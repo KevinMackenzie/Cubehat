@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="GeneratedFiles">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{8b9702ea-4fdd-4b6a-bbbc-53f735322248}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainLoop">
+      <UniqueIdentifier>{244759bf-6527-46e4-b5c7-160f0fbea199}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Multicore">
+      <UniqueIdentifier>{10b61eb5-779f-4120-9762-a50187b4d37f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{994b5145-8769-4a5e-a517-0a8aa67316b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UserInterface">
+      <UniqueIdentifier>{5959029e-9523-4668-b75d-37875a9f9ded}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{3c3e6bbf-3acc-421a-8a36-6592fa571435}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{91ec3d8b-b7b6-4b30-b8ea-26d903cc5b44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actors">
+      <UniqueIdentifier>{46645e1d-af59-4fe2-b415-3289e74b1e38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{113ce6ae-9837-4b9d-8298-e7cde4e5f3e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debugging">
+      <UniqueIdentifier>{6a453bf6-f52d-43bb-b4c1-6e3bfa6f8e37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EventManager">
+      <UniqueIdentifier>{7d2c7393-a2da-42ef-b692-a0a39f0c640d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameLogic">
+      <UniqueIdentifier>{56f76bea-e94f-482a-8a64-045d3cc35963}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics3D">
+      <UniqueIdentifier>{42bc2b6d-aca6-493a-b410-d6e0c37785d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LUAScripting">
+      <UniqueIdentifier>{22576bdf-e9e7-4ed4-97b9-bf1e4e940ff5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{a56eff2a-6c16-4a34-9535-a014de189145}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourceCache">
+      <UniqueIdentifier>{c1a2b7a6-a5f5-4c7a-9c90-2121fcbace43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{51cd4194-f37e-4208-b486-4befd8a16337}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\Quicksand\GeneratedFiles\dllmain.cpp">
+      <Filter>GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Quicksand\GeneratedFiles\stdafx.cpp">
+      <Filter>GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Quicksand\Math\Math.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Quicksand\Math\Math_Random.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Quicksand\MainLoop\ProcessManager.cpp">
+      <Filter>MainLoop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Quicksand\MainLoop\Process.cpp">
+      <Filter>MainLoop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Quicksand\MainLoop\Processes.cpp">
+      <Filter>MainLoop</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\Quicksand\GeneratedFiles\stdafx.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\GeneratedFiles\targetver.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\DLLExport.h" />
+    <ClInclude Include="..\..\Source\Quicksand\MainLoop\Processes.hpp">
+      <Filter>MainLoop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\MainLoop\ProcessManager.hpp">
+      <Filter>MainLoop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\MainLoop\Process.hpp">
+      <Filter>MainLoop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\Math\Math.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
