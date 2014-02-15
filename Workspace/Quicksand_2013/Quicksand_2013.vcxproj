@@ -41,12 +41,18 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)..\Source\Lib\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Temp\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)..\Lib\$(PlatformName)$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)..\Temp\$(ProjectName)$(PlatformName)$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)$(PlatformName)$(Configuration)</TargetName>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)$(ProjectName)\</IncludePath>
+    <LibraryPath>$(SolutionDir)..\Lib\$(PlatformName)$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)..\Lib\$(PlatformName)$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)..\Temp\$(ProjectName)$(PlatformName)$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)$(PlatformName)$(Configuration)</TargetName>
+    <LibraryPath>$(SolutionDir)..\Source\Lib\$(PlatformName)$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -54,6 +60,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;QUICKSAND_2013_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(SolutionDir)..\Temp\$(ProjectName)$(PlatformName)$(Configuration)\$(ProjectName)$(PlatformName)$(Configuration).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -68,6 +76,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;QUICKSAND_2013_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderOutputFile>$(SolutionDir)..\Temp\$(ProjectName)$(PlatformName)$(Configuration)\$(ProjectName)$(PlatformName)$(Configuration).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -77,22 +86,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\Quicksand\GeneratedFiles\dllmain.cpp" />
-    <ClCompile Include="..\..\Source\Quicksand\GeneratedFiles\stdafx.cpp" />
+    <ClCompile Include="..\..\Source\Quicksand\Debugging\Logger.cpp" />
+    <ClCompile Include="..\..\Source\Quicksand\Game\QuicksandGame.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\MainLoop\Process.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\MainLoop\Processes.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\MainLoop\ProcessManager.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\Math\Math.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\Math\Math_Random.cpp" />
+    <ClCompile Include="..\..\Source\Quicksand\ResourceCache\ResourceCache.cpp" />
+    <ClCompile Include="..\..\Source\Quicksand\Utilities\String.cpp" />
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Quicksand\Debugging\Logger.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\DLLExport.h" />
-    <ClInclude Include="..\..\Source\Quicksand\GeneratedFiles\stdafx.h" />
-    <ClInclude Include="..\..\Source\Quicksand\GeneratedFiles\targetver.h" />
+    <ClInclude Include="..\..\Source\Quicksand\Game\QuicksandGame.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\MainLoop\Process.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\MainLoop\Processes.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\MainLoop\ProcessManager.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\Math\Math.hpp" />
+    <ClInclude Include="..\..\Source\Quicksand\ResourceCache\ResourceCache.hpp" />
+    <ClInclude Include="..\..\Source\Quicksand\Utilities\Interfaces.hpp" />
+    <ClInclude Include="..\..\Source\Quicksand\Utilities\String.hpp" />
+    <ClInclude Include="..\..\Source\Quicksand\Utilities\Templates.hpp" />
+    <ClInclude Include="..\..\Source\Quicksand\Utilities\Types.hpp" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

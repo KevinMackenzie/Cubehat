@@ -56,14 +56,11 @@
     <Filter Include="Math">
       <UniqueIdentifier>{51cd4194-f37e-4208-b486-4befd8a16337}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{6680dda7-1246-4455-b880-a96006ea875b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\Quicksand\GeneratedFiles\dllmain.cpp">
-      <Filter>GeneratedFiles</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Quicksand\GeneratedFiles\stdafx.cpp">
-      <Filter>GeneratedFiles</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\Quicksand\Math\Math.cpp">
       <Filter>Math</Filter>
     </ClCompile>
@@ -79,14 +76,26 @@
     <ClCompile Include="..\..\Source\Quicksand\MainLoop\Processes.cpp">
       <Filter>MainLoop</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Quicksand\Game\QuicksandGame.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>GeneratedFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Quicksand\ResourceCache\ResourceCache.cpp">
+      <Filter>ResourceCache</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Quicksand\Utilities\String.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Quicksand\Debugging\Logger.cpp">
+      <Filter>Debugging</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\Quicksand\GeneratedFiles\stdafx.h">
-      <Filter>GeneratedFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Quicksand\GeneratedFiles\targetver.h">
-      <Filter>GeneratedFiles</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Quicksand\DLLExport.h" />
     <ClInclude Include="..\..\Source\Quicksand\MainLoop\Processes.hpp">
       <Filter>MainLoop</Filter>
@@ -99,6 +108,33 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Quicksand\Math\Math.hpp">
       <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\Game\QuicksandGame.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\Utilities\Types.hpp">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\Utilities\Templates.hpp">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\Utilities\Interfaces.hpp">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\ResourceCache\ResourceCache.hpp">
+      <Filter>ResourceCache</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\Utilities\String.hpp">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\Debugging\Logger.hpp">
+      <Filter>Debugging</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

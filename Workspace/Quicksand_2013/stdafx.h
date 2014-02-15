@@ -40,11 +40,12 @@
 #include <queue>
 #include <map>
 
-
+#define GLEW_STATIC
 
 //OpenGL Header files
 #include "../../Source/Quicksand/3rdParty/glew-1.10.0/include/GL/glew.h"
 #include "../../Source/Quicksand/3rdParty/glfw-3.0.4/include/GLFW/glfw3.h"
+#include "../../Source/Quicksand/3rdParty/glfw-3.0.4/include/GLFW/glfw3native.h"
 
 
 //glm include files
@@ -78,20 +79,20 @@ namespace Quicksand
 #endif
 
 
-//#include <tinyxml.h> TODO:
+#include "../../Source/Quicksand/3rdParty/tinyxml-2.6.2/tinyxml.h"
 
-	// fast delegate stuff TODO:
-	//#include "../3rdParty/FastDelegate/FastDelegate.h"
-	//using fastdelegate::MakeDelegate;
+	// fast delegate stuff 
+#include "../../Source/Quicksand/3rdParty/FastDelegate/FastDelegate.h"
+	using fastdelegate::MakeDelegate;
 
 #pragma warning( disable : 4996 ) // 'function' declared deprecated - gets rid of all those 2005 warnings....
 
 
 	// GameCode #includes
-#include "..\Debugging\Logger.h"  // this should be the first of the QSE includes since it defines QSE_ASSERT()
-#include "..\Utilities\types.h"
-#include "..\Utilities\templates.h"
-#include "..\Graphics3D\geometry.h"
+#include "..\..\Source\Quicksand\Debugging\Logger.hpp"  // this should be the first of the QSE includes since it defines QSE_ASSERT()
+#include "../../Source/Quicksand/Utilities/Types.hpp"
+#include "..\..\Source\Quicksand\Utilities\Templates.hpp"
+#include "..\..\Source\Quicksand\Graphics3D\geometry.h"
 
 
 	extern Color g_White;

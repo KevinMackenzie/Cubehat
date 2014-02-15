@@ -16,8 +16,8 @@
 #define CMATH_TEMPERING_SHIFT_T(y)  (y << 15)
 #define CMATH_TEMPERING_SHIFT_L(y)  (y >> 18)
 
-#define RADIANS_TO_DEGREES(x) ((x) * 180.0f / GCC_PI)
-#define DEGREES_TO_RADIANS(x) ((x) * GCC_PI / 180.0f)
+#define RADIANS_TO_DEGREES(x) ((x) * 180.0f / QSE_PI)
+#define DEGREES_TO_RADIANS(x) ((x) * QSE_PI / 180.0f)
 
 /////////////////////////////////////////////
 //	class CRandom
