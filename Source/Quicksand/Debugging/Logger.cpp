@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Logger.hpp"
 
-//#include "../Multicore/CriticalSection.h"
+#include "../Multicore/CriticalSection.hpp"
 #include "../Utilities/String.hpp"
 
 
@@ -51,7 +51,7 @@ public:
 	};
 
 	typedef std::map<string, unsigned char> Tags;
-	typedef std::list<Logger::ErrorMessenger*> ErrorMessengerList;
+	typedef std::list<NLogger::ErrorMessenger*> ErrorMessengerList;
 
 	Tags m_tags;
 	ErrorMessengerList m_errorMessengers;
@@ -71,7 +71,7 @@ public:
 	void SetDisplayFlags( const std::string& tag, unsigned char flags );
 
 	// error messengers
-	void AddErrorMessenger( Logger::ErrorMessenger* pMessenger );
+	void AddErrorMessenger( NLogger::ErrorMessenger* pMessenger );
 	LogMgr::ErrorDialogResult Error( const std::string& errorMessage, bool isFatal, const char* funcName, const char* sourceFile, unsigned int lineNum );
 
 private:
@@ -103,7 +103,7 @@ LogMgr::~LogMgr( void )
 	m_messengerCriticalSection.Lock( );
 	for (auto it = m_errorMessengers.begin( ); it != m_errorMessengers.end( ); ++it)
 	{
-		Logger::ErrorMessenger* pMessenger = (*it);
+		NLogger::ErrorMessenger* pMessenger = (*it);
 		delete pMessenger;
 	}
 	m_errorMessengers.clear( );
@@ -112,7 +112,7 @@ LogMgr::~LogMgr( void )
 
 
 //------------------------------------------------------------------------------------------------------------------------------------
-// Initializes the logger.
+// Initializes the NLogger.
 //------------------------------------------------------------------------------------------------------------------------------------
 void LogMgr::Init( const char* loggingConfigFilename )
 {
@@ -197,7 +197,7 @@ void LogMgr::SetDisplayFlags( const std::string& tag, unsigned char flags )
 //------------------------------------------------------------------------------------------------------------------------------------
 // Adds an error messenger to the list
 //------------------------------------------------------------------------------------------------------------------------------------
-void LogMgr::AddErrorMessenger( Logger::ErrorMessenger* pMessenger )
+void LogMgr::AddErrorMessenger( NLogger::ErrorMessenger* pMessenger )
 {
 	m_messengerCriticalSection.Lock( );
 	m_errorMessengers.push_back( pMessenger );
@@ -305,13 +305,13 @@ void LogMgr::GetOutputBuffer( std::string& outOutputBuffer, const string& tag, c
 //-----------------------------------------------------------------------------------------------------------------------
 // ErrorMessenger
 //-----------------------------------------------------------------------------------------------------------------------
-Logger::ErrorMessenger::ErrorMessenger( void )
+NLogger::ErrorMessenger::ErrorMessenger( void )
 {
 	s_pLogMgr->AddErrorMessenger( this );
 	m_enabled = true;
 }
 
-void Logger::ErrorMessenger::Show( const std::string& errorMessage, bool isFatal, const char* funcName, const char* sourceFile, unsigned int lineNum )
+void NLogger::ErrorMessenger::Show( const std::string& errorMessage, bool isFatal, const char* funcName, const char* sourceFile, unsigned int lineNum )
 {
 	if (m_enabled)
 	{
@@ -326,34 +326,32 @@ void Logger::ErrorMessenger::Show( const std::string& errorMessage, bool isFatal
 // C Interface
 //-----------------------------------------------------------------------------------------------------------------------
 
-namespace Logger {
 
-	void Init( const char* loggingConfigFilename )
+void NLogger::Init( const char* loggingConfigFilename )
+{
+	if (!s_pLogMgr)
 	{
-		if (!s_pLogMgr)
-		{
-			s_pLogMgr = QSE_NEW LogMgr;
-			s_pLogMgr->Init( loggingConfigFilename );
-		}
+		s_pLogMgr = QSE_NEW LogMgr;
+		s_pLogMgr->Init( loggingConfigFilename );
 	}
+}
 
-	void Destroy( void )
-	{
-		delete s_pLogMgr;
-		s_pLogMgr = NULL;
-	}
+void NLogger::Destroy( void )
+{
+	delete s_pLogMgr;
+	s_pLogMgr = NULL;
+}
 
-	void Log( const string& tag, const string& message, const char* funcName, const char* sourceFile, unsigned int lineNum )
-	{
-		QSE_ASSERT( s_pLogMgr );
-		s_pLogMgr->Log( tag, message, funcName, sourceFile, lineNum );
-	}
+void NLogger::Log( const string& tag, const string& message, const char* funcName, const char* sourceFile, unsigned int lineNum )
+{
+	QSE_ASSERT( s_pLogMgr );
+	s_pLogMgr->Log( tag, message, funcName, sourceFile, lineNum );
+}
 
-	void SetDisplayFlags( const std::string& tag, unsigned char flags )
-	{
-		QSE_ASSERT( s_pLogMgr );
-		s_pLogMgr->SetDisplayFlags( tag, flags );
-	}
+void NLogger::SetDisplayFlags( const std::string& tag, unsigned char flags )
+{
+	QSE_ASSERT( s_pLogMgr );
+	s_pLogMgr->SetDisplayFlags( tag, flags );
+}
 
-}  // end namespace Logger
 #pragma endregion

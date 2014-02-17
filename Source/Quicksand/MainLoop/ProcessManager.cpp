@@ -46,15 +46,15 @@ unsigned int CProcessManager::UpdateProcesses( unsigned long deltaMs )
 			switch (ptr->GetState())
 			{
 			case CProcess::SUCCEEDED:
-
-				ptr->VOnSuccess();
-				StrongProcessPtr pChild = ptr->RemoveChild();
-				if (pChild)
-					AttachProcess( pChild );
-				else
-					++successCount;//this only counts if the chain has succeeded
-				break;
-
+			{
+										ptr->VOnSuccess();
+										StrongProcessPtr pChild = ptr->RemoveChild();
+										if (pChild)
+											AttachProcess( pChild );
+										else
+											++successCount;//this only counts if the chain has succeeded
+										break;
+			}
 			case CProcess::ABORTED:
 				ptr->VOnAbort();
 

@@ -2,9 +2,7 @@
 #define RESOURCECACHE_HPP
 
 #include "../Utilities/Interfaces.hpp"
-#include <memory>
-#include <string>
-
+#include <cctype>
 
 
 namespace Quicksand
@@ -12,6 +10,7 @@ namespace Quicksand
 	using std::shared_ptr;
 	using std::weak_ptr;
 
+	class ResCache;
 
 	//useful for getting more information about the resource
 	class IResourceExtraData
@@ -28,7 +27,7 @@ namespace Quicksand
 		Resource( const std::string &name )
 		{
 			m_Name = name;
-			std:transform( m_Name.begin(), m_Name.end(), m_Name.begin(), (int( *))std::tolower );
+			std::transform( m_Name.begin( ), m_Name.end( ), m_Name.begin( ), (int( *)(int)) std::tolower );
 		}
 	};
 
@@ -55,35 +54,6 @@ namespace Quicksand
 	};
 
 
-	ResHandle::ResHandle(
-		Resource& resource, char* buffer, unsigned int size, ResCache* pResCache ) :
-		m_Resource( resource )
-	{
-		m_Buffer = buffer;
-		m_Size = size;
-		m_Extra = 0;
-		m_pResCache = pResCache;
-	}
-
-
-	ResHandle::~ResHandle( void )
-	{
-		SAFE_DELETE_ARRAY( m_Buffer );
-		m_pResCache->MemoryHasBeenFreed( m_Size );
-	}
-
-
-
-	//a default handler to extract data as is and requires no processing at all and is directly loaded into data
-	class DefaultResourceLoader : public IResourceLoader
-	{
-	public:
-		virtual bool VUseRawFile(){ return true; }
-		virtual unsigned int VGetLoadedResoureceSize( char* rawBuffer, unsigned int rawSize ){ return rawSize; }
-		virtual bool VLoadResource( char* rawBuffer, unsigned int rawSize, shared_ptr<ResHandle> handle ){ return true; }
-		virtual std::string VGetPattern(){ return "*"; }
-	};
-
 
 
 
@@ -109,27 +79,46 @@ namespace Quicksand
 		unsigned int m_CacheSize;	//total memory size
 		unsigned int m_Allocated;	//total memory used(allocated)
 
-		shared_ptr<ResHandle> Find( Resource *r );
-		const void *Update( shared_ptr<ResHandle> handle );
-		shared_ptr<ResHandle> Load( Resource* r );
+		shared_ptr<ResHandle> Find( Resource &r );
+		shared_ptr<ResHandle> Load( Resource &r );
 		void Free( shared_ptr<ResHandle> gonner );
+		void Update( shared_ptr<ResHandle> handle );
 
 		bool MakeRoom( unsigned int size );
 		char* Allocate( unsigned int size );
-		void FreeOneResource();
+		void FreeOneResource( );
 		void MemoryHasBeenFreed( unsigned int size );
 
 	public:
 		ResCache( const unsigned int sizeInMb, IResourceFile* resFile );
-		~ResCache();
+		~ResCache( );
 
-		bool Init();
+		bool Init( );
 		void RegisterLoader( shared_ptr<IResourceLoader> loader );
 
-		shared_ptr <ResHandle> GetHandle( Resource* r );
+		shared_ptr <ResHandle> GetHandle( Resource *r );
 		int Preload( const std::string pattern, void( *progressCallback )(int, bool&) );
 		void Flush( void );
 	};
+
+
+
+	//a default handler to extract data as is and requires no processing at all and is directly loaded into data
+	class DefaultResourceLoader : public IResourceLoader
+	{
+	public:
+		virtual bool VUseRawFile( ) { return true; }
+		virtual bool VDiscardRawBufferAfterLoad( ) { return true; }
+		virtual unsigned int VGetLoadedResourceSize( char *rawBuffer, unsigned int rawSize ) { return rawSize; }
+		virtual bool VLoadResource( char *rawBuffer, unsigned int rawSize, shared_ptr<ResHandle> handle ) { return true; }
+		virtual std::string VGetPattern( ) { return "*"; }
+
+	};
+
+
+
+
+
 
 
 }

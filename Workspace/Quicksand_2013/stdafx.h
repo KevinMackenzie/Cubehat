@@ -6,7 +6,7 @@
 // Windows Header Files:
 
 #define NOMINMAX
-#include <windows.h>
+#include <Windows.h>
 #include <windowsx.h>
 
 #include <crtdbg.h>
@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <memory.h>
+#include <memory>
 #include <tchar.h>
 
 #include <mmsystem.h>
@@ -40,7 +41,46 @@
 #include <queue>
 #include <map>
 
+
+//link the static version of GLEW
 #define GLEW_STATIC
+
+//this lets us expose the native types for GLFW example, get the HWND of a GLFWwindow
+#define GLFW_EXPOSE_NATIVE_WGL
+#define GLFW_EXPOSE_NATIVE_WIN32
+
+//these defines have to be at the top for some of the include files to use
+
+#if defined(_DEBUG)
+#	define QSE_NEW new(_NORMAL_BLOCK,__FILE__, __LINE__)
+#else
+#	define QSE_NEW new
+#endif
+
+
+#if !defined(SAFE_DELETE)
+#define SAFE_DELETE(x) if(x) delete x; x=NULL;
+#endif
+
+#if !defined(SAFE_DELETE_ARRAY)
+#define SAFE_DELETE_ARRAY(x) if (x) delete [] x; x=NULL; 
+#endif
+
+#if !defined(SAFE_RELEASE)
+#define SAFE_RELEASE(x) if(x) x->Release(); x=NULL;
+#endif
+
+#ifdef UNICODE
+#define _tcssprintf wsprintf
+#define tcsplitpath _wsplitpath
+#else
+#define _tcssprintf sprintf
+#define tcsplitpath _splitpath
+#endif
+
+#define __STR2__(x) #x
+#define __STR1__(x) __STR2__(x)
+#define __LOC__ __FILE__ "("__STR1__(__LINE__)") : Warning Msg: "
 
 //OpenGL Header files
 #include "../../Source/Quicksand/3rdParty/glew-1.10.0/include/GL/glew.h"
@@ -54,12 +94,43 @@
 #include "../../Source/Quicksand/3rdParty/glm-0.9.5.2/glm/gtx/quaternion.hpp"
 #include "../../Source/Quicksand/3rdParty/glm-0.9.5.2/glm/gtc/matrix_transform.hpp"
 
+
 namespace Quicksand
 {
+	//this needs to be before several of the include files
 	using std::shared_ptr;
 	using std::weak_ptr;
 	using std::static_pointer_cast;
 	using std::dynamic_pointer_cast;
+}
+
+#include "../../Source/Quicksand/3rdParty/tinyxml-2.6.2/tinyxml.h"
+
+// fast delegate stuff 
+#include "../../Source/Quicksand/3rdParty/FastDelegate/FastDelegate.h"
+
+// Quicksand #includes
+#include "../../Source/Quicksand/Debugging/Logger.hpp"  // this should be the first of the QSE includes since it defines QSE_ASSERT()
+#include "../../Source/Quicksand/Utilities/Types.hpp"
+#include "../../Source/Quicksand/Utilities/Templates.hpp"
+#include "../../Source/Quicksand/Utilities/String.hpp"
+#include "../../Source/Quicksand/Utilities/Interfaces.hpp"
+#include "../../Source/Quicksand/Game/QuicksandGame.hpp"
+
+//#include "../../Source/Quicksand/Graphics3D/geometry.h"
+
+
+
+namespace Quicksand
+{
+
+	//to be less of a pain
+	using glm::vec3;
+	using glm::vec4;
+	using glm::vec2;
+	using glm::mat4;
+	using glm::mat3;
+	using glm::quat;
 
 	class QSE_noncopyable
 	{
@@ -67,33 +138,19 @@ namespace Quicksand
 		QSE_noncopyable( const QSE_noncopyable& x );
 		QSE_noncopyable& operator=(const QSE_noncopyable& x);
 	public:
-		QSE_noncopyable( ) {}; // Default constructor  
+		QSE_noncopyable() {}; // Default constructor  
 	};
 
 
-	// Game Code Complete - Chapter 12, page 446-447
-#if defined(_DEBUG)
-#	define QSE_NEW new(_NORMAL_BLOCK,__FILE__, __LINE__)
-#else
-#	define QSE_NEW new
-#endif
 
-
-#include "../../Source/Quicksand/3rdParty/tinyxml-2.6.2/tinyxml.h"
-
-	// fast delegate stuff 
-#include "../../Source/Quicksand/3rdParty/FastDelegate/FastDelegate.h"
 	using fastdelegate::MakeDelegate;
 
 #pragma warning( disable : 4996 ) // 'function' declared deprecated - gets rid of all those 2005 warnings....
 
 
-	// GameCode #includes
-#include "..\..\Source\Quicksand\Debugging\Logger.hpp"  // this should be the first of the QSE includes since it defines QSE_ASSERT()
-#include "../../Source/Quicksand/Utilities/Types.hpp"
-#include "..\..\Source\Quicksand\Utilities\Templates.hpp"
-#include "..\..\Source\Quicksand\Graphics3D\geometry.h"
 
+
+	typedef vec4 Color;
 
 	extern Color g_White;
 	extern Color g_Black;
@@ -107,13 +164,13 @@ namespace Quicksand
 	extern Color g_Gray65;
 	extern Color g_Transparent;
 
-	extern Vec3 g_Up;
-	extern Vec3 g_Right;
-	extern Vec3 g_Forward;
+	extern vec3 g_Up;
+	extern vec3 g_Right;
+	extern vec3 g_Forward;
 
-	extern Vec4 g_Up4;
-	extern Vec4 g_Right4;
-	extern Vec4 g_Forward4;
+	extern vec4 g_Up4;
+	extern vec4 g_Right4;
+	extern vec4 g_Forward4;
 
 
 
@@ -142,34 +199,12 @@ namespace Quicksand
 	extern const int SCREEN_WIDTH;
 	extern const int SCREEN_HEIGHT;
 
-#if !defined(SAFE_DELETE)
-#define SAFE_DELETE(x) if(x) delete x; x=NULL;
-#endif
-
-#if !defined(SAFE_DELETE_ARRAY)
-#define SAFE_DELETE_ARRAY(x) if (x) delete [] x; x=NULL; 
-#endif
-
-#if !defined(SAFE_RELEASE)
-#define SAFE_RELEASE(x) if(x) x->Release(); x=NULL;
-#endif
-
-#ifdef UNICODE
-#define _tcssprintf wsprintf
-#define tcsplitpath _wsplitpath
-#else
-#define _tcssprintf sprintf
-#define tcsplitpath _splitpath
-#endif
-
-#define __STR2__(x) #x
-#define __STR1__(x) __STR2__(x)
-#define __LOC__ __FILE__ "("__STR1__(__LINE__)") : Warning Msg: "
+}
 
 
 
 
-};
+
 
 extern INT WINAPI QuicksandProc( HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,

@@ -28,28 +28,30 @@
 //
 //
 
-
-class CRandom
+namespace Quicksand
 {
-private:
 
-	//DATA:
-	unsigned int	m_Seed;
-	unsigned int	m_Seed_sp;
-	unsigned long	m_MT[CMATH_N];//this is an aray for the state vector
-	int				m_MTI;//whether m_MT is initialized
+	class CRandom
+	{
+	private:
 
-public:
+		//DATA:
+		unsigned int	m_Seed;
+		unsigned int	m_Seed_sp;
+		unsigned long	m_MT[CMATH_N];//this is an aray for the state vector
+		int				m_MTI;//whether m_MT is initialized
 
-	//FUNCTIONS
-	CRandom(void);
+	public:
 
-	unsigned int	Random(unsigned int n);//returns a number 0 to n-1 inclusive
-	float			Random();//random float
-	void			SetRandomSeed(unsigned int n);
-	unsigned int	GetRandomSeed(void);
-	void			Randomize(void);
-};
+		//FUNCTIONS
+		CRandom( void );
 
+		unsigned int	Random( unsigned int n );//returns a number 0 to n-1 inclusive
+		float			Random();//random float
+		void			SetRandomSeed( unsigned int n );
+		unsigned int	GetRandomSeed( void );
+		void			Randomize( void );
+	};
 
+}
 #endif

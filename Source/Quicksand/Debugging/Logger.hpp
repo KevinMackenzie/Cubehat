@@ -1,5 +1,5 @@
-#ifndef LOGGER_HPP
-#define LOGGER_HPP
+#ifndef Logger_HPP
+#define Logger_HPP
 
 //========================================================================
 
@@ -17,12 +17,12 @@
 // 
 // Calling  QSE_LOG("tag", "Log message") will print:
 //  [tag] Log Message
-// To enable these logs, you need to either manually call Logger::SetDisplayFlags() or set up a logging.xml file.
+// To enable these logs, you need to either manually call NLogger::SetDisplayFlags() or set up a logging.xml file.
 // logging.xml should follow this form:
 // 
-//  <Logger>
+//  <NLogger>
 //      <Log tag="Actor" debugger="1" file="0"/>
-//  </Logger>
+//  </NLogger>
 // 
 // The above chunk will cause all logs sent with the "Actor" tag to be displayed in the debugger.  If you set file 
 // to 1 as well, it would log out to a file as well.  Don't check in logging.xml to SVN, it should be a local-only 
@@ -33,41 +33,38 @@
 // Constants
 //---------------------------------------------------------------------------------------------------------------------
 
-namespace Quicksand
-{
-
-	// display flags
-	const unsigned char LOGFLAG_WRITE_TO_LOG_FILE = 1 << 0;
-	const unsigned char LOGFLAG_WRITE_TO_DEBUGGER = 1 << 1;
+// display flags
+const unsigned char LOGFLAG_WRITE_TO_LOG_FILE = 1 << 0;
+const unsigned char LOGFLAG_WRITE_TO_DEBUGGER = 1 << 1;
 
 #include <string>
 
-	//---------------------------------------------------------------------------------------------------------------------
-	// This is the public Logger interface.  You must call Init() before any logging can take place and Destroy() when
-	// you're done to clean it up.  Call SetDisplayFlags() to set the display flags for a particular logging tag.  By 
-	// default, they are all off.  Although you can, you probably shouldn't call Log() directly.  Use the QSE_LOG() macro 
-	// instead since it can be stripped out by the compiler for Release builds.
-	//---------------------------------------------------------------------------------------------------------------------
-	namespace Logger
+//---------------------------------------------------------------------------------------------------------------------
+// This is the public NLogger interface.  You must call Init() before any logging can take place and Destroy() when
+// you're done to clean it up.  Call SetDisplayFlags() to set the display flags for a particular logging tag.  By 
+// default, they are all off.  Although you can, you probably shouldn't call Log() directly.  Use the QSE_LOG() macro 
+// instead since it can be stripped out by the compiler for Release builds.
+//---------------------------------------------------------------------------------------------------------------------
+namespace NLogger
+{
+	// This class is used by the debug macros and shouldn't be accessed externally.
+	class ErrorMessenger
 	{
-		// This class is used by the debug macros and shouldn't be accessed externally.
-		class ErrorMessenger
-		{
-			bool m_enabled;
+		bool m_enabled;
 
-		public:
-			ErrorMessenger( void );
-			void Show( const std::string& errorMessage, bool isFatal, const char* funcName, const char* sourceFile, unsigned int lineNum );
-		};
+	public:
+		ErrorMessenger( void );
+		void Show( const std::string& errorMessage, bool isFatal, const char* funcName, const char* sourceFile, unsigned int lineNum );
+	};
 
-		// construction; must be called at the beginning and end of the program
-		void Init( const char* loggingConfigFilename );
-		void Destroy( void );
+	// construction; must be called at the beginning and end of the program
+	void Init( const char* loggingConfigFilename );
+	void Destroy( void );
 
-		// logging functions
-		void Log( const std::string& tag, const std::string& message, const char* funcName, const char* sourceFile, unsigned int lineNum );
-		void SetDisplayFlags( const std::string& tag, unsigned char flags );
-	}
+	// logging functions
+	void Log( const std::string& tag, const std::string& message, const char* funcName, const char* sourceFile, unsigned int lineNum );
+	void SetDisplayFlags( const std::string& tag, unsigned char flags );
+}
 
 
 	//---------------------------------------------------------------------------------------------------------------------
@@ -78,7 +75,7 @@ namespace Quicksand
 #define QSE_FATAL(str) \
 	do \
 	{ \
-	static Logger::ErrorMessenger* pErrorMessenger = QSE_NEW Logger::ErrorMessenger; \
+	static NLogger::ErrorMessenger* pErrorMessenger = QSE_NEW NLogger::ErrorMessenger; \
 	std::string s( (str) ); \
 	pErrorMessenger->Show( s, true, __FUNCTION__, __FILE__, __LINE__ ); \
 	} \
@@ -92,7 +89,7 @@ namespace Quicksand
 #define QSE_ERROR(str) \
 	do \
 	{ \
-	static Logger::ErrorMessenger* pErrorMessenger = QSE_NEW Logger::ErrorMessenger; \
+	static NLogger::ErrorMessenger* pErrorMessenger = QSE_NEW NLogger::ErrorMessenger; \
 	std::string s( (str) ); \
 	pErrorMessenger->Show( s, false, __FUNCTION__, __FILE__, __LINE__ ); \
 	} \
@@ -104,7 +101,7 @@ namespace Quicksand
 	do \
 	{ \
 	std::string s( (str) ); \
-	Logger::Log( "WARNING", s, __FUNCTION__, __FILE__, __LINE__ ); \
+	NLogger::Log( "WARNING", s, __FUNCTION__, __FILE__, __LINE__ ); \
 	}\
 	while (0)\
 
@@ -115,7 +112,7 @@ namespace Quicksand
 	do \
 	{ \
 	std::string s( (str) ); \
-	Logger::Log( "INFO", s, NULL, NULL, 0 ); \
+	NLogger::Log( "INFO", s, NULL, NULL, 0 ); \
 	} \
 	while (0) \
 
@@ -125,7 +122,7 @@ namespace Quicksand
 	do \
 	{ \
 	std::string s( (str) ); \
-	Logger::Log( tag, s, NULL, NULL, 0 ); \
+	NLogger::Log( tag, s, NULL, NULL, 0 ); \
 	} \
 	while (0) \
 
@@ -135,7 +132,7 @@ namespace Quicksand
 	{ \
 	if (!(expr)) \
 	{ \
-	static Logger::ErrorMessenger* pErrorMessenger = QSE_NEW Logger::ErrorMessenger; \
+	static NLogger::ErrorMessenger* pErrorMessenger = QSE_NEW NLogger::ErrorMessenger; \
 	pErrorMessenger->Show( #expr, false, __FUNCTION__, __FILE__, __LINE__ ); \
 	} \
 	} \
@@ -153,6 +150,5 @@ namespace Quicksand
 
 #endif  // !defined NDEBUG
 
-}
 
 #endif

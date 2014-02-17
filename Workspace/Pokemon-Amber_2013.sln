@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2013 for Windows Desktop
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Quicksand_2013", "Quicksand_2013\Quicksand_2013.vcxproj", "{1C3F1498-C8CC-4F36-A36E-6364AD8F0F3F}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pokemon-Amber_2013", "Pokemon-Amber_2013\Pokemon-Amber_2013.vcxproj", "{76BF52CF-7C79-4ED6-8AEC-5AA3939485F6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Quicksand_2013", "Quicksand_2013\Quicksand_2013.vcxproj", "{530483AD-A749-4E30-803E-A1904AA819E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1C3F1498-C8CC-4F36-A36E-6364AD8F0F3F}.Debug|Win32.ActiveCfg = Debug|Win32
-		{1C3F1498-C8CC-4F36-A36E-6364AD8F0F3F}.Debug|Win32.Build.0 = Debug|Win32
-		{1C3F1498-C8CC-4F36-A36E-6364AD8F0F3F}.Release|Win32.ActiveCfg = Release|Win32
-		{1C3F1498-C8CC-4F36-A36E-6364AD8F0F3F}.Release|Win32.Build.0 = Release|Win32
 		{76BF52CF-7C79-4ED6-8AEC-5AA3939485F6}.Debug|Win32.ActiveCfg = Debug|Win32
 		{76BF52CF-7C79-4ED6-8AEC-5AA3939485F6}.Debug|Win32.Build.0 = Debug|Win32
 		{76BF52CF-7C79-4ED6-8AEC-5AA3939485F6}.Release|Win32.ActiveCfg = Release|Win32
 		{76BF52CF-7C79-4ED6-8AEC-5AA3939485F6}.Release|Win32.Build.0 = Release|Win32
+		{530483AD-A749-4E30-803E-A1904AA819E5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{530483AD-A749-4E30-803E-A1904AA819E5}.Debug|Win32.Build.0 = Debug|Win32
+		{530483AD-A749-4E30-803E-A1904AA819E5}.Release|Win32.ActiveCfg = Release|Win32
+		{530483AD-A749-4E30-803E-A1904AA819E5}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

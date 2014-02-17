@@ -1,5 +1,8 @@
 #include "stdafx.h"
-#include "Math.h"
+#include "Math.hpp"
+#include <time.h>
+
+using namespace Quicksand;
 
 /////////////////////////////////////////////////////////////////////////////
 //	CRandom Implimentation
