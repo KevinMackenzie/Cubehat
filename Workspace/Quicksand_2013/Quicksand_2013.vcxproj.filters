@@ -106,6 +106,15 @@
     <ClCompile Include="..\..\Source\Quicksand\Utilities\String.cpp">
       <Filter>Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Quicksand\EventManager\Events.cpp">
+      <Filter>EventManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Quicksand\EventManager\EventManagerInterfaces.cpp">
+      <Filter>EventManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Quicksand\EventManager\EventManger.cpp">
+      <Filter>EventManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -162,6 +171,15 @@
     <ClInclude Include="..\..\Source\Quicksand\DLLExport.h" />
     <ClInclude Include="stdafx.h">
       <Filter>GeneratedFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\EventManager\EventManger.hpp">
+      <Filter>EventManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\EventManager\Events.hpp">
+      <Filter>EventManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\EventManager\EventManagerInterfaces.hpp">
+      <Filter>EventManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
