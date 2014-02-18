@@ -52,7 +52,7 @@ namespace Quicksand
 		
 
 		//return the type of event
-		virtual const EventType& VGetEventType( void ) = 0;
+		virtual const EventType& VGetEventType( void ) const = 0;
 
 		float GetTimeStamp( void ) const { return m_fTimeStamp; }
 

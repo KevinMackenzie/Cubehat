@@ -94,6 +94,10 @@
 #include "../../Source/Quicksand/3rdParty/glm-0.9.5.2/glm/gtx/quaternion.hpp"
 #include "../../Source/Quicksand/3rdParty/glm-0.9.5.2/glm/gtc/matrix_transform.hpp"
 
+#include "../../Source/Quicksand/3rdParty/tinyxml-2.6.2/tinyxml.h"
+
+// fast delegate stuff 
+#include "../../Source/Quicksand/3rdParty/FastDelegate/FastDelegate.h"
 
 namespace Quicksand
 {
@@ -102,27 +106,16 @@ namespace Quicksand
 	using std::weak_ptr;
 	using std::static_pointer_cast;
 	using std::dynamic_pointer_cast;
-}
-
-#include "../../Source/Quicksand/3rdParty/tinyxml-2.6.2/tinyxml.h"
-
-// fast delegate stuff 
-#include "../../Source/Quicksand/3rdParty/FastDelegate/FastDelegate.h"
-
-// Quicksand #includes
-#include "../../Source/Quicksand/Debugging/Logger.hpp"  // this should be the first of the QSE includes since it defines QSE_ASSERT()
-#include "../../Source/Quicksand/Utilities/Types.hpp"
-#include "../../Source/Quicksand/Utilities/Templates.hpp"
-#include "../../Source/Quicksand/Utilities/String.hpp"
-#include "../../Source/Quicksand/Utilities/Interfaces.hpp"
-#include "../../Source/Quicksand/Game/QuicksandGame.hpp"
-
-//#include "../../Source/Quicksand/Graphics3D/geometry.h"
 
 
 
-namespace Quicksand
-{
+	struct AppMsg
+	{
+		HWND m_hWnd;
+		UINT m_uMsg;
+		WPARAM m_wParam;
+		LPARAM m_lParam;
+	};
 
 	//to be less of a pain
 	using glm::vec3;
@@ -132,13 +125,15 @@ namespace Quicksand
 	using glm::mat3;
 	using glm::quat;
 
+
+
 	class QSE_noncopyable
 	{
 	private:
 		QSE_noncopyable( const QSE_noncopyable& x );
 		QSE_noncopyable& operator=(const QSE_noncopyable& x);
 	public:
-		QSE_noncopyable() {}; // Default constructor  
+		QSE_noncopyable( ) {}; // Default constructor  
 	};
 
 
@@ -174,18 +169,6 @@ namespace Quicksand
 
 
 
-	//  AppMsg				- Chapter 9, page 248
-
-	struct AppMsg
-	{
-		HWND m_hWnd;
-		UINT m_uMsg;
-		WPARAM m_wParam;
-		LPARAM m_lParam;
-	};
-
-
-
 	// Useful #defines
 
 	extern const float fOPAQUE;
@@ -198,12 +181,18 @@ namespace Quicksand
 
 	extern const int SCREEN_WIDTH;
 	extern const int SCREEN_HEIGHT;
-
 }
 
 
+// Quicksand #includes
+#include "../../Source/Quicksand/Debugging/Logger.hpp"  // this should be the first of the QSE includes since it defines QSE_ASSERT()
+#include "../../Source/Quicksand/Utilities/Types.hpp"
+#include "../../Source/Quicksand/Utilities/Templates.hpp"
+#include "../../Source/Quicksand/Utilities/String.hpp"
+#include "../../Source/Quicksand/Utilities/Interfaces.hpp"
+#include "../../Source/Quicksand/Game/QuicksandGame.hpp"
 
-
+//#include "../../Source/Quicksand/Graphics3D/geometry.h"
 
 
 extern INT WINAPI QuicksandProc( HINSTANCE hInstance,

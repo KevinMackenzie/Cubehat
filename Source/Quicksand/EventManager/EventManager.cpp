@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "EventManger.hpp"
+#include "EventManager.hpp"
 
 namespace Quicksand
 {

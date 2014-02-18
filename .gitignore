@@ -131,9 +131,6 @@ UpgradeLog*.htm
 App_Data/*.mdf
 App_Data/*.ldf
 
-#Third Party Libraries
-Source/Quicksand/3rdParty/
-
 #LightSwitch generated files
 GeneratedArtifacts/
 _Pvt_Extensions/
@@ -155,4 +152,6 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
-/Lib/
+
+#Temp folder
+/Temp/

@@ -90,7 +90,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\Source\Quicksand\Debugging\Logger.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\EventManager\EventManagerInterfaces.cpp" />
-    <ClCompile Include="..\..\Source\Quicksand\EventManager\EventManger.cpp" />
+    <ClCompile Include="..\..\Source\Quicksand\EventManager\EventManager.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\EventManager\Events.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\Game\QuicksandGame.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\MainLoop\Process.cpp" />
@@ -120,7 +120,7 @@
     <ClInclude Include="..\..\Source\Quicksand\Debugging\Logger.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\DLLExport.h" />
     <ClInclude Include="..\..\Source\Quicksand\EventManager\EventManagerInterfaces.hpp" />
-    <ClInclude Include="..\..\Source\Quicksand\EventManager\EventManger.hpp" />
+    <ClInclude Include="..\..\Source\Quicksand\EventManager\EventManager.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\EventManager\Events.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\Game\QuicksandGame.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\MainLoop\Process.hpp" />
