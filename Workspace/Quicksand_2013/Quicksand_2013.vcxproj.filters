@@ -115,6 +115,9 @@
     <ClCompile Include="..\..\Source\Quicksand\EventManager\EventManager.cpp">
       <Filter>EventManager</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Quicksand\Graphics3D\Shader.cpp">
+      <Filter>Graphics3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -180,6 +183,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Quicksand\EventManager\EventManager.hpp">
       <Filter>EventManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\Graphics3D\Shader.hpp">
+      <Filter>Graphics3D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
