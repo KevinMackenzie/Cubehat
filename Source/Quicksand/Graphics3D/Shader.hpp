@@ -10,6 +10,7 @@ namespace Quicksand
 	//into the openGL functions
 	enum ShaderType
 	{
+		QSE_UNDEFINED           = NULL,
 		QSE_COMPUTE_SHADER		= GL_COMPUTE_SHADER,
 		QSE_VERTEX_SHADER		= GL_VERTEX_SHADER,
 		QSE_TESS_CONTROL_SHADER = GL_TESS_CONTROL_SHADER,
@@ -24,6 +25,8 @@ namespace Quicksand
 	{
 		const char* m_InfoLog;
 		bool m_bSuccess;
+
+		ShaderCompileStruct_t(void) : m_bSuccess(false), m_InfoLog(""){}
 	};
 
 	typedef ShaderCompileStruct_t ShaderCompileStruct;
@@ -31,16 +34,16 @@ namespace Quicksand
 
 	class Shader
 	{
+		Shader(void){}
 	protected:
 		GLuint m_ShaderID;
-		ShaderType m_Typel;
-		const char* m_TextCache;
+		ShaderType m_Type;
+		std::string m_TextCache;
 
 		ShaderCompileStruct m_CompileInfo;
-
 	public:
-		Shader(void);
-		~Shader(void);
+		Shader(ShaderType shaderType);
+		virtual ~Shader(void);
 
 		//fileName is the name of the file that is should load,
 		//replace is whether it should append the current shader information, 
@@ -65,6 +68,10 @@ namespace Quicksand
 		//this lets you get compile information from opeGL
 		const ShaderCompileStruct& GetCompileInfo(void) const;
 
+		ShaderType GetShaderType(void) const { return m_Type; }
+
+		GLuint GetShaderID(void) const { return m_ShaderID; }
+
 	};
 
 	class ShaderProgramBase
@@ -72,6 +79,7 @@ namespace Quicksand
 	protected:
 		GLuint m_ProgramID;
 
+		//this tells us about the link info for seperable programs
 		ShaderProgramBuildStruct m_BuildInfo;
 	protected:
 
@@ -79,21 +87,22 @@ namespace Quicksand
 		virtual void Overide(void)const = 0;
 
 	public:
+		ShaderProgramBase(void){ m_ProgramID = glCreateProgram(); }
+		virtual ~ShaderProgramBase(void){ glDeleteProgram(m_ProgramID); }
 
 		const GLuint GetProgramID(void) const { return m_ProgramID; }
 
 		//use the program ID for the current draw calls
-		void UseProgram(void) const;
+		void UseProgram(void) const { glUseProgram(m_ProgramID); }
 
 
-		const ShaderProgramBuildStruct& GetProgramInfo(void) const;
+		const ShaderProgramBuildStruct& GetProgramInfo(void) const { return m_BuildInfo; }
 	};
 
 #define OVERIDEPROGRAM virtual void Overide(void)const{}
 
 	class ShaderProgram : public ShaderProgramBase
 	{
-		std::map<ShaderType, Shader> m_Shaders;
 
 	protected:
 
@@ -111,12 +120,10 @@ namespace Quicksand
 		void Build(bool bSeperable = false);
 	};
 
-	//a useful typedef
-	typedef std::list<ShaderType> ShaderTypeList;
 
 	class ShaderProgramSeperable : public ShaderProgramBase
 	{
-		std::map<ShaderTypeList, ShaderProgram*> m_SeperablePrograms;
+		std::vector<ShaderProgram*> m_SeperablePrograms;
 
 	protected:
 
