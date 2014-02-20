@@ -47,7 +47,7 @@ namespace Quicksand
 	}
 
 
-	bool Shader::Compile(void)
+	bool Shader::Compile(bool flushOnSuccess)
 	{
 		const char* strTmp = m_TextCache.c_str();
 
@@ -67,6 +67,10 @@ namespace Quicksand
 		glGetShaderiv(m_ShaderID, GL_INFO_LOG_LENGTH, &size);
 
 		glGetShaderInfoLog(m_ShaderID, size, &size, const_cast<char*>(m_CompileInfo.m_InfoLog));
+
+		//if the compile was succesful, and we want to flush, flush the textcache
+		if (flushOnSuccess && m_CompileInfo.m_bSuccess)
+			FlushTextCache();
 
 		//return whether it was successful
 		return m_CompileInfo.m_bSuccess;
@@ -99,9 +103,24 @@ namespace Quicksand
 	}
 
 	//this builds the program with the contained shaders
-	//seperable is whether to build using seperable mode
-	void ShaderProgram::Build(bool bSeperable = false)
+	bool ShaderProgram::Build()
 	{
 		glLinkProgram(m_ProgramID);
+
+		//get the resaults
+
+		GLint success = 0;
+		glGetShaderiv(m_ProgramID, GL_COMPILE_STATUS, &success);
+
+		m_BuildInfo.m_bSuccess = success == GL_TRUE ? true : false;
+
+		GLint size = 0;
+		glGetShaderiv(m_ProgramID, GL_INFO_LOG_LENGTH, &size);
+
+		glGetShaderInfoLog(m_ProgramID, size, &size, const_cast<char*>(m_BuildInfo.m_InfoLog));
+
+
+		//return whether it was successful
+		return m_BuildInfo.m_bSuccess;
 	}
 }

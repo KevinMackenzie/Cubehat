@@ -27,6 +27,11 @@ namespace Quicksand
 		bool m_bSuccess;
 
 		ShaderCompileStruct_t(void) : m_bSuccess(false), m_InfoLog(""){}
+
+		void Flush(void)
+		{
+			delete[] m_InfoLog;
+		}
 	};
 
 	typedef ShaderCompileStruct_t ShaderCompileStruct;
@@ -54,7 +59,7 @@ namespace Quicksand
 		bool Load(const char* shaderText, bool append = false);
 
 		//compile the shader with the text in the text cache
-		bool Compile(void);
+		bool Compile(bool flushOnSuccess = true);
 
 		//flush the cache of text that exists before it compiles
 		void FlushTextCache(void);
@@ -79,13 +84,8 @@ namespace Quicksand
 	protected:
 		GLuint m_ProgramID;
 
-		//this tells us about the link info for seperable programs
+		//this tells us about the link info for programs
 		ShaderProgramBuildStruct m_BuildInfo;
-	protected:
-
-		//you must impliment this, we do not want any direct instances of this class
-		virtual void Overide(void)const = 0;
-
 	public:
 		ShaderProgramBase(void){ m_ProgramID = glCreateProgram(); }
 		virtual ~ShaderProgramBase(void){ glDeleteProgram(m_ProgramID); }
@@ -93,45 +93,40 @@ namespace Quicksand
 		const GLuint GetProgramID(void) const { return m_ProgramID; }
 
 		//use the program ID for the current draw calls
-		void UseProgram(void) const { glUseProgram(m_ProgramID); }
+		virtual void UseProgram(void) const = 0;
 
-
+		void FlushProgramInfo(void) { m_BuildInfo.Flush(); }
 		const ShaderProgramBuildStruct& GetProgramInfo(void) const { return m_BuildInfo; }
-	};
 
-#define OVERIDEPROGRAM virtual void Overide(void)const{}
+		ShaderProgramBuildStruct GetAndFlush(void) { FlushProgramInfo(); return GetProgramInfo(); }
+	};
 
 	class ShaderProgram : public ShaderProgramBase
 	{
-
-	protected:
-
-		OVERIDEPROGRAM
-
 	public:
 		ShaderProgram(void){}
 		~ShaderProgram(void){}
+
+		//use the program for the draw calls
+		virtual void UseProgram(void) const { glUseProgram(m_ProgramID); }
 
 		//attaches a shader
 		void AttachShader(Shader shader);
 
 		//this builds the program with the contained shaders
-		//seperable is whether to build using seperable mode
-		void Build(bool bSeperable = false);
+		//a seperable mode will be implimented when needed
+		bool Build(void);
 	};
 
-
-	class ShaderProgramSeperable : public ShaderProgramBase
+	//TODO: impliment program pipeline objects and seperable shader programs
+	/*
+	class ProgramPipelineObject : public ShaderProgramBase
 	{
 		std::vector<ShaderProgram*> m_SeperablePrograms;
 
-	protected:
-
-		OVERIDEPROGRAM
-
 	public:
-		ShaderProgramSeperable(void){}
-		~ShaderProgramSeperable(void){}
+		ProgramPipelineObject(void){}
+		~ProgramPipelineObject(void){}
 
 		//attach a program to this seperable program.  The list of shader types is the different
 		//shader types it contains
@@ -140,7 +135,7 @@ namespace Quicksand
 		//link the shader programs
 		void Link(void);
 
-	};
+	};*/
 
 
 }
