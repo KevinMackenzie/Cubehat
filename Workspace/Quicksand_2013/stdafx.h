@@ -145,19 +145,20 @@ namespace Quicksand
 
 
 
-	typedef vec4 Color;
+	typedef vec4 ColorRGBA;
+	typedef ColorRGBA Color;
 
-	extern Color g_White;
-	extern Color g_Black;
-	extern Color g_Cyan;
-	extern Color g_Red;
-	extern Color g_Green;
-	extern Color g_Blue;
-	extern Color g_Yellow;
-	extern Color g_Gray40;
-	extern Color g_Gray25;
-	extern Color g_Gray65;
-	extern Color g_Transparent;
+	extern ColorRGBA g_White;
+	extern ColorRGBA g_Black;
+	extern ColorRGBA g_Cyan;
+	extern ColorRGBA g_Red;
+	extern ColorRGBA g_Green;
+	extern ColorRGBA g_Blue;
+	extern ColorRGBA g_Yellow;
+	extern ColorRGBA g_Gray40;
+	extern ColorRGBA g_Gray25;
+	extern ColorRGBA g_Gray65;
+	extern ColorRGBA g_Transparent;
 
 	extern vec3 g_Up;
 	extern vec3 g_Right;

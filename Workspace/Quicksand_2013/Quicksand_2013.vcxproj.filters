@@ -121,6 +121,12 @@
     <ClCompile Include="..\..\Source\Quicksand\Graphics3D\Utils3d.cpp">
       <Filter>Graphics3D</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Quicksand\Graphics3D\Material.cpp">
+      <Filter>Graphics3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Quicksand\Graphics3D\SceneNode.cpp">
+      <Filter>Graphics3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -191,6 +197,12 @@
       <Filter>Graphics3D</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Quicksand\Graphics3D\Utils3D.hpp">
+      <Filter>Graphics3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\Graphics3D\Material.hpp">
+      <Filter>Graphics3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\Graphics3D\SceneNode.hpp">
       <Filter>Graphics3D</Filter>
     </ClInclude>
   </ItemGroup>
