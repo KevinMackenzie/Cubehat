@@ -60,7 +60,7 @@ namespace Quicksand
 		RenderPass RenderPass( void ) const;
 		float Radius( void ) const;
 
-		MaterialGetMaterial( void ) const;
+		Material GetMaterial( void ) const;
 	};
 
 	// a useful typedef for making sceneNode hierarchy
@@ -78,7 +78,7 @@ namespace Quicksand
 		//WeakBaseRenderComponentPtr m_RenderComponent;
 
 	public:
-		SceneNode( ActorID actorId, /*WeakBaseRenderComponentPtr renderComponent*/, RenderPass renderPass, const mat4 *to, const mat4 *from = NULL );
+		SceneNode( ActorID actorId, /*WeakBaseRenderComponentPtr renderComponent,*/ RenderPass renderPass, const mat4 *to, const mat4 *from = NULL );
 		virtual ~SceneNode( void );
 
 		virtual const SceneNodeProperties* const VGet( void ) const;
@@ -98,7 +98,7 @@ namespace Quicksand
 		virtual bool VRemoveChild( ActorID id );
 		virtual long VPick( Scene* pScene, RayCast *pRayCast );
 
-		void SetAlpha( const alpha );
+		void SetAlpha( const float Alpha );
 		float GetAlpha( void ) const;
 
 		vec3 GetPosition( void ) const;

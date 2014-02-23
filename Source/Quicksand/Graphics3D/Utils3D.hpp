@@ -4,8 +4,10 @@
 //include glm
 #include "../3rdParty/glm-0.9.5.2/glm/glm.hpp"
 
-#undef near
-#undef far
+//get the std::stack
+#include <stack>
+
+
 
 //a series of utility classes for 3D graphics
 //NOTE: all subsystesms MUST BE USING COUNTER CLOCKWISE VERTEX SETS
@@ -79,7 +81,7 @@ namespace Quicksand
 		void SetAspect(GLfloat aspect);
 		void SetNear(GLfloat nearClip);
 		void SetFar(GLfloat farClip);
-		void Init(const GLfloat fov, const GLfloat aspect, const GLfloat near, const GLfloat far);
+		void Init(const GLfloat fov, const GLfloat aspect, const GLfloat nearClipDistance, const GLfloat farClipDistance);
 
 		void Render(void);
 
@@ -88,6 +90,39 @@ namespace Quicksand
 
 	};
 
+
+	typedef std::stack<mat4> MatrixStack4;
+
+	//this is a matrix stack to help with hierarchal scenes
+	//this replaces the openGL deprecated matrix stack
+	//this is a simple data structure that i proudly say is all my work
+	class GLMatrixStack
+	{
+		MatrixStack4 m_MatrixStack;
+		
+		//this turns out to be very useful, this is the element of the stack that is one from the top
+		mat4 *m_OneFromTop;
+
+	public:
+
+		GLMatrixStack(void);
+		~GLMatrixStack(void);
+
+		void Push(void);//adds to the stack
+		void Pop(void);//pops the stack
+		void MultMatrix(mat4 matrix);//multiplies the top matrix by the parameter
+		void LoadMatrix(mat4 matrix);//overwrites the top matrix with this matrix
+		void LoadIdentity(void);//makes the top of the stack the the second-to-top level of the stack
+		const mat4& GetTop(void) const;//returns the top of the stack (full concatinated toworld matrix)
+
+
+		//NOTE:
+		//the top level matrix is the resault of multiplying the input matrix by the 
+		//matrix in the level below it.  The bottom is ALWAYS the identity, and 
+		//i make sure of that.  This creates a system that is very fast,
+		//and versatile.  it only does the costly multiplication once
+
+	};
 
 }
 

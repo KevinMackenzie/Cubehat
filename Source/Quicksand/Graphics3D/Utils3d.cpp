@@ -149,12 +149,12 @@ namespace Quicksand
 		ReInit();
 	}
 
-	void Frustum::Init(const GLfloat fov, const GLfloat aspect, const GLfloat near, const GLfloat far)
+	void Frustum::Init(const GLfloat fov, const GLfloat aspect, const GLfloat nearClipDistance, const GLfloat farClipDistance)
 	{
 		m_FOV = fov;
 		m_Aspect = aspect;
-		m_Near = near;
-		m_Far = far;
+		m_Near = nearClipDistance;
+		m_Far = farClipDistance;
 
 
 		//get a set of points
@@ -195,6 +195,76 @@ namespace Quicksand
 
 	}
 
+
+	//GLMatrixStack
+	//////////////////////////////////////////////
+
+	GLMatrixStack::GLMatrixStack(void)
+	{
+		//add one to the stack to begin with to have fewer issues
+		m_MatrixStack.push(mat4());
+	}
+
+	GLMatrixStack::~GLMatrixStack(void)
+	{
+		while (m_MatrixStack.size() != 0)
+		{
+			m_MatrixStack.pop();
+		}
+	}
+
+
+	void GLMatrixStack::Push(void)
+	{
+		
+		m_OneFromTop = &m_MatrixStack.top();
+		m_MatrixStack.push(m_MatrixStack.top());
+		
+	}
+
+	void GLMatrixStack::Pop(void)
+	{
+		//make sure we leave that one top level identity matrix
+		if (m_MatrixStack.size() == 1)
+			return;
+
+		//to keep the m_OneFromTop working, we have to do something a little fancy
+		
+		//first pop the top
+		m_MatrixStack.pop();
+
+		//next get the top level matrix
+		mat4 tmp = m_MatrixStack.top();
+
+		//pop the top again
+		m_MatrixStack.pop();
+
+		//get a reference to the top
+		m_OneFromTop = &m_MatrixStack.top();
+
+		//now put the tmp matrix back on
+		m_MatrixStack.push(tmp);
+	}
+
+	void GLMatrixStack::LoadMatrix(mat4 matrix)
+	{
+		m_MatrixStack.top() = matrix * (*m_OneFromTop);
+	}
+
+	void GLMatrixStack::LoadIdentity(void)
+	{
+		m_MatrixStack.top() = *m_OneFromTop;
+	}
+
+	void GLMatrixStack::MultMatrix(mat4 matrix)
+	{
+		m_MatrixStack.top() *= matrix;
+	}
+
+	const mat4& GLMatrixStack::GetTop(void) const
+	{
+		return m_MatrixStack.top();
+	}
 
 
 }
