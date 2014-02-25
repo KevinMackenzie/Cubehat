@@ -1,5 +1,5 @@
-#ifndef RANDOM_H
-#define RANDOM_H
+#ifndef QSE_RANDOM_H
+#define QSE_RANDOM_H
 
 //Math period functions
 #define CMATH_N 624

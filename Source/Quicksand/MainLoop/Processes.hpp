@@ -1,4 +1,4 @@
-#ifndef PROCESSES_HPP
-#define PROCESSES_HPP
+#ifndef QSE_PROCESSES_HPP
+#define QSE_PROCESSES_HPP
 
 #endif

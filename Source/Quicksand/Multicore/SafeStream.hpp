@@ -1,0 +1,6 @@
+#ifndef QSE_SAFESTREAM_HPP
+#define QSE_SAFESTREAM_HPP
+
+
+
+#endif

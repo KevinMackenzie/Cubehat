@@ -165,9 +165,9 @@ namespace Quicksand
 
 		GLint buffSize;
 
-		Bind();
+		glBindBuffer(m_Type, m_BufferId);
 		glGetBufferParameteriv(m_Type, GL_BUFFER_SIZE, &buffSize);
-		Release();
+		glBindBuffer(m_Type, 0);
 
 		return buffSize;
 	}
@@ -188,6 +188,109 @@ namespace Quicksand
 	void GLBuffer::Write(int offset, const void * pData, int count)
 	{
 		glBufferSubData(m_Type, offset, count, pData);
+	}
+
+	////////////////////////////////////
+	//GLVertexArrayObject
+	////////////////////////////////////
+
+
+	GLVertexArrayObject::GLVertexArrayObject(void)
+	{
+		m_VaoId = QSE_UNINITIALIZED_OPENGL;
+	}
+
+
+	//this creats the VAO, this should be the first thing to call
+	bool GLVertexArrayObject::Create(void)
+	{
+		glGenVertexArrays(1, &m_VaoId);
+
+		if (!IsCreated())
+			return false;
+		else
+			return true;
+	}
+
+	//this is used to check if we have initialized the Id
+	bool GLVertexArrayObject::IsCreated(void)
+	{
+		return m_VaoId != QSE_UNINITIALIZED_OPENGL;
+	}
+
+	//bind the VAO for whatever
+	void GLVertexArrayObject::Bind(void)
+	{
+		if (!IsCreated())
+		{
+			QSE_ASSERT("Attempt to bind uninitailized openGL VAO");
+		}
+
+		glBindVertexArray(m_VaoId);
+	}
+
+	//unbind the VAO
+	void GLVertexArrayObject::Release(void)
+	{
+		glBindVertexArray(0);
+	}
+
+	//enable a GL_ARRAY_BUFFER for the vao.
+	void GLVertexArrayObject::AddBuffer(shared_ptr<GLBuffer> buffer, GLArrayBufferProperties arrayBufferProperties)
+	{
+		if (buffer != NULL)
+		{
+
+			if (buffer->IsCreated())
+			{
+
+
+				Bind();
+
+				glEnableVertexAttribArray(arrayBufferProperties.m_Index);
+				glBindBuffer(buffer->Type(), buffer->GetBufferId());
+				glVertexAttribPointer(
+					arrayBufferProperties.m_Index,
+					arrayBufferProperties.m_Size,
+					arrayBufferProperties.m_Type,
+					arrayBufferProperties.m_Normalized,
+					arrayBufferProperties.m_Stride,
+					arrayBufferProperties.m_pOffset);
+
+
+
+				Release();
+
+
+				//add the buffer to the list to be freed at the end
+				m_Buffers.push_back(buffer);
+			}
+			else
+			{
+				QSE_ASSERT("Attempt to enable a vertex attrubute array on an uninitialized buffer");
+			}
+		}
+		else
+		{
+			QSE_ASSERT("Attempt to add enable a vertex attribute array on a null buffer");
+		}
+	}
+
+	//this disables all of the buffers attached with the VBO
+	void GLVertexArrayObject::DisableBuffers(void)
+	{
+		Bind();
+		for (auto i : m_Buffers)
+		{
+			glDisableVertexAttribArray(i->GetBufferId());
+		}
+		Release();
+	}
+
+	//this deletes the buffer
+	void GLVertexArrayObject::Destroy(void)
+	{
+		glDeleteVertexArrays(1, &m_VaoId);
 	}
 
 }

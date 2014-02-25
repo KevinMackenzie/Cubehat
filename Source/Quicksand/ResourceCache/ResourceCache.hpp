@@ -1,5 +1,5 @@
-#ifndef RESOURCECACHE_HPP
-#define RESOURCECACHE_HPP
+#ifndef QSE_RESOURCECACHE_HPP
+#define QSE_RESOURCECACHE_HPP
 
 #include "../Utilities/Interfaces.hpp"
 #include <cctype>

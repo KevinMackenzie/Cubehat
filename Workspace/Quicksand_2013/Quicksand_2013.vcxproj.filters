@@ -133,6 +133,9 @@
     <ClCompile Include="..\..\Source\Quicksand\Graphics3D\Buffer.cpp">
       <Filter>Graphics3D</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Quicksand\Graphics3D\Texture.cpp">
+      <Filter>Graphics3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -215,6 +218,9 @@
       <Filter>Graphics3D</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Quicksand\Graphics3D\Buffer.hpp">
+      <Filter>Graphics3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\Graphics3D\Texture.hpp">
       <Filter>Graphics3D</Filter>
     </ClInclude>
   </ItemGroup>

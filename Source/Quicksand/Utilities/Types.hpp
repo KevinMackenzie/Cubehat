@@ -1,5 +1,5 @@
-#ifndef TYPES_HPP
-#define TYPES_HPP
+#ifndef QSE_TYPES_HPP
+#define QSE_TYPES_HPP
 
 namespace Quicksand
 {

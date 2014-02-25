@@ -98,6 +98,7 @@
     <ClCompile Include="..\..\Source\Quicksand\Graphics3D\Scene.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\Graphics3D\SceneNode.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\Graphics3D\Shader.cpp" />
+    <ClCompile Include="..\..\Source\Quicksand\Graphics3D\Texture.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\Graphics3D\Utils3d.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\MainLoop\Process.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\MainLoop\Processes.cpp" />
@@ -134,6 +135,7 @@
     <ClInclude Include="..\..\Source\Quicksand\Graphics3D\Scene.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\Graphics3D\SceneNode.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\Graphics3D\Shader.hpp" />
+    <ClInclude Include="..\..\Source\Quicksand\Graphics3D\Texture.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\Graphics3D\Utils3D.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\MainLoop\Process.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\MainLoop\Processes.hpp" />

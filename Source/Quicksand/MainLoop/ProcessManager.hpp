@@ -1,5 +1,5 @@
-#ifndef PROCESSMANAGER_HPP
-#define PROCESSMANAGER_HPP
+#ifndef QSE_PROCESSMANAGER_HPP
+#define QSE_PROCESSMANAGER_HPP
 
 #include "Process.hpp"
 

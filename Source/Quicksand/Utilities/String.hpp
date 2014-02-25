@@ -1,4 +1,5 @@
-#pragma once
+#ifndef QSE_STRINGS_HPP
+#define QSE_STRINGS_HPP
 
 //try to get rid of this
 #include "../3rdParty/glm-0.9.5.2/glm/glm.hpp"
@@ -111,3 +112,5 @@ namespace Quicksand
 
 
 }
+
+#endif

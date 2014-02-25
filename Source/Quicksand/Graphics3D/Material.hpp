@@ -1,5 +1,5 @@
-#ifndef MATERIAL_HPP
-#define MATERIAL_HPP
+#ifndef QSE_MATERIAL_HPP
+#define QSE_MATERIAL_HPP
 
 #include "../3rdParty/glm-0.9.5.2/glm/glm.hpp"
 

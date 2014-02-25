@@ -1,5 +1,5 @@
-#ifndef PROCESS_HPP
-#define PROCESS_HPP
+#ifndef QSE_PROCESS_HPP
+#define QSE_PROCESS_HPP
 
 //#include "../Debugging/Logger.hpp"
 

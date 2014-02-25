@@ -1,5 +1,5 @@
-#ifndef GLSceneNode_HPP
-#define GLSceneNode_HPP
+#ifndef QSE_GLSCENENODE_HPP
+#define QSE_GLSCENENODE_HPP
 
 #include "Material.hpp"
 #include "Shader.hpp"

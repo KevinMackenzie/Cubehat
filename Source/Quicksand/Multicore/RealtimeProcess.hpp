@@ -1,5 +1,5 @@
-#ifndef REALTIMEPROCESS_HPP
-#define REALTIMEPROCESS_HPP
+#ifndef QSE_REALTIMEPROCESS_HPP
+#define QSE_REALTIMEPROCESS_HPP
 
 #include "../MainLoop/Process.hpp"
 

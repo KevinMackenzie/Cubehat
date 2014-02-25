@@ -1,5 +1,5 @@
-#ifndef SCENE_HPP
-#define SCENE_HPP
+#ifndef QSE_SCENE_HPP
+#define QSE_SCENE_HPP
 
 #include "SceneNode.hpp"
 

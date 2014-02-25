@@ -1,5 +1,5 @@
-#ifndef BUFFER_HPP
-#define BUFFER_HPP
+#ifndef QSE_BUFFER_HPP
+#define QSE_BUFFER_HPP
 
 namespace Quicksand
 {
@@ -40,7 +40,7 @@ namespace Quicksand
 	//these are all helper classes to encapsulate openGL buffers
 	class GLBuffer
 	{
-		unsigned int m_BufferId;
+		GLuint m_BufferId;
 
 		GLBufferAccess m_Access;
 		GLBufferType   m_Type;
@@ -60,7 +60,7 @@ namespace Quicksand
 		void Allocate(int count);
 
 		//get the buffer id
-		unsigned int GetBufferId(void) const;
+		GLuint GetBufferId(void) const;
 
 		//map the openGL buffer for writing call SetAccessType first
 		void* Map(void);
@@ -121,9 +121,59 @@ namespace Quicksand
 	};
 
 
+	//a structure for identifying openGL buffer data
+	struct GLArrayBufferProperties
+	{
+		GLuint m_Index;//layout location
+		GLint  m_Size;//size of each element (eg vec3 would be 3) default is 4
+		GLenum m_Type;//e.g. GL_FLOAT GL_INT
+		GLboolean m_Normalized;//usually GL_FALSE
+		GLsizei m_Stride;//stride between data
+		const GLvoid* m_pOffset;//array buffer offset
+
+		GLArrayBufferProperties(GLuint index, GLint size = 4, GLenum type = GL_FLOAT, GLboolean normalized = GL_FALSE, GLsizei stride = 0, const GLvoid *pOffset = (GLvoid*)0)
+		{
+			m_Index = index;
+			m_Size = size;
+			m_Type = type;
+			m_Normalized = normalized;
+			m_Stride = stride;
+			m_pOffset = pOffset;
+		}
+	};
+
 
 	class GLVertexArrayObject
 	{
+		GLuint m_VaoId;
+
+		std::list<shared_ptr<GLBuffer> > m_Buffers;
+
+	public:
+
+		GLVertexArrayObject(void);
+		~GLVertexArrayObject(void);
+
+		//this creats the VAO, this should be the first thing to call
+		bool Create(void);
+
+		//this is used to check if we have initialized the Id
+		bool IsCreated(void);
+
+		//bind the VAO for whatever
+		void Bind(void);
+
+		//unbind the VAO
+		void Release(void);
+
+		//enable a GL_ARRAY_BUFFER for the vao.
+		void AddBuffer(shared_ptr<GLBuffer> buffer, GLArrayBufferProperties arrayBufferProperties);
+
+		//this disables all of the buffers attached with the VBO
+		void DisableBuffers(void);
+
+		//this deletes the buffer
+		void Destroy(void);
 
 	};
 

@@ -1,5 +1,5 @@
-#ifndef ZIPRESOURCE_HPP
-#define ZIPRESOURCE_HPP
+#ifndef QSE_ZIPRESOURCE_HPP
+#define QSE_ZIPRESOURCE_HPP
 
 namespace Quicksand
 {

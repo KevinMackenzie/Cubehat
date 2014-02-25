@@ -1,5 +1,5 @@
-#ifndef TEMPLATES_HPP
-#define TEMPLATES_HPP
+#ifndef QSE_TEMPLATES_HPP
+#define QSE_TEMPLATES_HPP
 
 //---------------------------------------------------------------------------------------------------------------------
 // singleton template manages setting/resettting global variables.

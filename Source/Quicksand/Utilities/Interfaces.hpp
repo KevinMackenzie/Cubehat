@@ -1,5 +1,5 @@
-#ifndef INTERFACES_HPP
-#define INTERFACES_HPP
+#ifndef QSE_INTERFACES_HPP
+#define QSE_INTERFACES_HPP
 
 //all of the interface clases used in this engine
 

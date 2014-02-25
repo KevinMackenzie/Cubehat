@@ -1,5 +1,5 @@
-#ifndef SHADER_HPP
-#define SHADER_HPP
+#ifndef QSE_SHADER_HPP
+#define QSE_SHADER_HPP
 
 //this definesa bunch of classes to deal with openGL shaders
 

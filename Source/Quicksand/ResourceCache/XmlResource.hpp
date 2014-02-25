@@ -1,5 +1,5 @@
-#ifndef XMLRESOURCE_HPP
-#define XMLRESOURCE_HPP
+#ifndef QSE_XMLRESOURCE_HPP
+#define QSE_XMLRESOURCE_HPP
 
 #include "ResourceCache.hpp"
 #include "../3rdParty/tinyxml-2.6.2/tinyxml.h"
