@@ -1,5 +1,5 @@
-#ifndef SCENENODE_HPP
-#define SCENENODE_HPP
+#ifndef GLSceneNode_HPP
+#define GLSceneNode_HPP
 
 #include "Material.hpp"
 #include "Shader.hpp"
@@ -8,8 +8,8 @@ namespace Quicksand
 {
 
 	//forward declarations
-	class SceneNode;
-	class Scene;
+	class GLSceneNode;
+	class GLScene;
 	class RayCast;
 	class MovementController;
 	class IResourceExtraData;
@@ -18,7 +18,7 @@ namespace Quicksand
 
 
 	//the different types of alpha blending
-	enum AlphaType
+	enum GLAlphaType
 	{
 		AlphaOpaque,
 		AlphaTexture,
@@ -28,9 +28,9 @@ namespace Quicksand
 
 	typedef unsigned int ActorID;
 
-	class SceneNodeProperties
+	class GLSceneNodeProperties
 	{
-		friend class SceneNode;
+		friend class GLSceneNode;
 
 	protected:
 		ActorID			m_ActorID;
@@ -39,13 +39,13 @@ namespace Quicksand
 		float			m_Radius;
 		RenderPass		m_RenderPass;
 		Material		m_Material;
-		AlphaType		m_AlphaType;
+		GLAlphaType		m_AlphaType;
 
 		void SetAlpha( const float alpha );
 
 	public:
 
-		SceneNodeProperties( void );
+		GLSceneNodeProperties( void );
 		const ActorId& ActorID( void ) const;
 		mat4 const& ToWorld( void ) const;
 		mat4 const FromWorld( void ) const;
@@ -55,46 +55,45 @@ namespace Quicksand
 
 		bool HasAlpha( void ) const;
 		float Alpha( void ) const;
-		AlphaType AlphaType( void ) const;
+		GLAlphaType AlphaType( void ) const;
 
 		RenderPass RenderPass( void ) const;
 		float Radius( void ) const;
 
-		Material GetMaterial( void ) const;
+		Material GetMaterial(void) const;
 	};
 
-	// a useful typedef for making sceneNode hierarchy
-	typedef std::vector<shared_ptr<ISceneNode> > SceneNodeList;
+	// a useful typedef for making GLSceneNode hierarchy
+	typedef std::vector<shared_ptr<IGLSceneNode> > GLSceneNodeList;
 
 	//the scene node that represents an object in the world hierarchy
-	class SceneNode
+	class GLSceneNode : public IGLSceneNode
 	{
 		friend class Scene;
 
 	protected:
-		SceneNodeList		m_Children;
-		SceneNode		   *m_Parent;
-		SceneNodeProperties m_Props;
-		//WeakBaseRenderComponentPtr m_RenderComponent;
+		GLSceneNodeList		  m_Children;
+		GLSceneNode		     *m_pParent;
+		GLSceneNodeProperties m_Props;
 
 	public:
-		SceneNode( ActorID actorId, /*WeakBaseRenderComponentPtr renderComponent,*/ RenderPass renderPass, const mat4 *to, const mat4 *from = NULL );
-		virtual ~SceneNode( void );
+		GLSceneNode( ActorID actorId, std::string name, RenderPass renderPass, const Color& diffuseColor, const mat4 *to, const mat4 *from = NULL );
+		virtual ~GLSceneNode( void );
 
-		virtual const SceneNodeProperties* const VGet( void ) const;
+		virtual const GLSceneNodeProperties* const VGet( void ) const;
 
 		virtual void VSetTransform( const mat4 *toWorld, const mat4 *fromWorld = NULL );
 
-		virtual long VOnRestore( Scene *pScene );
-		virtual long VOnUpdate( Scene *pScene, DWORD const elapsedMs );
+		virtual long VOnRestore(GLScene *pScene);
+		virtual long VOnUpdate(GLScene *pScene, DWORD const elapsedMs);
 		
 
-		virtual long VPreRender( Scene *pScene );
-		virtual bool VIsVisible( Scene *pScene );
-		virtual long VRender( Scene *pScene );
-		virtual long VPostRender( Scene pScene );
+		virtual long VPreRender(GLScene *pScene);
+		virtual bool VIsVisible(GLScene *pScene);
+		virtual long VRender(GLScene *pScene);
+		virtual long VPostRender(GLScene *pScene);
 
-		virtual bool VAddChild( shared_ptr<ISceneNode> child );
+		virtual bool VAddChild( shared_ptr<IGLSceneNode> child );
 		virtual bool VRemoveChild( ActorID id );
 		virtual long VPick( Scene* pScene, RayCast *pRayCast );
 
@@ -113,6 +112,20 @@ namespace Quicksand
 
 	};
 
+
+	//a scene node that has transparencies
+
+	class GLAlphaSceneNode
+	{
+		shared_ptr<IGLSceneNode> m_pNode;
+		mat4 m_Concat;
+		float m_ScreenZ;
+
+		// For the STL sort...
+		bool const operator <(GLAlphaSceneNode const &other) { return m_ScreenZ < other.m_ScreenZ; }
+	};
+
+	typedef std::list<GLAlphaSceneNode *> GLAlphaSceneNodes;
 
 
 }

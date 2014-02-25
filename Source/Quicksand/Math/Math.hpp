@@ -53,5 +53,12 @@ namespace Quicksand
 		void			Randomize( void );
 	};
 
+
+	//some glm extensions that are useful
+	const vec3& GetTransMatPosition(const mat4& matrix);
+	void        SetTransMatPosition(mat4 *matrix, vec3 position);
+
+	const vec3& GetTransMatDirection(const mat4& matrix);
+
 }
 #endif

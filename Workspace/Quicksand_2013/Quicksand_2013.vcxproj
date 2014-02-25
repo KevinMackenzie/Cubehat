@@ -93,7 +93,9 @@
     <ClCompile Include="..\..\Source\Quicksand\EventManager\EventManager.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\EventManager\Events.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\Game\QuicksandGame.cpp" />
+    <ClCompile Include="..\..\Source\Quicksand\Graphics3D\Buffer.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\Graphics3D\Material.cpp" />
+    <ClCompile Include="..\..\Source\Quicksand\Graphics3D\Scene.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\Graphics3D\SceneNode.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\Graphics3D\Shader.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\Graphics3D\Utils3d.cpp" />
@@ -127,7 +129,9 @@
     <ClInclude Include="..\..\Source\Quicksand\EventManager\EventManager.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\EventManager\Events.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\Game\QuicksandGame.hpp" />
+    <ClInclude Include="..\..\Source\Quicksand\Graphics3D\Buffer.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\Graphics3D\Material.hpp" />
+    <ClInclude Include="..\..\Source\Quicksand\Graphics3D\Scene.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\Graphics3D\SceneNode.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\Graphics3D\Shader.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\Graphics3D\Utils3D.hpp" />

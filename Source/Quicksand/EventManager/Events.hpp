@@ -204,8 +204,8 @@ namespace Quicksand
 		}
 	};
 
-	//TODO:impliment sceneNode along with all of the other 3dGraphics Api Things
-	class SceneNode;
+	//TODO:impliment GLSceneNode along with all of the other 3dGraphics Api Things
+	class GLSceneNode;
 
 	//---------------------------------------------------------------------------------------------------------------------
 	// EvtData_New_Render_Component - This event is sent out when an actor is *actually* created.
@@ -213,7 +213,7 @@ namespace Quicksand
 	class EvtData_New_Render_Component : public BaseEventData
 	{
 		ActorId m_actorId;
-		shared_ptr<SceneNode> m_pSceneNode;
+		shared_ptr<GLSceneNode> m_pGLSceneNode;
 
 	public:
 		static const EventType sk_EventType;
@@ -223,9 +223,9 @@ namespace Quicksand
 			m_actorId = INVALID_ACTOR_ID;
 		}
 
-		explicit EvtData_New_Render_Component( ActorId actorId, shared_ptr<SceneNode> pSceneNode )
+		explicit EvtData_New_Render_Component( ActorId actorId, shared_ptr<GLSceneNode> pGLSceneNode )
 			: m_actorId( actorId ),
-			m_pSceneNode( pSceneNode )
+			m_pGLSceneNode( pGLSceneNode )
 		{
 		}
 
@@ -246,7 +246,7 @@ namespace Quicksand
 
 		virtual IEventDataPtr VCopy( void ) const
 		{
-			return IEventDataPtr( QSE_NEW EvtData_New_Render_Component( m_actorId, m_pSceneNode ) );
+			return IEventDataPtr( QSE_NEW EvtData_New_Render_Component( m_actorId, m_pGLSceneNode ) );
 		}
 
 		virtual const char* GetName( void ) const
@@ -259,9 +259,9 @@ namespace Quicksand
 			return m_actorId;
 		}
 
-		shared_ptr<SceneNode> GetSceneNode( void ) const
+		shared_ptr<GLSceneNode> GetGLSceneNode( void ) const
 		{
-			return m_pSceneNode;
+			return m_pGLSceneNode;
 		}
 	};
 

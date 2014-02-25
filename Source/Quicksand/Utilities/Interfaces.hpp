@@ -211,7 +211,7 @@ namespace Quicksand
 
 
 	class Scene;
-	class SceneNodeProperties;
+	class GLSceneNodeProperties;
 	class RayCast;
 	class LightNode;
 
@@ -248,15 +248,15 @@ namespace Quicksand
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
-	// class ISceneNode					- Chapter 16, page 524
+	// class IGLSceneNode					- Chapter 16, page 524
 	//
 	//   This is the public interface for nodes in a 3D scene graph.
 	/////////////////////////////////////////////////////////////////////////////
 
-	class ISceneNode
+	class IGLSceneNode
 	{
 	public:
-		virtual const SceneNodeProperties * const VGet( ) const = 0;
+		virtual const GLSceneNodeProperties * const VGet( ) const = 0;
 
 		virtual void VSetTransform( const mat4 *toWorld, const mat4 *fromWorld = NULL ) = 0;
 
@@ -269,13 +269,13 @@ namespace Quicksand
 		virtual HRESULT VRenderChildren( Scene *pScene ) = 0;
 		virtual HRESULT VPostRender( Scene *pScene ) = 0;
 
-		virtual bool VAddChild( shared_ptr<ISceneNode> kid ) = 0;
+		virtual bool VAddChild( shared_ptr<IGLSceneNode> kid ) = 0;
 		virtual bool VRemoveChild( ActorId id ) = 0;
 		virtual HRESULT VOnLostDevice( Scene *pScene ) = 0;
 		virtual HRESULT VPick( Scene *pScene, RayCast *pRayCast ) = 0;
 
 
-		virtual ~ISceneNode( ) { };
+		virtual ~IGLSceneNode( ) { };
 	};
 
 
