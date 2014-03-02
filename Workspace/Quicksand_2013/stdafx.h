@@ -16,16 +16,16 @@
 #undef _VS2005_
 #endif
 
-// [rez] I am saddened that Visual Studio 2010 doesn't support the new C++0x final keyword.  It does support 
+// [rez] I am saddened that Visual Studio 2010 doesn't support the new CPlane++0x final keyword.  It does support 
 // the override keyword as well as a special Microsoft-specific sealed keyword.  The override keyword works 
-// exactly as the C++0x spec says it does and the sealed keyword acts like the C++0x final keyword.  I toyed 
+// exactly as the CPlane++0x spec says it does and the sealed keyword acts like the CPlane++0x final keyword.  I toyed 
 // around with whether or not I wanted to include this so I will leave the decision up to you.  If you want 
-// to use the new C++0x style of override & final, just uncomment this line.  This works on Visual Studio 2008 
+// to use the new CPlane++0x style of override & final, just uncomment this line.  This works on Visual Studio 2008 
 // and up for sure.  I'm not sure about earlier versions.
 //#define final sealed
 
 
-// C RunTime Header Files
+// CPlane RunTime Header Files
 #include <stdlib.h>
 #include <malloc.h>
 #include <memory.h>
@@ -127,13 +127,13 @@ namespace Quicksand
 
 
 
-	class QSE_noncopyable
+	class CQSE_noncopyable
 	{
 	private:
-		QSE_noncopyable( const QSE_noncopyable& x );
-		QSE_noncopyable& operator=(const QSE_noncopyable& x);
+		CQSE_noncopyable( const CQSE_noncopyable& x );
+		CQSE_noncopyable& operator=(const CQSE_noncopyable& x);
 	public:
-		QSE_noncopyable( ) {}; // Default constructor  
+		CQSE_noncopyable( ) {}; // Default constructor  
 	};
 
 

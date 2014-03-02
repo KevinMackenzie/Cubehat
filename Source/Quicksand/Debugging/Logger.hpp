@@ -21,10 +21,10 @@
 // logging.xml should follow this form:
 // 
 //  <NLogger>
-//      <Log tag="Actor" debugger="1" file="0"/>
+//      <Log tag="CActor" debugger="1" file="0"/>
 //  </NLogger>
 // 
-// The above chunk will cause all logs sent with the "Actor" tag to be displayed in the debugger.  If you set file 
+// The above chunk will cause all logs sent with the "CActor" tag to be displayed in the debugger.  If you set file 
 // to 1 as well, it would log out to a file as well.  Don't check in logging.xml to SVN, it should be a local-only 
 // file.
 //---------------------------------------------------------------------------------------------------------------------
@@ -47,13 +47,13 @@ const unsigned char LOGFLAG_WRITE_TO_DEBUGGER = 1 << 1;
 //---------------------------------------------------------------------------------------------------------------------
 namespace NLogger
 {
-	// This class is used by the debug macros and shouldn't be accessed externally.
-	class ErrorMessenger
+	// This class Cis used by the debug macros and shouldn't be accessed externally.
+	class CErrorMessenger
 	{
 		bool m_enabled;
 
 	public:
-		ErrorMessenger( void );
+		CErrorMessenger( void );
 		void Show( const std::string& errorMessage, bool isFatal, const char* funcName, const char* sourceFile, unsigned int lineNum );
 	};
 
@@ -75,7 +75,7 @@ namespace NLogger
 #define QSE_FATAL(str) \
 	do \
 	{ \
-	static NLogger::ErrorMessenger* pErrorMessenger = QSE_NEW NLogger::ErrorMessenger; \
+	static NLogger::CErrorMessenger* pErrorMessenger = QSE_NEW NLogger::CErrorMessenger; \
 	std::string s( (str) ); \
 	pErrorMessenger->Show( s, true, __FUNCTION__, __FILE__, __LINE__ ); \
 	} \
@@ -89,7 +89,7 @@ namespace NLogger
 #define QSE_ERROR(str) \
 	do \
 	{ \
-	static NLogger::ErrorMessenger* pErrorMessenger = QSE_NEW NLogger::ErrorMessenger; \
+	static NLogger::CErrorMessenger* pErrorMessenger = QSE_NEW NLogger::CErrorMessenger; \
 	std::string s( (str) ); \
 	pErrorMessenger->Show( s, false, __FUNCTION__, __FILE__, __LINE__ ); \
 	} \
@@ -132,7 +132,7 @@ namespace NLogger
 	{ \
 	if (!(expr)) \
 	{ \
-	static NLogger::ErrorMessenger* pErrorMessenger = QSE_NEW NLogger::ErrorMessenger; \
+	static NLogger::CErrorMessenger* pErrorMessenger = QSE_NEW NLogger::CErrorMessenger; \
 	pErrorMessenger->Show( #expr, false, __FUNCTION__, __FILE__, __LINE__ ); \
 	} \
 	} \

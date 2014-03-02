@@ -8,7 +8,7 @@ namespace Quicksand
 {
 
 
-	class XmlResourceExtraData : public IResourceExtraData
+	class CXmlResourceExtraData : public IResourceExtraData
 	{
 		//the data
 		TiXmlDocument m_XmlDocument;
@@ -19,15 +19,15 @@ namespace Quicksand
 		TiXmlElement* GetRoot( void ) { return m_XmlDocument.RootElement( ); }
 	};
 
-	class XmlResourceLoader : public IResourceLoader
+	class CXmlResourceLoader : public IResourceLoader
 	{
 	public:
 		virtual bool VUseRawFile() { return false; }
 		virtual bool VDiscardRawBufferAfterLoad() { return true; }
 		virtual unsigned int VGetLoadedResourceSize( char *rawBuffer, unsigned int rawSize ) { return rawSize; }
-		virtual bool VLoadResource( char *rawBuffer, unsigned int rawSize, shared_ptr<ResHandle> handle );
+		virtual bool VLoadResource( char *rawBuffer, unsigned int rawSize, shared_ptr<CResHandle> handle );
 		virtual std::string VGetPattern() { return "*.xml"; }
-
+		
 
 		//this is purly for convenience
 		static TiXmlElement* LoadAndReturnRootXmlElement( const char* resourceString );

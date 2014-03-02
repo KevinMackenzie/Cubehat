@@ -16,13 +16,13 @@ namespace Quicksand
 		float Power;
 	};
 
-	class Material
+	class CMaterial
 	{
 		MaterialStruct m_Material;
 
 	public:
-		Material( void );
-		~Material( void );
+		CMaterial( void );
+		~CMaterial( void );
 
 		void SetAmbient( const ColorRGBA& color );
 		const ColorRGBA& GetAmbient( void ) const;

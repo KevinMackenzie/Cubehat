@@ -1,20 +1,20 @@
 #ifndef QSE_GLSCENENODE_HPP
 #define QSE_GLSCENENODE_HPP
 
-#include "Material.hpp"
+#include "CMaterial.hpp"
 #include "Shader.hpp"
 
 namespace Quicksand
 {
 
 	//forward declarations
-	class GLSceneNode;
-	class GLScene;
-	class RayCast;
-	class MovementController;
+	class CGLSceneNode;
+	class CGLScene;
+	class CRayCast;
+	class CMovementController;
 	class IResourceExtraData;
-	class ActorComponent;
-	class BaseRenderComponent;
+	class CActorComponent;
+	class CBaseRenderComponent;
 
 
 	//the different types of alpha blending
@@ -28,9 +28,9 @@ namespace Quicksand
 
 	typedef unsigned int ActorID;
 
-	class GLSceneNodeProperties
+	class CGLSceneNodeProperties
 	{
-		friend class GLSceneNode;
+		friend class CGLSceneNode;
 
 	protected:
 		ActorID			m_ActorID;
@@ -38,14 +38,14 @@ namespace Quicksand
 		mat4			m_ToWorld, m_FromWorld;
 		float			m_Radius;
 		RenderPass		m_RenderPass;
-		Material		m_Material;
+		CMaterial		m_Material;
 		GLAlphaType		m_AlphaType;
 
 		void SetAlpha( const float alpha );
 
 	public:
 
-		GLSceneNodeProperties( void );
+		CGLSceneNodeProperties( void );
 		const ActorId& ActorID( void ) const;
 		mat4 const& ToWorld( void ) const;
 		mat4 const FromWorld( void ) const;
@@ -60,42 +60,42 @@ namespace Quicksand
 		RenderPass RenderPass( void ) const;
 		float Radius( void ) const;
 
-		Material GetMaterial(void) const;
+		CMaterial GetMaterial(void) const;
 	};
 
-	// a useful typedef for making GLSceneNode hierarchy
+	// a useful typedef for making CGLSceneNode hierarchy
 	typedef std::vector<shared_ptr<IGLSceneNode> > GLSceneNodeList;
 
 	//the scene node that represents an object in the world hierarchy
-	class GLSceneNode : public IGLSceneNode
+	class CGLSceneNode : public IGLSceneNode
 	{
-		friend class Scene;
+		friend class CScene;
 
 	protected:
-		GLSceneNodeList		  m_Children;
-		GLSceneNode		     *m_pParent;
-		GLSceneNodeProperties m_Props;
+		GLSceneNodeList		   m_Children;
+		CGLSceneNode		  *m_pParent;
+		CGLSceneNodeProperties m_Props;
 
 	public:
-		GLSceneNode( ActorID actorId, std::string name, RenderPass renderPass, const Color& diffuseColor, const mat4 *to, const mat4 *from = NULL );
-		virtual ~GLSceneNode( void );
+		CGLSceneNode( ActorID actorId, std::string name, RenderPass renderPass, const Color& diffuseColor, const mat4 *to, const mat4 *from = NULL );
+		virtual ~CGLSceneNode( void );
 
-		virtual const GLSceneNodeProperties* const VGet( void ) const;
+		virtual const CGLSceneNodeProperties* const VGet( void ) const;
 
 		virtual void VSetTransform( const mat4 *toWorld, const mat4 *fromWorld = NULL );
 
-		virtual long VOnRestore(GLScene *pScene);
-		virtual long VOnUpdate(GLScene *pScene, DWORD const elapsedMs);
+		virtual long VOnRestore(CGLScene *pScene);
+		virtual long VOnUpdate(CGLScene *pScene, DWORD const elapsedMs);
 		
 
-		virtual long VPreRender(GLScene *pScene);
-		virtual bool VIsVisible(GLScene *pScene);
-		virtual long VRender(GLScene *pScene);
-		virtual long VPostRender(GLScene *pScene);
+		virtual long VPreRender(CGLScene *pScene);
+		virtual bool VIsVisible(CGLScene *pScene);
+		virtual long VRender(CGLScene *pScene);
+		virtual long VPostRender(CGLScene *pScene);
 
 		virtual bool VAddChild( shared_ptr<IGLSceneNode> child );
 		virtual bool VRemoveChild( ActorID id );
-		virtual long VPick( Scene* pScene, RayCast *pRayCast );
+		virtual long VPick( CScene* pScene, CRayCast *pRayCast );
 
 		void SetAlpha( const float Alpha );
 		float GetAlpha( void ) const;
@@ -108,24 +108,24 @@ namespace Quicksand
 		vec3 GetDirection( void ) const;
 
 		void SetRadius( const float radius );
-		void SetMaterial( const Material& mat );
+		void SetMaterial( const CMaterial& mat );
 
 	};
 
 
 	//a scene node that has transparencies
 
-	class GLAlphaSceneNode
+	class CGLAlphaSceneNode
 	{
 		shared_ptr<IGLSceneNode> m_pNode;
 		mat4 m_Concat;
 		float m_ScreenZ;
 
 		// For the STL sort...
-		bool const operator <(GLAlphaSceneNode const &other) { return m_ScreenZ < other.m_ScreenZ; }
+		bool const operator <(CGLAlphaSceneNode const &other) { return m_ScreenZ < other.m_ScreenZ; }
 	};
 
-	typedef std::list<GLAlphaSceneNode *> GLAlphaSceneNodes;
+	typedef std::list<CGLAlphaSceneNode *> GLAlphaSceneNodes;
 
 
 }

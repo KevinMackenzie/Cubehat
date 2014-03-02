@@ -7,17 +7,17 @@
 
 namespace Quicksand
 {
-	//ZipResourceFile class
+	//CZipResourceFile class
 
 
-	ZipResourceFile::~ZipResourceFile( )
+	CZipResourceFile::~CZipResourceFile( )
 	{
 		SAFE_DELETE( m_pZipFile );
 	}
 
-	bool ZipResourceFile::VOpen( )
+	bool CZipResourceFile::VOpen( )
 	{
-		m_pZipFile = QSE_NEW ZipFile();
+		m_pZipFile = QSE_NEW CZipFile();
 		if (m_pZipFile)
 		{
 			return m_pZipFile->Init( m_ResFileName.c_str() );
@@ -25,7 +25,7 @@ namespace Quicksand
 		return false;
 	}
 
-	int ZipResourceFile::VGetRawResourceSize( const Resource &r )
+	int CZipResourceFile::VGetRawResourceSize( const CResource &r )
 	{
 		int resourceNum = m_pZipFile->Find( r.m_Name.c_str( ) );
 		if (resourceNum == -1)
@@ -34,10 +34,10 @@ namespace Quicksand
 		return m_pZipFile->GetFileLen( resourceNum );
 	}
 
-	int ZipResourceFile::VGetRawResource( const Resource &r, char *buffer )
+	int CZipResourceFile::VGetRawResource( const CResource &r, char *buffer )
 	{
 		int size = 0;
-		optional<int> resourceNum = m_pZipFile->Find( r.m_Name.c_str( ) );
+		COptional<int> resourceNum = m_pZipFile->Find( r.m_Name.c_str( ) );
 		if (resourceNum.valid( ))
 		{
 			size = m_pZipFile->GetFileLen( *resourceNum );
@@ -46,14 +46,14 @@ namespace Quicksand
 		return size;
 	}
 
-	int ZipResourceFile::VGetNumResources( ) const
+	int CZipResourceFile::VGetNumResources( ) const
 	{
 		QSE_ASSERT( m_pZipFile != NULL && "Error, zip file is uninitialized" );
 
 		return m_pZipFile->GetNumFiles();
 	}
 
-	std::string ZipResourceFile::VGetResourceName( int num ) const
+	std::string CZipResourceFile::VGetResourceName( int num ) const
 	{
 		QSE_ASSERT( m_pZipFile != NULL && "Error, zip file is uninitialized" );
 
@@ -63,7 +63,7 @@ namespace Quicksand
 
 
 
-	//ALL BELOW THIS IS FOR class ZipFile
+	//ALL BELOW THIS IS FOR class CZipFile
 
 	// --------------------------------------------------------------------------
 	// Basic types.
@@ -78,9 +78,9 @@ namespace Quicksand
 
 #pragma pack(1)
 	// --------------------------------------------------------------------------
-	// struct ZipFile::TZipLocalHeader					- Chapter 8, page 215
+	// struct CZipFile::TZipLocalHeader					- Chapter 8, page 215
 	// --------------------------------------------------------------------------
-	struct ZipFile::TZipLocalHeader
+	struct CZipFile::TZipLocalHeader
 	{
 		enum
 		{
@@ -100,9 +100,9 @@ namespace Quicksand
 	};
 
 	// --------------------------------------------------------------------------
-	// struct ZipFile::TZipDirHeader					- Chapter 8, page 215
+	// struct CZipFile::TZipDirHeader					- Chapter 8, page 215
 	// --------------------------------------------------------------------------
-	struct ZipFile::TZipDirHeader
+	struct CZipFile::TZipDirHeader
 	{
 		enum
 		{
@@ -119,9 +119,9 @@ namespace Quicksand
 	};
 
 	// --------------------------------------------------------------------------
-	// struct ZipFile::TZipDirFileHeader					- Chapter 8, page 215
+	// struct CZipFile::TZipDirFileHeader					- Chapter 8, page 215
 	// --------------------------------------------------------------------------
-	struct ZipFile::TZipDirFileHeader
+	struct CZipFile::TZipDirFileHeader
 	{
 		enum
 		{
@@ -157,7 +157,7 @@ namespace Quicksand
 	// Purpose:       Initialize the object and read the zip file directory.
 	// Parameters:    A stdio FILE* used for reading.
 	// --------------------------------------------------------------------------
-	bool ZipFile::Init( const std::wstring &resFileName )
+	bool CZipFile::Init( const std::wstring &resFileName )
 	{
 		End( );
 
@@ -235,7 +235,7 @@ namespace Quicksand
 		return success;
 	}
 
-	int ZipFile::Find( const std::string &path ) const
+	int CZipFile::Find( const std::string &path ) const
 	{
 		std::string lowerCase = path;
 		std::transform( lowerCase.begin( ), lowerCase.end( ), lowerCase.begin( ), (int( *)(int)) std::tolower );
@@ -253,7 +253,7 @@ namespace Quicksand
 	// Purpose:       Finish the object
 	// Parameters:    
 	// --------------------------------------------------------------------------
-	void ZipFile::End( )
+	void CZipFile::End( )
 	{
 		m_ZipContentsMap.clear( );
 		SAFE_DELETE_ARRAY( m_pDirData );
@@ -265,7 +265,7 @@ namespace Quicksand
 	// Purpose:       Return the name of a file
 	// Parameters:    The file index and the buffer where to store the filename
 	// --------------------------------------------------------------------------
-	std::string ZipFile::GetFilename( int i )  const
+	std::string CZipFile::GetFilename( int i )  const
 	{
 		std::string fileName = "";
 		if (i >= 0 && i < m_nEntries)
@@ -284,7 +284,7 @@ namespace Quicksand
 	// Purpose:       Return the length of a file so a buffer can be allocated
 	// Parameters:    The file index.
 	// --------------------------------------------------------------------------
-	int ZipFile::GetFileLen( int i ) const
+	int CZipFile::GetFileLen( int i ) const
 	{
 		if (i < 0 || i >= m_nEntries)
 			return -1;
@@ -297,7 +297,7 @@ namespace Quicksand
 	// Purpose:       Uncompress a complete file
 	// Parameters:    The file index and the pre-allocated buffer
 	// --------------------------------------------------------------------------
-	bool ZipFile::ReadFile( int i, void *pBuf )
+	bool CZipFile::ReadFile( int i, void *pBuf )
 	{
 		if (pBuf == NULL || i < 0 || i >= m_nEntries)
 			return false;
@@ -371,7 +371,7 @@ namespace Quicksand
 	// Purpose:       Uncompress a complete file with callbacks.
 	// Parameters:    The file index and the pre-allocated buffer
 	// --------------------------------------------------------------------------
-	bool ZipFile::ReadLargeFile( int i, void *pBuf, void( *progressCallback )(int, bool &) )
+	bool CZipFile::ReadLargeFile( int i, void *pBuf, void( *progressCallback )(int, bool &) )
 	{
 		if (pBuf == NULL || i < 0 || i >= m_nEntries)
 			return false;
@@ -503,7 +503,7 @@ namespace Quicksand
 	FILE *f = fopen(argv[1], "rb");
 	if (f)
 	{
-	ZipFile zip;
+	CZipFile zip;
 
 	if (true != zip.Init(f))
 	printf("Bad Zip file: \"%s\"\n", argv[1]);

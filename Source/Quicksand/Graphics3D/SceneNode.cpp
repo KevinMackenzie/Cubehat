@@ -7,12 +7,12 @@ namespace Quicksand
 {
 
 
-	void GLSceneNodeProperties::SetAlpha(const float alpha)
+	void CGLSceneNodeProperties::SetAlpha(const float alpha)
 	{
 		m_Material.SetAlpha(alpha);
 	}
 
-	GLSceneNodeProperties::GLSceneNodeProperties(void)
+	CGLSceneNodeProperties::CGLSceneNodeProperties(void)
 	{
 		m_ActorID = INVALID_ACTOR_ID;
 		m_Radius = 0;
@@ -20,22 +20,22 @@ namespace Quicksand
 		m_AlphaType = AlphaOpaque;
 	}
 
-	const ActorId& GLSceneNodeProperties::ActorID(void) const
+	const ActorId& CGLSceneNodeProperties::ActorID(void) const
 	{
 		return m_ActorID;
 	}
 
-	mat4 const& GLSceneNodeProperties::ToWorld(void) const
+	mat4 const& CGLSceneNodeProperties::ToWorld(void) const
 	{
 		return m_ToWorld;
 	}
 
-	mat4 const GLSceneNodeProperties::FromWorld(void) const
+	mat4 const CGLSceneNodeProperties::FromWorld(void) const
 	{
 		return m_FromWorld;
 	}
 
-	void GLSceneNodeProperties::Transform(mat4* toWorld, mat4 *fromWorld) const
+	void CGLSceneNodeProperties::Transform(mat4* toWorld, mat4 *fromWorld) const
 	{
 		if (toWorld != NULL)
 			*toWorld = m_ToWorld;
@@ -44,50 +44,50 @@ namespace Quicksand
 	}
 
 
-	const char* GLSceneNodeProperties::Name(void) const
+	const char* CGLSceneNodeProperties::Name(void) const
 	{
 		return m_Name.c_str();
 	}
 
 
-	bool GLSceneNodeProperties::HasAlpha(void) const
+	bool CGLSceneNodeProperties::HasAlpha(void) const
 	{
 		return m_Material.HasAlpha();
 	}
 
-	float GLSceneNodeProperties::Alpha(void) const
+	float CGLSceneNodeProperties::Alpha(void) const
 	{
 		return m_Material.GetAlpha();
 	}
 
-	GLAlphaType GLSceneNodeProperties::AlphaType(void) const
+	GLAlphaType CGLSceneNodeProperties::AlphaType(void) const
 	{
 		return m_AlphaType;
 	}
 
 
-	RenderPass GLSceneNodeProperties::RenderPass(void) const
+	RenderPass CGLSceneNodeProperties::RenderPass(void) const
 	{
 		return m_RenderPass;
 	}
 
-	float GLSceneNodeProperties::Radius(void) const
+	float CGLSceneNodeProperties::Radius(void) const
 	{
 		return m_Radius;
 	}
 
 
-	Material GLSceneNodeProperties::GetMaterial(void) const
+	CMaterial CGLSceneNodeProperties::GetMaterial(void) const
 	{
 		return m_Material;
 	}
 
 	//////////////////////////////////
-	//GLSceneNode
+	//CGLSceneNode
 	//
 	///////////////////////////////////
 
-	GLSceneNode::GLSceneNode(ActorID actorId, std::string name, RenderPass renderPass, const Color& diffuseColor, const mat4 *to, const mat4 *from)
+	CGLSceneNode::CGLSceneNode(ActorID actorId, std::string name, RenderPass renderPass, const Color& diffuseColor, const mat4 *to, const mat4 *from)
 	{
 		m_pParent = NULL;
 
@@ -102,63 +102,63 @@ namespace Quicksand
 
 	}
 
-	GLSceneNode::~GLSceneNode(void)
+	CGLSceneNode::~CGLSceneNode(void)
 	{
 
 	}
 
 
-	const GLSceneNodeProperties* const GLSceneNode::VGet(void) const
+	const CGLSceneNodeProperties* const CGLSceneNode::VGet(void) const
 	{
 		return &m_Props;
 	}
 
 
-	void GLSceneNode::VSetTransform(const mat4 *toWorld, const mat4 *fromWorld )
+	void CGLSceneNode::VSetTransform(const mat4 *toWorld, const mat4 *fromWorld )
 	{
 		m_Props.m_ToWorld = *toWorld;
 		m_Props.m_FromWorld = *fromWorld;
 	}
 
 
-	long GLSceneNode::VOnRestore(GLScene *pScene)
+	long CGLSceneNode::VOnRestore(CGLScene *pScene)
 	{
 
 	}
 
-	long GLSceneNode::VOnUpdate(GLScene *pScene, DWORD const elapsedMs)
-	{
-
-	}
-
-
-
-	long GLSceneNode::VPreRender(GLScene *pScene)
-	{
-
-	}
-
-	bool GLSceneNode::VIsVisible(GLScene *pScene)
-	{
-
-	}
-
-	long GLSceneNode::VRender(GLScene *pScene)
-	{
-
-	}
-
-	long GLSceneNode::VPostRender(GLScene *pScene)
+	long CGLSceneNode::VOnUpdate(CGLScene *pScene, DWORD const elapsedMs)
 	{
 
 	}
 
 
-	bool GLSceneNode::VAddChild(shared_ptr<IGLSceneNode> child)
+
+	long CGLSceneNode::VPreRender(CGLScene *pScene)
+	{
+
+	}
+
+	bool CGLSceneNode::VIsVisible(CGLScene *pScene)
+	{
+
+	}
+
+	long CGLSceneNode::VRender(CGLScene *pScene)
+	{
+
+	}
+
+	long CGLSceneNode::VPostRender(CGLScene *pScene)
+	{
+
+	}
+
+
+	bool CGLSceneNode::VAddChild(shared_ptr<IGLSceneNode> child)
 	{
 		m_Children.push_back(child);
 
-		shared_ptr<GLSceneNode> kid = static_pointer_cast<GLSceneNode>(child);
+		shared_ptr<CGLSceneNode> kid = static_pointer_cast<CGLSceneNode>(child);
 
 		kid->m_pParent = this;					// [mrmike] Post-press fix - the parent was never set!
 
@@ -173,11 +173,11 @@ namespace Quicksand
 		return true;
 	}
 
-	bool GLSceneNode::VRemoveChild(ActorID id)
+	bool CGLSceneNode::VRemoveChild(ActorID id)
 	{
 		for (GLSceneNodeList::iterator i = m_Children.begin(); i != m_Children.end(); ++i)
 		{
-			const GLSceneNodeProperties* pProps = (*i)->VGet();
+			const CGLSceneNodeProperties* pProps = (*i)->VGet();
 			if (pProps->ActorID() != INVALID_ACTOR_ID && id == pProps->ActorID())
 			{
 				i = m_Children.erase(i);	//this can be expensive for vectors
@@ -187,7 +187,7 @@ namespace Quicksand
 		return false;
 	}
 
-	long GLSceneNode::VPick(Scene* pScene, RayCast *pRayCast)
+	long CGLSceneNode::VPick(CScene* pScene, CRayCast *pRayCast)
 	{
 		for (GLSceneNodeList::const_iterator i = m_Children.begin(); i != m_Children.end(); ++i)
 		{
@@ -201,28 +201,28 @@ namespace Quicksand
 	}
 
 
-	void GLSceneNode::SetAlpha(const float alpha)
+	void CGLSceneNode::SetAlpha(const float alpha)
 	{
 		m_Props.m_Material.SetAlpha(alpha);
 		for (GLSceneNodeList::const_iterator i = m_Children.begin(); i != m_Children.end(); ++i)
 		{
-			shared_ptr<GLSceneNode> sceneNode = static_pointer_cast<GLSceneNode>(*i);
+			shared_ptr<CGLSceneNode> sceneNode = static_pointer_cast<CGLSceneNode>(*i);
 			sceneNode->SetAlpha(alpha);
 		}
 	}
 
-	float GLSceneNode::GetAlpha(void) const
+	float CGLSceneNode::GetAlpha(void) const
 	{
 		return m_Props.m_Material.GetAlpha();
 	}
 
 
-	vec3 GLSceneNode::GetPosition(void) const
+	vec3 CGLSceneNode::GetPosition(void) const
 	{
 		return GetTransMatPosition(m_Props.ToWorld());
 	}
 
-	void GLSceneNode::SetPosition(const vec3& pos)
+	void CGLSceneNode::SetPosition(const vec3& pos)
 	{
 		m_Props.m_ToWorld[3][0] = pos.x;
 		m_Props.m_ToWorld[3][1] = pos.y;
@@ -230,24 +230,24 @@ namespace Quicksand
 	}
 
 
-	const vec3 GLSceneNode::GetWorldPosition(void) const
+	const vec3 CGLSceneNode::GetWorldPosition(void) const
 	{
 		return GetTransMatPosition(m_Props.m_ToWorld);
 	}
 
 
-	vec3 GLSceneNode::GetDirection(void) const
+	vec3 CGLSceneNode::GetDirection(void) const
 	{
 		return GetTransMatDirection(m_Props.ToWorld);
 	}
 
 
-	void GLSceneNode::SetRadius(const float radius)
+	void CGLSceneNode::SetRadius(const float radius)
 	{
 		m_Props.m_Radius = radius;
 	}
 
-	void GLSceneNode::SetMaterial(const Material& mat)
+	void CGLSceneNode::SetMaterial(const CMaterial& mat)
 	{
 		m_Props.m_Material = mat;
 	}

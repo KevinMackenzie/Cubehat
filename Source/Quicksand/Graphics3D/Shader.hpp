@@ -37,9 +37,9 @@ namespace Quicksand
 	typedef ShaderCompileStruct_t ShaderCompileStruct;
 	typedef ShaderCompileStruct_t ShaderProgramBuildStruct;
 
-	class Shader
+	class CShader
 	{
-		Shader(void){}
+		CShader(void){}
 	protected:
 		GLuint m_ShaderID;
 		ShaderType m_Type;
@@ -47,8 +47,8 @@ namespace Quicksand
 
 		ShaderCompileStruct m_CompileInfo;
 	public:
-		Shader(ShaderType shaderType);
-		virtual ~Shader(void);
+		CShader(ShaderType shaderType);
+		virtual ~CShader(void);
 
 		//fileName is the name of the file that is should load,
 		//replace is whether it should append the current shader information, 
@@ -79,7 +79,7 @@ namespace Quicksand
 
 	};
 
-	class ShaderProgramBase
+	class CShaderProgramBase
 	{
 	protected:
 		GLuint m_ProgramID;
@@ -87,8 +87,8 @@ namespace Quicksand
 		//this tells us about the link info for programs
 		ShaderProgramBuildStruct m_BuildInfo;
 	public:
-		ShaderProgramBase(void){ m_ProgramID = glCreateProgram(); }
-		virtual ~ShaderProgramBase(void){ glDeleteProgram(m_ProgramID); }
+		CShaderProgramBase(void){ m_ProgramID = glCreateProgram(); }
+		virtual ~CShaderProgramBase(void){ glDeleteProgram(m_ProgramID); }
 
 		const GLuint GetProgramID(void) const { return m_ProgramID; }
 
@@ -101,17 +101,17 @@ namespace Quicksand
 		ShaderProgramBuildStruct GetAndFlush(void) { FlushProgramInfo(); return GetProgramInfo(); }
 	};
 
-	class ShaderProgram : public ShaderProgramBase
+	class CShaderProgram : public CShaderProgramBase
 	{
 	public:
-		ShaderProgram(void){}
-		~ShaderProgram(void){}
+		CShaderProgram(void){}
+		~CShaderProgram(void){}
 
 		//use the program for the draw calls
 		virtual void UseProgram(void) const { glUseProgram(m_ProgramID); }
 
 		//attaches a shader
-		void AttachShader(Shader shader);
+		void AttachShader(CShader shader);
 
 		//this builds the program with the contained shaders
 		//a seperable mode will be implimented when needed
@@ -120,9 +120,9 @@ namespace Quicksand
 
 	//TODO: impliment program pipeline objects and seperable shader programs
 	/*
-	class ProgramPipelineObject : public ShaderProgramBase
+	class CProgramPipelineObject : public CShaderProgramBase
 	{
-		std::vector<ShaderProgram*> m_SeperablePrograms;
+		std::vector<CShaderProgram*> m_SeperablePrograms;
 
 	public:
 		ProgramPipelineObject(void){}
@@ -130,7 +130,7 @@ namespace Quicksand
 
 		//attach a program to this seperable program.  The list of shader types is the different
 		//shader types it contains
-		void AttachProgram(ShaderProgramBase* pProgram, std::list<ShaderType> programShaderType);
+		void AttachProgram(CShaderProgramBase* pProgram, std::list<ShaderType> programShaderType);
 
 		//link the shader programs
 		void Link(void);

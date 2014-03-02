@@ -5,84 +5,84 @@
 namespace Quicksand
 {
 
-	void GLScene::RenderAlphaPass(void)
+	void CGLScene::RenderAlphaPass(void)
 	{
 
 	}
 
-	GLScene::GLScene(void)
+	CGLScene::CGLScene(void)
 	{
 
 	}
 
-	GLScene::~GLScene(void)
-	{
-
-	}
-
-
-	unsigned long GLScene::OnRender(void)
-	{
-
-	}
-
-	unsigned long GLScene::OnUpdate(void)
+	CGLScene::~CGLScene(void)
 	{
 
 	}
 
 
-	shared_ptr<IGLSceneNode> GLScene::FindActor(ActorId id)
+	unsigned long CGLScene::OnRender(void)
 	{
 
 	}
 
-	bool GLScene::AddChild(ActorId id, shared_ptr<IGLSceneNode> child)
-	{
-
-	}
-
-
-	bool GLScene::RemoveChild(ActorId id)
+	unsigned long CGLScene::OnUpdate(void)
 	{
 
 	}
 
 
-	void GLScene::SetCamera(shared_ptr<GLCameraNode> camera)
+	shared_ptr<IGLSceneNode> CGLScene::FindActor(ActorId id)
 	{
 
 	}
 
-	const shared_ptr<GLCameraNode> GLScene::GetCamera(void) const
-	{
-
-	}
-
-
-	void GLScene::PushAndSetMatrix(const mat4& toWorld)
-	{
-
-	}
-
-	void GLScene::PopMatrix(void)
-	{
-
-	}
-
-	const mat4* GLScene::GetTopMatrix(void)
+	bool CGLScene::AddChild(ActorId id, shared_ptr<IGLSceneNode> child)
 	{
 
 	}
 
 
-	GLLightManager* GLScene::GetLightManager(void)
+	bool CGLScene::RemoveChild(ActorId id)
 	{
 
 	}
 
 
-	void GLScene::AddAlphaSceneNode(GLAlphaSceneNode *asn)
+	void CGLScene::SetCamera(shared_ptr<CGLCameraNode> camera)
+	{
+
+	}
+
+	const shared_ptr<CGLCameraNode> CGLScene::GetCamera(void) const
+	{
+
+	}
+
+
+	void CGLScene::PushAndSetMatrix(const mat4& toWorld)
+	{
+
+	}
+
+	void CGLScene::PopMatrix(void)
+	{
+
+	}
+
+	const mat4* CGLScene::GetTopMatrix(void)
+	{
+
+	}
+
+
+	CGLLightManager* CGLScene::GetLightManager(void)
+	{
+
+	}
+
+
+	void CGLScene::AddAlphaSceneNode(CGLAlphaSceneNode *asn)
 	{
 
 	}

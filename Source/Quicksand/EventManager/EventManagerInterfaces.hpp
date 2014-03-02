@@ -19,11 +19,11 @@ namespace Quicksand
 	//typedef concurrent_queue<IEventDataPtr> ThreadSafeEventQueue;
 
 	//define's for adding events
-	extern GenericObjectFactory<IEventData, EventType> g_eventFactory;
+	extern CGenericObjectFactory<IEventData, EventType> g_eventFactory;
 	#define REGISTER_EVENT(eventClass) g_eventFactory.Register<eventClass>(eventClass::sk_EventType)
 	#define CREATE_EVENT(eventType) g_eventFactory.Create(eventType)
 
-	//a base data class for event data passed into events.
+	//a base data class Cfor event data passed into events.
 	//this data interface contains to data at all ( except of course the virtual method table)
 	class IEventData
 	{
@@ -42,13 +42,13 @@ namespace Quicksand
 	};
 
 
-	class BaseEventData : public IEventData
+	class CBaseEventData : public IEventData
 	{
 		const float m_fTimeStamp;
 
 	public:
 		//make this explicit to avoid any further overloading of this constructor
-		explicit BaseEventData( const float fTimeStamp = 0.0f ) : m_fTimeStamp( fTimeStamp ){}
+		explicit CBaseEventData( const float fTimeStamp = 0.0f ) : m_fTimeStamp( fTimeStamp ){}
 		
 
 		//return the type of event

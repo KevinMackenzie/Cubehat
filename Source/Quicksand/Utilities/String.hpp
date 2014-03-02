@@ -59,12 +59,12 @@ namespace Quicksand
 
 	// A hashed string.  It retains the initial (ANSI) string in addition to the hash value for easy reference.
 
-	// class HashedString				- Chapter 10, page 274
+	// class CHashedString				- Chapter 10, page 274
 
-	class HashedString
+	class CHashedString
 	{
 	public:
-		explicit HashedString( char const * const pIdentString )
+		explicit CHashedString( char const * const pIdentString )
 			: m_ident( hash_name( pIdentString ) )
 			, m_identStr( pIdentString )
 		{
@@ -84,13 +84,13 @@ namespace Quicksand
 		static
 			void * hash_name( char const *  pIdentStr );
 
-		bool operator< (HashedString const & o) const
+		bool operator< (CHashedString const & o) const
 		{
 			bool r = (getHashValue() < o.getHashValue());
 			return r;
 		}
 
-		bool operator== (HashedString const & o) const
+		bool operator== (CHashedString const & o) const
 		{
 			bool r = (getHashValue() == o.getHashValue());
 			return r;

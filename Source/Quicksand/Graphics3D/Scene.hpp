@@ -10,32 +10,32 @@ namespace Quicksand
 
 
 	//forward declarations
-	class GLCameraNode;
-	class GLSkyNode;
-	class GLLightNode;
-	class GLLightManager;
-	class GLMatrixStack;
+	class CGLCameraNode;
+	class CGLSkyNode;
+	class CGLLightNode;
+	class CGLLightManager;
+	class CGLMatrixStack;
 
-	class GLScene
+	class CGLScene
 	{
 
 	protected:
-		shared_ptr<GLSceneNode> m_Root;
-		shared_ptr<GLCameraNode> m_Camera;
+		shared_ptr<CGLSceneNode> m_Root;
+		shared_ptr<CGLCameraNode> m_Camera;
 		shared_ptr<IGLRenderer> m_Renderer;
 
-		GLMatrixStack *m_MatrixStack;
+		CGLMatrixStack *m_MatrixStack;
 		AlphaSceneNodes m_AlphaSceneNodes;
 		SceneActorMap m_ActorMap;
 
-		GLLightManager *m_LightManager;
+		CGLLightManager *m_LightManager;
 
 		void RenderAlphaPass(void);
 
 	public:
 
-		GLScene(void);
-		virtual ~GLScene(void);
+		CGLScene(void);
+		virtual ~CGLScene(void);
 
 		unsigned long OnRender(void);
 		unsigned long OnUpdate(void);
@@ -45,16 +45,16 @@ namespace Quicksand
 
 		bool RemoveChild(ActorId id);
 
-		void SetCamera(shared_ptr<GLCameraNode> camera);
-		const shared_ptr<GLCameraNode> GetCamera(void) const;
+		void SetCamera(shared_ptr<CGLCameraNode> camera);
+		const shared_ptr<CGLCameraNode> GetCamera(void) const;
 
 		void PushAndSetMatrix(const mat4& toWorld);
 		void PopMatrix(void);
 		const mat4* GetTopMatrix(void);
 
-		GLLightManager* GetLightManager(void);
+		CGLLightManager* GetLightManager(void);
 
-		void AddAlphaSceneNode(GLAlphaSceneNode *asn);
+		void AddAlphaSceneNode(CGLAlphaSceneNode *asn);
 
 	};
 

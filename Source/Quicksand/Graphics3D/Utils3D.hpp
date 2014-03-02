@@ -24,16 +24,16 @@ namespace Quicksand
 	using glm::mat3;
 	using glm::mat4;
 
-	//first we need a class to represent a plane
-	class Plane
+	//first we need a class Cto represent a plane
+	class CPlane
 	{
 	public:
 		GLfloat m_fA, m_fB, m_fC, m_fD;
 
-		Plane(void);
-		Plane(vec3 p0, vec3 p1, vec3 p2);
-		Plane(GLfloat a, GLfloat b, GLfloat c, GLfloat d);
-		~Plane(void);
+		CPlane(void);
+		CPlane(vec3 p0, vec3 p1, vec3 p2);
+		CPlane(GLfloat a, GLfloat b, GLfloat c, GLfloat d);
+		~CPlane(void);
 
 		void Normalize(void);
 
@@ -47,15 +47,15 @@ namespace Quicksand
 	};
 
 
-	//this is a frustum class represented as six different planes all facing in
-	class Frustum
+	//this is a frustum class Crepresented as six different planes all facing in
+	class CFrustum
 	{
 	public:
 
 		enum Side{ Near, Far, Top, Right, Bottom, Left };
 
 		//the planes of the frustum object
-		Plane m_Planes[NumPlanes];
+		CPlane m_Planes[NumPlanes];
 
 		//the vertices of the near clip plane in camera space
 		vec3 m_NearClip[4];
@@ -72,11 +72,11 @@ namespace Quicksand
 		GLfloat m_Far;
 
 	public:
-		Frustum(void);
+		CFrustum(void);
 
 		bool Inside(const vec3& point) const;
 		bool Inside(const vec3& point, const GLfloat radius) const;
-		const Plane& Get(Side side) const { return m_Planes[side]; }
+		const CPlane& Get(Side side) const { return m_Planes[side]; }
 		void SetFOV(GLfloat fov);
 		void SetAspect(GLfloat aspect);
 		void SetNear(GLfloat nearClip);
@@ -85,7 +85,7 @@ namespace Quicksand
 
 		void Render(void);
 
-		//this reinitializes the class with the data already in it
+		//this reinitializes the class Cwith the data already in it
 		void ReInit(void);
 
 	};
@@ -96,7 +96,7 @@ namespace Quicksand
 	//this is a matrix stack to help with hierarchal scenes
 	//this replaces the openGL deprecated matrix stack
 	//this is a simple data structure that i proudly say is all my work
-	class GLMatrixStack
+	class CGLMatrixStack
 	{
 		MatrixStack4 m_MatrixStack;
 		
@@ -105,8 +105,8 @@ namespace Quicksand
 
 	public:
 
-		GLMatrixStack(void);
-		~GLMatrixStack(void);
+		CGLMatrixStack(void);
+		~CGLMatrixStack(void);
 
 		void Push(void);//adds to the stack
 		void Pop(void);//pops the stack

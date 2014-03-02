@@ -9,9 +9,9 @@ namespace Quicksand
 
 
 /////////////////////////////////////////////
-//	class CProcess
+//	class CCProcess
 //
-//	a class representing a single process
+//	a class Crepresenting a single process
 //	to be exictued in the game loop.
 //	all uses of this must be derived, then 
 //	used in CProcessManager

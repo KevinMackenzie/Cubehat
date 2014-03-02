@@ -3,13 +3,13 @@
 
 namespace Quicksand
 {
-	GLBuffer::GLBuffer(GLBufferType type)
+	CGLBuffer::CGLBuffer(GLBufferType type)
 	{
 		m_Type = type;
 		m_BufferId = QSE_UNINITIALIZED_OPENGL;
 	}
 
-	GLBuffer::~GLBuffer(void)
+	CGLBuffer::~CGLBuffer(void)
 	{
 		if (m_BufferId != QSE_UNINITIALIZED_OPENGL)
 		{
@@ -19,7 +19,7 @@ namespace Quicksand
 
 
 	//allocate data size count and fill it with given data
-	void GLBuffer::Allocate(const void* pData, int count)
+	void CGLBuffer::Allocate(const void* pData, int count)
 	{
 		Bind();
 		glBufferData(m_Type, count, pData, m_Usage);
@@ -27,19 +27,19 @@ namespace Quicksand
 	}
 
 	//allocates data size count into the openGL buffer
-	void GLBuffer::Allocate(int count)
+	void CGLBuffer::Allocate(int count)
 	{
 		Allocate(0, count);
 	}
 
 	//get the buffer id
-	unsigned int GLBuffer::GetBufferId(void) const
+	unsigned int CGLBuffer::GetBufferId(void) const
 	{
 		return m_BufferId;
 	}
 
 	//map the openGL buffer for writing
-	void* GLBuffer::Map(void)
+	void* CGLBuffer::Map(void)
 	{
 		Bind();
 		void *data = glMapBuffer(m_Type, m_Access);
@@ -50,20 +50,20 @@ namespace Quicksand
 
 
 	//map the openGL buffer for writing, this calles SetAccessType automatically
-	void* GLBuffer::Map(GLBufferAccess accessType)
+	void* CGLBuffer::Map(GLBufferAccess accessType)
 	{
 		SetAccessType(accessType);
 		return Map();
 	}
 
 	//set the access type of this buffer when mapping
-	void GLBuffer::SetAccessType(GLBufferAccess accessType)
+	void CGLBuffer::SetAccessType(GLBufferAccess accessType)
 	{
 		m_Access = accessType;
 	}
 
 	//unmap the buffer
-	bool GLBuffer::UnMap(void)
+	bool CGLBuffer::UnMap(void)
 	{
 		Bind();
 		glUnmapBuffer(m_Type);
@@ -71,7 +71,7 @@ namespace Quicksand
 	}
 
 
-	void GLBuffer::QuickMap(int offset, const void * pData, int count)
+	void CGLBuffer::QuickMap(int offset, const void * pData, int count)
 	{
 		Bind();
 		char *data = (char*)glMapBuffer(m_Type, m_Access);
@@ -96,14 +96,14 @@ namespace Quicksand
 		Release();
 	}
 
-	void GLBuffer::QuickMap(int offset, const void* pData, int count, GLBufferAccess accessType)
+	void CGLBuffer::QuickMap(int offset, const void* pData, int count, GLBufferAccess accessType)
 	{
 		SetAccessType(accessType);
 		QuickMap(offset, pData, accessType);
 	}
 
 	//bind the buffer for use
-	bool GLBuffer::Bind(void)
+	bool CGLBuffer::Bind(void)
 	{
 		if (!IsCreated())
 		{
@@ -116,7 +116,7 @@ namespace Quicksand
 	}
 
 	//create MUST be called before use
-	bool GLBuffer::Create(void)
+	bool CGLBuffer::Create(void)
 	{
 		glGenBuffers(1, &m_BufferId);
 
@@ -124,7 +124,7 @@ namespace Quicksand
 	}
 
 	//deletes the openGL buffer
-	void GLBuffer::Destroy(void)
+	void CGLBuffer::Destroy(void)
 	{
 		glDeleteBuffers(1, &m_BufferId);
 		//just in case
@@ -132,13 +132,13 @@ namespace Quicksand
 	}
 
 	//returns true if the buffer has been created
-	bool GLBuffer::IsCreated(void) const
+	bool CGLBuffer::IsCreated(void) const
 	{
 		return (m_BufferId != QSE_UNINITIALIZED_OPENGL);
 	}
 
 	//gets the data and stores 'count' amount of data into 'pData' at the offset 'offset'
-	bool GLBuffer::Read(int offset, void * pData, int count)
+	bool CGLBuffer::Read(int offset, void * pData, int count)
 	{
 		glGetBufferSubData(m_Type, offset, count, pData);
 
@@ -146,19 +146,19 @@ namespace Quicksand
 	}
 
 	//unbinds the buffer
-	void GLBuffer::Release(void)
+	void CGLBuffer::Release(void)
 	{
 		glBindBuffer(m_Type, 0);
 	}
 
 	//sets the usage pattern of this buffer
-	void GLBuffer::SetUsagePattern(GLBufferUsagePattern value)
+	void CGLBuffer::SetUsagePattern(GLBufferUsagePattern value)
 	{
 		m_Usage = value;
 	}
 
 	//get the size in bytes of the buffer
-	int GLBuffer::Size() const
+	int CGLBuffer::Size() const
 	{
 		if (!IsCreated())
 			return -1;
@@ -173,36 +173,36 @@ namespace Quicksand
 	}
 
 	//get the type of buffer
-	GLBufferType GLBuffer::Type() const
+	GLBufferType CGLBuffer::Type() const
 	{
 		return m_Type;
 	}
 
 	//get the usage pattern
-	GLBufferUsagePattern GLBuffer::UsagePattern() const
+	GLBufferUsagePattern CGLBuffer::UsagePattern() const
 	{
 		return m_Usage;
 	}
 
 	//write 'pData' to the buffer at 'offset' with the size 'count'
-	void GLBuffer::Write(int offset, const void * pData, int count)
+	void CGLBuffer::Write(int offset, const void * pData, int count)
 	{
 		glBufferSubData(m_Type, offset, count, pData);
 	}
 
 	////////////////////////////////////
-	//GLVertexArrayObject
+	//CGLVertexArrayObject
 	////////////////////////////////////
 
 
-	GLVertexArrayObject::GLVertexArrayObject(void)
+	CGLVertexArrayObject::CGLVertexArrayObject(void)
 	{
 		m_VaoId = QSE_UNINITIALIZED_OPENGL;
 	}
 
 
 	//this creats the VAO, this should be the first thing to call
-	bool GLVertexArrayObject::Create(void)
+	bool CGLVertexArrayObject::Create(void)
 	{
 		glGenVertexArrays(1, &m_VaoId);
 
@@ -213,13 +213,13 @@ namespace Quicksand
 	}
 
 	//this is used to check if we have initialized the Id
-	bool GLVertexArrayObject::IsCreated(void)
+	bool CGLVertexArrayObject::IsCreated(void)
 	{
 		return m_VaoId != QSE_UNINITIALIZED_OPENGL;
 	}
 
 	//bind the VAO for whatever
-	void GLVertexArrayObject::Bind(void)
+	void CGLVertexArrayObject::Bind(void)
 	{
 		if (!IsCreated())
 		{
@@ -230,13 +230,13 @@ namespace Quicksand
 	}
 
 	//unbind the VAO
-	void GLVertexArrayObject::Release(void)
+	void CGLVertexArrayObject::Release(void)
 	{
 		glBindVertexArray(0);
 	}
 
 	//enable a GL_ARRAY_BUFFER for the vao.
-	void GLVertexArrayObject::AddBuffer(shared_ptr<GLBuffer> buffer, GLArrayBufferProperties arrayBufferProperties)
+	void CGLVertexArrayObject::AddBuffer(shared_ptr<CGLBuffer> buffer, GLArrayBufferProperties arrayBufferProperties)
 	{
 		if (buffer != NULL)
 		{
@@ -277,7 +277,7 @@ namespace Quicksand
 	}
 
 	//this disables all of the buffers attached with the VBO
-	void GLVertexArrayObject::DisableBuffers(void)
+	void CGLVertexArrayObject::DisableBuffers(void)
 	{
 		Bind();
 		for (auto i : m_Buffers)
@@ -288,7 +288,7 @@ namespace Quicksand
 	}
 
 	//this deletes the buffer
-	void GLVertexArrayObject::Destroy(void)
+	void CGLVertexArrayObject::Destroy(void)
 	{
 		glDeleteVertexArrays(1, &m_VaoId);
 	}

@@ -10,7 +10,7 @@ make up your Quicksand_2013 application.
 
 Quicksand_2013.vcxproj
     This is the main project file for VC++ projects generated using an Application Wizard.
-    It contains information about the version of Visual C++ that generated the file, and
+    It contains information about the version of Visual CPlane++ that generated the file, and
     information about the platforms, configurations, and project features selected with the
     Application Wizard.
 

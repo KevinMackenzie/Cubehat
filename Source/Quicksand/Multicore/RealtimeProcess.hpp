@@ -5,9 +5,9 @@
 
 namespace Quicksand
 {
-	//a class that allows realtime processes(process that do not need VOnUpdate() to run)
+	//a class Cthat allows realtime processes(process that do not need VOnUpdate() to run)
 
-	class RealtimeProcess : public CProcess
+	class CRealtimeProcess : public CProcess
 	{
 	protected:
 		HANDLE m_hThread;
@@ -22,9 +22,9 @@ namespace Quicksand
 		//THREAD_PRIORITY_LOWEST
 		//THREAD_PRIORITY_IDLE
 
-		RealtimeProcess( int priority = THREAD_PRIORITY_NORMAL );
+		CRealtimeProcess( int priority = THREAD_PRIORITY_NORMAL );
 
-		virtual ~RealtimeProcess(){ CloseHandle( m_hThread ); }
+		virtual ~CRealtimeProcess(){ CloseHandle( m_hThread ); }
 		static DWORD WINAPI ThreadProc( LPVOID lpParam );
 	protected:
 		virtual void VOnInit();

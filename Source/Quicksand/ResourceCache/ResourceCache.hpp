@@ -10,7 +10,7 @@ namespace Quicksand
 	using std::shared_ptr;
 	using std::weak_ptr;
 
-	class ResCache;
+	class CResCache;
 
 	//useful for getting more information about the resource
 	class IResourceExtraData
@@ -20,31 +20,32 @@ namespace Quicksand
 	};
 
 
-	class Resource
+	class CResource
 	{
 	public:
 		std::string m_Name;
-		Resource( const std::string &name )
+		CResource( const std::string &name )
 		{
 			m_Name = name;
 			std::transform( m_Name.begin( ), m_Name.end( ), m_Name.begin( ), (int( *)(int)) std::tolower );
 		}
 	};
 
-	class ResHandle
+	class CResHandle
 	{
-		friend class ResCache;
+		friend class CResCache;
+		friend class CFreeRomeResCache;
 
 	protected:
-		Resource m_Resource;
+		CResource m_Resource;
 		char* m_Buffer;
 		unsigned int m_Size;
 		shared_ptr<IResourceExtraData> m_Extra;
-		ResCache *m_pResCache;
+		CResCache *m_pResCache;
 
 	public:
-		ResHandle( Resource& resource, char* buffer, unsigned int size, ResCache* pResCache );
-		virtual ~ResHandle( void );
+		CResHandle( CResource& resource, char* buffer, unsigned int size, CResCache* pResCache );
+		virtual ~CResHandle( void );
 
 		unsigned int Size( void ) const { return m_Size; }
 		char *Buffer( void ) const { return m_Buffer; }
@@ -60,14 +61,14 @@ namespace Quicksand
 	//a simple resource cache
 
 	//useful typedef's
-	typedef std::list<shared_ptr<ResHandle> >				ResHandleList;
-	typedef std::map<std::string, shared_ptr<ResHandle> >	ResHandleMap;
+	typedef std::list<shared_ptr<CResHandle> >				ResHandleList;
+	typedef std::map<std::string, shared_ptr<CResHandle> >	ResHandleMap;
 	typedef std::list<shared_ptr<IResourceLoader> >			ResourceLoaders;
 
 
-	class ResCache
+	class CResCache
 	{
-		friend ResHandle;
+		friend CResHandle;
 
 	protected:
 		ResHandleList m_LRU;// a list of the LRU (least recently used) resources
@@ -79,10 +80,10 @@ namespace Quicksand
 		unsigned int m_CacheSize;	//total memory size
 		unsigned int m_Allocated;	//total memory used(allocated)
 
-		shared_ptr<ResHandle> Find( Resource &r );
-		shared_ptr<ResHandle> Load( Resource &r );
-		void Free( shared_ptr<ResHandle> gonner );
-		void Update( shared_ptr<ResHandle> handle );
+		shared_ptr<CResHandle> Find( CResource &r );
+		shared_ptr<CResHandle> Load( CResource &r );
+		void Free( shared_ptr<CResHandle> gonner );
+		void Update( shared_ptr<CResHandle> handle );
 
 		bool MakeRoom( unsigned int size );
 		char* Allocate( unsigned int size );
@@ -90,13 +91,13 @@ namespace Quicksand
 		void MemoryHasBeenFreed( unsigned int size );
 
 	public:
-		ResCache( const unsigned int sizeInMb, IResourceFile* resFile );
-		~ResCache( );
+		CResCache( const unsigned int sizeInMb, IResourceFile* resFile );
+		~CResCache( );
 
 		bool Init( );
 		void RegisterLoader( shared_ptr<IResourceLoader> loader );
 
-		shared_ptr <ResHandle> GetHandle( Resource *r );
+		shared_ptr <CResHandle> GetHandle( CResource *r );
 		int Preload( const std::string pattern, void( *progressCallback )(int, bool&) );
 		void Flush( void );
 	};
@@ -104,13 +105,13 @@ namespace Quicksand
 
 
 	//a default handler to extract data as is and requires no processing at all and is directly loaded into data
-	class DefaultResourceLoader : public IResourceLoader
+	class CDefaultResourceLoader : public IResourceLoader
 	{
 	public:
 		virtual bool VUseRawFile( ) { return true; }
 		virtual bool VDiscardRawBufferAfterLoad( ) { return true; }
 		virtual unsigned int VGetLoadedResourceSize( char *rawBuffer, unsigned int rawSize ) { return rawSize; }
-		virtual bool VLoadResource( char *rawBuffer, unsigned int rawSize, shared_ptr<ResHandle> handle ) { return true; }
+		virtual bool VLoadResource( char *rawBuffer, unsigned int rawSize, shared_ptr<CResHandle> handle ) { return true; }
 		virtual std::string VGetPattern( ) { return "*"; }
 
 	};

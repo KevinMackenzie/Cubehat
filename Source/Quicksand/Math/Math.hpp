@@ -20,7 +20,7 @@
 #define DEGREES_TO_RADIANS(x) ((x) * QSE_PI / 180.0f)
 
 /////////////////////////////////////////////
-//	class CRandom
+//	class CCRandom
 //
 //	a random number generating class
 //

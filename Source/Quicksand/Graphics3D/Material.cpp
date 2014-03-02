@@ -5,7 +5,7 @@ namespace Quicksand
 {
 
 
-	Material::Material( void )
+	CMaterial::CMaterial( void )
 	{
 		ZeroMemory( &m_Material, sizeof(MaterialStruct) );
 		m_Material.Diffuse = g_White;
@@ -14,67 +14,67 @@ namespace Quicksand
 		m_Material.Emissive = g_Black;
 	}
 
-	Material::~Material( void )
+	CMaterial::~CMaterial( void )
 	{
 
 	}
 
 
-	void Material::SetAmbient( const ColorRGBA& color )
+	void CMaterial::SetAmbient( const ColorRGBA& color )
 	{
 		m_Material.Ambient = color;
 	}
 
-	const ColorRGBA& Material::GetAmbient( void ) const
+	const ColorRGBA& CMaterial::GetAmbient( void ) const
 	{
 		return m_Material.Ambient;
 	}
 
 
-	void Material::SetDiffuse( const ColorRGBA& color )
+	void CMaterial::SetDiffuse( const ColorRGBA& color )
 	{
 		m_Material.Diffuse = color;
 	}
 
-	const ColorRGBA& Material::GetDiffuse( void ) const
+	const ColorRGBA& CMaterial::GetDiffuse( void ) const
 	{
 		return m_Material.Diffuse;
 	}
 
 
-	void Material::SetSpecular( const ColorRGBA& color )
+	void CMaterial::SetSpecular( const ColorRGBA& color )
 	{
 		m_Material.Specular = color;
 	}
 
-	const ColorRGBA& Material::GetSpecular( void ) const
+	const ColorRGBA& CMaterial::GetSpecular( void ) const
 	{
 		return m_Material.Specular;
 	}
 
 
-	void Material::SetEmissive( const ColorRGBA& color )
+	void CMaterial::SetEmissive( const ColorRGBA& color )
 	{
 		m_Material.Emissive = color;
 	}
 
-	const ColorRGBA& Material::GetEmissive( void ) const
+	const ColorRGBA& CMaterial::GetEmissive( void ) const
 	{
 		return m_Material.Emissive;
 	}
 
 
-	void Material::SetAlpha( const float alpha )
+	void CMaterial::SetAlpha( const float alpha )
 	{
 		m_Material.Diffuse.a = alpha;
 	}
 
-	bool Material::HasAlpha( void ) const
+	bool CMaterial::HasAlpha( void ) const
 	{
 		return GetAlpha() != fOPAQUE;
 	}
 
-	float Material::GetAlpha( void ) const
+	float CMaterial::GetAlpha( void ) const
 	{
 		return m_Material.Diffuse.a;
 	}

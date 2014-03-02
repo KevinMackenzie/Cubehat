@@ -106,7 +106,9 @@
     <ClCompile Include="..\..\Source\Quicksand\Math\Math.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\Math\Math_Random.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\Multicore\RealtimeProcess.cpp" />
+    <ClCompile Include="..\..\Source\Quicksand\ResourceCache\FreeRoamCache.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\ResourceCache\ResourceCache.cpp" />
+    <ClCompile Include="..\..\Source\Quicksand\ResourceCache\TextureResource.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\ResourceCache\XmlResource.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\ResourceCache\ZipResource.cpp" />
     <ClCompile Include="..\..\Source\Quicksand\Utilities\String.cpp" />
@@ -144,7 +146,9 @@
     <ClInclude Include="..\..\Source\Quicksand\Multicore\CriticalSection.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\Multicore\RealtimeProcess.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\Multicore\SafeStream.hpp" />
+    <ClInclude Include="..\..\Source\Quicksand\ResourceCache\FreeRoamCache.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\ResourceCache\ResourceCache.hpp" />
+    <ClInclude Include="..\..\Source\Quicksand\ResourceCache\TextureResource.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\ResourceCache\XmlResource.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\ResourceCache\ZipResource.hpp" />
     <ClInclude Include="..\..\Source\Quicksand\Utilities\Interfaces.hpp" />

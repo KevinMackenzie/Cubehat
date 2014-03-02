@@ -25,9 +25,9 @@ namespace Quicksand
 
 
 	//---------------------------------------------------------------------------------------------------------------------
-	// EvtData_New_Actor - This event is sent out when an actor is *actually* created.
+	// CEvtData_New_Actor - This event is sent out when an actor is *actually* created.
 	//---------------------------------------------------------------------------------------------------------------------
-	class EvtData_New_Actor : public BaseEventData
+	class CEvtData_New_Actor : public CBaseEventData
 	{
 		ActorId m_actorId;
 		GameViewId m_viewId;
@@ -35,13 +35,13 @@ namespace Quicksand
 	public:
 		static const EventType sk_EventType;
 
-		EvtData_New_Actor( void )
+		CEvtData_New_Actor( void )
 		{
 			m_actorId = INVALID_ACTOR_ID;
 			m_viewId = gc_InvalidGameViewId;
 		}
 
-		explicit EvtData_New_Actor( ActorId actorId, GameViewId viewId = gc_InvalidGameViewId )
+		explicit CEvtData_New_Actor( ActorId actorId, GameViewId viewId = gc_InvalidGameViewId )
 			: m_actorId( actorId ),
 			m_viewId( viewId )
 		{
@@ -60,7 +60,7 @@ namespace Quicksand
 
 		virtual IEventDataPtr VCopy( void ) const
 		{
-			return IEventDataPtr( QSE_NEW EvtData_New_Actor( m_actorId, m_viewId ) );
+			return IEventDataPtr( QSE_NEW CEvtData_New_Actor( m_actorId, m_viewId ) );
 		}
 
 		virtual void VSerialize( std::ostrstream& out ) const
@@ -72,7 +72,7 @@ namespace Quicksand
 
 		virtual const char* GetName( void ) const
 		{
-			return "EvtData_New_Actor";
+			return "CEvtData_New_Actor";
 		}
 
 		const ActorId GetActorId( void ) const
@@ -90,14 +90,14 @@ namespace Quicksand
 	//---------------------------------------------------------------------------------------------------------------------
 	// EvtData_Destroy_Actor - sent when actors are destroyed	
 	//---------------------------------------------------------------------------------------------------------------------
-	class EvtData_Destroy_Actor : public BaseEventData
+	class CEvtData_Destroy_Actor : public CBaseEventData
 	{
 		ActorId m_id;
 
 	public:
 		static const EventType sk_EventType;
 
-		explicit EvtData_Destroy_Actor( ActorId id = INVALID_ACTOR_ID )
+		explicit CEvtData_Destroy_Actor( ActorId id = INVALID_ACTOR_ID )
 			: m_id( id )
 		{
 			//
@@ -110,7 +110,7 @@ namespace Quicksand
 
 		virtual IEventDataPtr VCopy( void ) const
 		{
-			return IEventDataPtr( QSE_NEW EvtData_Destroy_Actor( m_id ) );
+			return IEventDataPtr( QSE_NEW CEvtData_Destroy_Actor( m_id ) );
 		}
 
 		virtual void VSerialize( std::ostrstream &out ) const
@@ -135,7 +135,7 @@ namespace Quicksand
 	//---------------------------------------------------------------------------------------------------------------------
 	// EvtData_Move_Actor - sent when actors are moved
 	//---------------------------------------------------------------------------------------------------------------------
-	class EvtData_Move_Actor : public BaseEventData
+	class CEvtData_Move_Actor : public CBaseEventData
 	{
 		ActorId m_id;
 		mat4 m_matrix;
@@ -148,12 +148,12 @@ namespace Quicksand
 			return sk_EventType;
 		}
 
-		EvtData_Move_Actor( void )
+		CEvtData_Move_Actor( void )
 		{
 			m_id = INVALID_ACTOR_ID;
 		}
 
-		EvtData_Move_Actor( ActorId id, const mat4& matrix )
+		CEvtData_Move_Actor( ActorId id, const mat4& matrix )
 			: m_id( id ), m_matrix( matrix )
 		{
 			//
@@ -185,7 +185,7 @@ namespace Quicksand
 
 		virtual IEventDataPtr VCopy( ) const
 		{
-			return IEventDataPtr( QSE_NEW EvtData_Move_Actor( m_id, m_matrix ) );
+			return IEventDataPtr( QSE_NEW CEvtData_Move_Actor( m_id, m_matrix ) );
 		}
 
 		virtual const char* GetName( void ) const
@@ -204,26 +204,26 @@ namespace Quicksand
 		}
 	};
 
-	//TODO:impliment GLSceneNode along with all of the other 3dGraphics Api Things
-	class GLSceneNode;
+	//TODO:impliment CGLSceneNode along with all of the other 3dGraphics Api Things
+	class CGLSceneNode;
 
 	//---------------------------------------------------------------------------------------------------------------------
 	// EvtData_New_Render_Component - This event is sent out when an actor is *actually* created.
 	//---------------------------------------------------------------------------------------------------------------------
-	class EvtData_New_Render_Component : public BaseEventData
+	class CEvtData_New_Render_Component : public CBaseEventData
 	{
 		ActorId m_actorId;
-		shared_ptr<GLSceneNode> m_pGLSceneNode;
+		shared_ptr<CGLSceneNode> m_pGLSceneNode;
 
 	public:
 		static const EventType sk_EventType;
 
-		EvtData_New_Render_Component( void )
+		CEvtData_New_Render_Component( void )
 		{
 			m_actorId = INVALID_ACTOR_ID;
 		}
 
-		explicit EvtData_New_Render_Component( ActorId actorId, shared_ptr<GLSceneNode> pGLSceneNode )
+		explicit CEvtData_New_Render_Component( ActorId actorId, shared_ptr<CGLSceneNode> pGLSceneNode )
 			: m_actorId( actorId ),
 			m_pGLSceneNode( pGLSceneNode )
 		{
@@ -246,7 +246,7 @@ namespace Quicksand
 
 		virtual IEventDataPtr VCopy( void ) const
 		{
-			return IEventDataPtr( QSE_NEW EvtData_New_Render_Component( m_actorId, m_pGLSceneNode ) );
+			return IEventDataPtr( QSE_NEW CEvtData_New_Render_Component( m_actorId, m_pGLSceneNode ) );
 		}
 
 		virtual const char* GetName( void ) const
@@ -259,7 +259,7 @@ namespace Quicksand
 			return m_actorId;
 		}
 
-		shared_ptr<GLSceneNode> GetGLSceneNode( void ) const
+		shared_ptr<CGLSceneNode> GetGLSceneNode( void ) const
 		{
 			return m_pGLSceneNode;
 		}
@@ -268,9 +268,9 @@ namespace Quicksand
 
 	//---------------------------------------------------------------------------------------------------------------------
 	// EvtData_Modified_Render_Component - This event is sent out when a render component is changed
-	//   NOTE: This class is not described in the book!
+	//   NOTE: This class Cis not described in the book!
 	//---------------------------------------------------------------------------------------------------------------------
-	class EvtData_Modified_Render_Component : public BaseEventData
+	class CEvtData_Modified_Render_Component : public CBaseEventData
 	{
 		ActorId m_id;
 
@@ -282,12 +282,12 @@ namespace Quicksand
 			return sk_EventType;
 		}
 
-		EvtData_Modified_Render_Component( void )
+		CEvtData_Modified_Render_Component( void )
 		{
 			m_id = INVALID_ACTOR_ID;
 		}
 
-		EvtData_Modified_Render_Component( ActorId id )
+		CEvtData_Modified_Render_Component( ActorId id )
 			: m_id( id )
 		{
 		}
@@ -304,7 +304,7 @@ namespace Quicksand
 
 		virtual IEventDataPtr VCopy( ) const
 		{
-			return IEventDataPtr( QSE_NEW EvtData_Modified_Render_Component( m_id ) );
+			return IEventDataPtr( QSE_NEW CEvtData_Modified_Render_Component( m_id ) );
 		}
 
 		virtual const char* GetName( void ) const
@@ -323,16 +323,16 @@ namespace Quicksand
 	//---------------------------------------------------------------------------------------------------------------------
 	// EvtData_Environment_Loaded - this event is sent when a new game is started
 	//---------------------------------------------------------------------------------------------------------------------
-	class EvtData_Environment_Loaded : public BaseEventData
+	class CEvtData_Environment_Loaded : public CBaseEventData
 	{
 	public:
 		static const EventType sk_EventType;
 
-		EvtData_Environment_Loaded( void ) { }
+		CEvtData_Environment_Loaded( void ) { }
 		virtual const EventType& VGetEventType( void ) const	{ return sk_EventType; }
 		virtual IEventDataPtr VCopy( void ) const
 		{
-			return IEventDataPtr( QSE_NEW EvtData_Environment_Loaded( ) );
+			return IEventDataPtr( QSE_NEW CEvtData_Environment_Loaded( ) );
 		}
 		virtual const char* GetName( void ) const  { return "EvtData_Environment_Loaded"; }
 	};
@@ -348,16 +348,16 @@ namespace Quicksand
 	// FUTURE_WORK: It would be an interesting idea to add a "Private" type of event that is addressed only to a specific 
 	//              listener. Of course, that might be a really dumb idea too - someone will have to try it!
 	//---------------------------------------------------------------------------------------------------------------------
-	class EvtData_Remote_Environment_Loaded : public BaseEventData
+	class CEvtData_Remote_Environment_Loaded : public CBaseEventData
 	{
 	public:
 		static const EventType sk_EventType;
 
-		EvtData_Remote_Environment_Loaded( void ) { }
+		CEvtData_Remote_Environment_Loaded( void ) { }
 		virtual const EventType& VGetEventType( void ) const	{ return sk_EventType; }
 		virtual IEventDataPtr VCopy( void ) const
 		{
-			return IEventDataPtr( QSE_NEW EvtData_Remote_Environment_Loaded( ) );
+			return IEventDataPtr( QSE_NEW CEvtData_Remote_Environment_Loaded( ) );
 		}
 		virtual const char* GetName( void ) const  { return "EvtData_Remote_Environment_Loaded"; }
 	};
@@ -366,13 +366,13 @@ namespace Quicksand
 	//---------------------------------------------------------------------------------------------------------------------
 	// EvtData_Request_Start_Game - this is sent by the authoritative game logic to all views so they will load a game level.
 	//---------------------------------------------------------------------------------------------------------------------
-	class EvtData_Request_Start_Game : public BaseEventData
+	class CEvtData_Request_Start_Game : public CBaseEventData
 	{
 
 	public:
 		static const EventType sk_EventType;
 
-		EvtData_Request_Start_Game( void ) { }
+		CEvtData_Request_Start_Game( void ) { }
 
 		virtual const EventType& VGetEventType( void ) const
 		{
@@ -381,7 +381,7 @@ namespace Quicksand
 
 		virtual IEventDataPtr VCopy( ) const
 		{
-			return IEventDataPtr( QSE_NEW EvtData_Request_Start_Game( ) );
+			return IEventDataPtr( QSE_NEW CEvtData_Request_Start_Game( ) );
 		}
 
 		virtual const char* GetName( void ) const
@@ -395,7 +395,7 @@ namespace Quicksand
 	//---------------------------------------------------------------------------------------------------------------------
 	// EvtData_Game_State - sent whenever the game state is changed (look for "BGS_" to see the different states)
 	//---------------------------------------------------------------------------------------------------------------------
-	class EvtData_Game_State : public BaseEventData
+	class CEvtData_Game_State : public BaseEventData
 	{
 	BaseGameState m_gameState;
 	std::string m_parameter;
@@ -461,7 +461,7 @@ namespace Quicksand
 	// 
 	//   Sent whenever a new client attaches to a game logic acting as a server				
 	//---------------------------------------------------------------------------------------------------------------------
-	class EvtData_Remote_Client : public BaseEventData
+	class CEvtData_Remote_Client : public CBaseEventData
 	{
 		int m_socketId;
 		int m_ipAddress;
@@ -469,13 +469,13 @@ namespace Quicksand
 	public:
 		static const EventType sk_EventType;
 
-		EvtData_Remote_Client( void )
+		CEvtData_Remote_Client( void )
 		{
 			m_socketId = 0;
 			m_ipAddress = 0;
 		}
 
-		EvtData_Remote_Client( const int socketid, const int ipaddress )
+		CEvtData_Remote_Client( const int socketid, const int ipaddress )
 			: m_socketId( socketid ), m_ipAddress( ipaddress )
 		{
 		}
@@ -487,7 +487,7 @@ namespace Quicksand
 
 		virtual IEventDataPtr VCopy( ) const
 		{
-			return IEventDataPtr( QSE_NEW EvtData_Remote_Client( m_socketId, m_ipAddress ) );
+			return IEventDataPtr( QSE_NEW CEvtData_Remote_Client( m_socketId, m_ipAddress ) );
 		}
 
 		virtual const char* GetName( void ) const
@@ -522,14 +522,14 @@ namespace Quicksand
 	//---------------------------------------------------------------------------------------------------------------------
 	// EvtData_Update_Tick - sent by the game logic each game tick
 	//---------------------------------------------------------------------------------------------------------------------
-	class EvtData_Update_Tick : public BaseEventData
+	class CEvtData_Update_Tick : public CBaseEventData
 	{
 		int m_DeltaMilliseconds;
 
 	public:
 		static const EventType sk_EventType;
 
-		explicit EvtData_Update_Tick( const int deltaMilliseconds )
+		explicit CEvtData_Update_Tick( const int deltaMilliseconds )
 			: m_DeltaMilliseconds( deltaMilliseconds )
 		{
 		}
@@ -541,7 +541,7 @@ namespace Quicksand
 
 		virtual IEventDataPtr VCopy( ) const
 		{
-			return IEventDataPtr( QSE_NEW EvtData_Update_Tick( m_DeltaMilliseconds ) );
+			return IEventDataPtr( QSE_NEW CEvtData_Update_Tick( m_DeltaMilliseconds ) );
 		}
 
 		virtual void VSerialize( std::ostrstream & out )
@@ -559,7 +559,7 @@ namespace Quicksand
 	//---------------------------------------------------------------------------------------------------------------------
 	// EvtData_Network_Player_Actor_Assignment - sent by the server to the clients when a network view is assigned a player number
 	//---------------------------------------------------------------------------------------------------------------------
-	class EvtData_Network_Player_Actor_Assignment : public BaseEventData
+	class CEvtData_Network_Player_Actor_Assignment : public CBaseEventData
 	{
 		ActorId m_ActorId;
 		int m_SocketId;
@@ -567,13 +567,13 @@ namespace Quicksand
 	public:
 		static const EventType sk_EventType;
 
-		EvtData_Network_Player_Actor_Assignment( )
+		CEvtData_Network_Player_Actor_Assignment( )
 		{
 			m_ActorId = INVALID_ACTOR_ID;
 			m_SocketId = -1;
 		}
 
-		explicit EvtData_Network_Player_Actor_Assignment( const ActorId actorId, const int socketId )
+		explicit CEvtData_Network_Player_Actor_Assignment( const ActorId actorId, const int socketId )
 			: m_ActorId( actorId ), m_SocketId( socketId )
 
 		{
@@ -586,7 +586,7 @@ namespace Quicksand
 
 		virtual IEventDataPtr VCopy( ) const
 		{
-			return IEventDataPtr( QSE_NEW EvtData_Network_Player_Actor_Assignment( m_ActorId, m_SocketId ) );
+			return IEventDataPtr( QSE_NEW CEvtData_Network_Player_Actor_Assignment( m_ActorId, m_SocketId ) );
 		}
 
 		virtual const char* GetName( void ) const
@@ -622,7 +622,7 @@ namespace Quicksand
 	//---------------------------------------------------------------------------------------------------------------------
 	// EvtData_Decompress_Request - sent to a multithreaded game event listener to decompress something in the resource file
 	//---------------------------------------------------------------------------------------------------------------------
-	class EvtData_Decompress_Request : public BaseEventData
+	class CEvtData_Decompress_Request : public CBaseEventData
 	{
 		std::wstring m_zipFileName;
 		std::string m_fileName;
@@ -630,7 +630,7 @@ namespace Quicksand
 	public:
 		static const EventType sk_EventType;
 
-		explicit EvtData_Decompress_Request( std::wstring zipFileName, std::string filename )
+		explicit CEvtData_Decompress_Request( std::wstring zipFileName, std::string filename )
 			: m_zipFileName( zipFileName ),
 			m_fileName( filename )
 		{
@@ -643,7 +643,7 @@ namespace Quicksand
 
 		virtual IEventDataPtr VCopy( ) const
 		{
-			return IEventDataPtr( QSE_NEW EvtData_Decompress_Request( m_zipFileName, m_fileName ) );
+			return IEventDataPtr( QSE_NEW CEvtData_Decompress_Request( m_zipFileName, m_fileName ) );
 		}
 
 		virtual void VSerialize( std::ostrstream & out )
@@ -670,7 +670,7 @@ namespace Quicksand
 	//---------------------------------------------------------------------------------------------------------------------
 	// EvtData_Decompression_Progress - sent by the decompression thread to report progress
 	//---------------------------------------------------------------------------------------------------------------------
-	class EvtData_Decompression_Progress : public BaseEventData
+	class CEvtData_Decompression_Progress : public CBaseEventData
 	{
 		int m_progress;
 		std::wstring m_zipFileName;
@@ -680,7 +680,7 @@ namespace Quicksand
 	public:
 		static const EventType sk_EventType;
 
-		EvtData_Decompression_Progress( int progress, std::wstring zipFileName, std::string filename, void *buffer )
+		CEvtData_Decompression_Progress( int progress, std::wstring zipFileName, std::string filename, void *buffer )
 			: m_progress( progress ),
 			m_zipFileName( zipFileName ),
 			m_fileName( filename ),
@@ -695,7 +695,7 @@ namespace Quicksand
 
 		virtual IEventDataPtr VCopy( ) const
 		{
-			return IEventDataPtr( QSE_NEW EvtData_Decompression_Progress( m_progress, m_zipFileName, m_fileName, m_buffer ) );
+			return IEventDataPtr( QSE_NEW CEvtData_Decompression_Progress( m_progress, m_zipFileName, m_fileName, m_buffer ) );
 		}
 
 		virtual void VSerialize( std::ostrstream & out )
@@ -712,12 +712,12 @@ namespace Quicksand
 
 
 	//---------------------------------------------------------------------------------------------------------------------
-	// class EvtData_Request_New_Actor				
+	// class CEvtData_Request_New_Actor				
 	// This event is sent by a server asking Client proxy logics to create new actors from their local resources.
 	// It can be sent from script or via code.
 	// This event is also sent from the server game logic to client logics AFTER it has created a new actor. The logics will allow follow suit to stay in sync.
 	//---------------------------------------------------------------------------------------------------------------------
-	class EvtData_Request_New_Actor : public BaseEventData
+	class CEvtData_Request_New_Actor : public CBaseEventData
 	{
 		std::string m_actorResource;
 		bool m_hasInitialTransform;
@@ -728,7 +728,7 @@ namespace Quicksand
 	public:
 		static const EventType sk_EventType;
 
-		EvtData_Request_New_Actor( )
+		CEvtData_Request_New_Actor( )
 		{
 			m_actorResource = "";
 			m_hasInitialTransform = false;
@@ -737,7 +737,7 @@ namespace Quicksand
 			m_viewId = gc_InvalidGameViewId;
 		}
 
-		explicit EvtData_Request_New_Actor( const std::string &actorResource, const mat4 *initialTransform = NULL, const ActorId serverActorId = INVALID_ACTOR_ID, const GameViewId viewId = gc_InvalidGameViewId )
+		explicit CEvtData_Request_New_Actor( const std::string &actorResource, const mat4 *initialTransform = NULL, const ActorId serverActorId = INVALID_ACTOR_ID, const GameViewId viewId = gc_InvalidGameViewId )
 		{
 			m_actorResource = actorResource;
 			if (initialTransform)
@@ -777,7 +777,7 @@ namespace Quicksand
 
 		virtual IEventDataPtr VCopy( ) const
 		{
-			return IEventDataPtr( QSE_NEW EvtData_Request_New_Actor( m_actorResource, (m_hasInitialTransform) ? &m_initialTransform : NULL, m_serverActorId, m_viewId ) );
+			return IEventDataPtr( QSE_NEW CEvtData_Request_New_Actor( m_actorResource, (m_hasInitialTransform) ? &m_initialTransform : NULL, m_serverActorId, m_viewId ) );
 		}
 
 		virtual void VSerialize( std::ostrstream & out ) const
@@ -812,7 +812,7 @@ namespace Quicksand
 	// EvtData_Request_Destroy_Actor - sent by any system requesting that the game logic destroy an actor	
 	//    FUTURE WORK - This event shouldn't really exist - subsystems should never ask the game logic to destroy something through an event, should they?
 	//---------------------------------------------------------------------------------------------------------------------
-	/*class EvtData_Request_Destroy_Actor : public ScriptEvent
+	/*class CEvtData_Request_Destroy_Actor : public ScriptEvent
 	{
 		ActorId m_actorId;
 
@@ -877,7 +877,7 @@ namespace Quicksand
 	//---------------------------------------------------------------------------------------------------------------------
 	// EvtData_PlaySound - sent by any system wishing for a HumanView to play a sound
 	//---------------------------------------------------------------------------------------------------------------------
-	/*class EvtData_PlaySound : public ScriptEvent
+	/*class CEvtData_PlaySound : public ScriptEvent
 	{
 		std::string m_soundResource;
 

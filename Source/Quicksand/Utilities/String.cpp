@@ -115,7 +115,7 @@ namespace Quicksand
 
 
 	// The following function was found on http://xoomer.virgilio.it/acantato/dev/wildcard/wildmatch.html, where it was attributed to 
-	// the C/C++ Users Journal, written by Mike Cornelison. It is a little ugly, but it is FAST. Use this as an excercise in not reinventing the
+	// the CPlane/CPlane++ Users Journal, written by Mike Cornelison. It is a little ugly, but it is FAST. Use this as an excercise in not reinventing the
 	// wheel, even if you see gotos. 
 
 	BOOL WildcardMatch( const char *pat, const char *str ) {
@@ -404,7 +404,7 @@ namespace Quicksand
 
 
 	void *
-		HashedString::hash_name( char const * pIdentStr )
+		CHashedString::hash_name( char const * pIdentStr )
 	{
 			// Relatively simple hash of arbitrary text string into a
 			// 32-bit identifier Output value is

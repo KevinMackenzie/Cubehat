@@ -10,7 +10,7 @@
 namespace Quicksand
 {
 
-	class QuicksandEventManager : public IEventManager
+	class CQuicksandEventManager : public IEventManager
 	{
 
 		typedef std::list<EventListenerDelegate> EventListenerList;
@@ -24,8 +24,8 @@ namespace Quicksand
 		//ThreadSafeEventQueue m_realtimeEventQueue;
 
 	public:
-		QuicksandEventManager( bool bSetAsGlobal = true );
-		~QuicksandEventManager( void );
+		CQuicksandEventManager( bool bSetAsGlobal = true );
+		~CQuicksandEventManager( void );
 
 		//registers a delegate fnction that will be called when the event type is triggered
 		//the return value is the success of the registration

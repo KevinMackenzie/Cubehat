@@ -2,6 +2,8 @@
 #include "../ResourceCache/ResourceCache.hpp"
 #include "../ResourceCache/XmlResource.hpp"
 #include "../ResourceCache/ZipResource.hpp"
+#include "../EventManager/EventManagerInterfaces.hpp"
+#include "../EventManager/Events.hpp"
 #include <shlobj.h>
 #include <direct.h>
 #include <sstream>
@@ -62,7 +64,7 @@ namespace Quicksand
 	//
 	//
 	//
-	QuicksandApp* g_pApp;
+	CQuicksandApp* g_pApp;
 
 	//
 	// CheckStorage
@@ -163,7 +165,7 @@ namespace Quicksand
 		m_numAIs = 1;
 		m_maxAIs = 4;
 		m_maxPlayers = 4;
-		m_ScreenSize = Point( 1024, 768 );
+		m_ScreenSize = CPoint( 1024, 768 );
 		m_useDevelopmentDirectories = false;
 
 		m_pDoc = NULL;
@@ -236,7 +238,7 @@ namespace Quicksand
 				m_gameHost = pNode->Attribute( "gameHost" );
 			}
 
-			pNode = pRoot->FirstChildElement( "ResCache" );
+			pNode = pRoot->FirstChildElement( "CResCache" );
 			if (pNode)
 			{
 				std::string attribute( pNode->Attribute( "useDevelopmentDirectories" ) );
@@ -303,19 +305,19 @@ namespace Quicksand
 	}
 
 
-	QuicksandApp::QuicksandApp()
+	CQuicksandApp::CQuicksandApp()
 	{
 		g_pApp = this;
 		m_pGame = NULL;
 
 		m_rcDesktop.bottom = m_rcDesktop.left = m_rcDesktop.right = m_rcDesktop.top = 0;
-		m_ScreenSize = Point( 0, 0 );
+		m_ScreenSize = CPoint( 0, 0 );
 
 		m_bIsRunning = false;
 		m_bIsEditorRunning = false;
 
-		//TODO: event manager
-		//m_pEventManager = NULL;
+
+		m_pEventManager = NULL;
 		m_pResCache = NULL;
 
 		//TODO: networked gameplay
@@ -335,14 +337,14 @@ namespace Quicksand
 	//
 	// InitInstance - this checks system resources, creates your window, and launches the game
 	//
-	// preprocessor macro setting in the C++ options of the project provides the base macro
-	// C preprocessor string concatenation takes care of the rest.
+	// preprocessor macro setting in the CPlane++ options of the project provides the base macro
+	// CPlane preprocessor string concatenation takes care of the rest.
 	//
-	// QuicksandApp::InitInstance - Chapter 5, page 136
+	// CQuicksandApp::InitInstance - Chapter 5, page 136
 	//
 	//===================================================================
 
-	bool QuicksandApp::InitInstance( HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hWnd, int ScreenWidth, int ScreenHeight )
+	bool CQuicksandApp::InitInstance( HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hWnd, int ScreenWidth, int ScreenHeight )
 	{
 		// Check for existing instance of the same window
 		// 
@@ -385,7 +387,7 @@ namespace Quicksand
 		VRegisterGameEvents();
 
 		//
-		// Initialize the ResCache - Chapter 5, page 141
+		// Initialize the CResCache - Chapter 5, page 141
 		//
 		//    Note - this is a little different from the book. Here we have a speccial resource ZIP file class, DevelopmentResourceZipFile,
 		//    that actually reads directly from the source asset files, rather than the ZIP file. This is MUCH better during development, since
@@ -396,9 +398,9 @@ namespace Quicksand
 		//	QSE_NEW ResourceZipFile( L"Assets.zip" );
 
 		//NOTE: the zip file may not be named Assets.zip
-		IResourceFile *zipFile = QSE_NEW ZipResourceFile( L"Assets.zip" );
+		IResourceFile *zipFile = QSE_NEW CZipResourceFile( L"Assets.zip" );
 
-		m_pResCache = QSE_NEW ResCache( 50, zipFile );
+		m_pResCache = QSE_NEW CResCache( 50, zipFile );
 
 		if (!m_pResCache->Init())
 		{
@@ -442,12 +444,12 @@ namespace Quicksand
 		// don't need to do anything with it, we just need to load it.
 		//{
 		//	TODO: uncomment this once the script is implimentedx
-		//	Resource resource( SCRIPT_PREINIT_FILE );
-		//	shared_ptr<ResHandle> pResourceHandle = m_pResCache->GetHandle( &resource );  // this actually loads the XML file from the zip file
+		//	CResource resource( SCRIPT_PREINIT_FILE );
+		//	shared_ptr<CResHandle> pResourceHandle = m_pResCache->GetHandle( &resource );  // this actually loads the XML file from the zip file
 		//}
 
 		//TODO: create script parser and exicuter
-		// Register function exported from C++
+		// Register function exported from CPlane++
 		//ScriptExports::Register( );
 		//ScriptProcess::RegisterScriptClass( );
 		//BaseScriptComponent::RegisterScriptFunctions( );
@@ -455,7 +457,7 @@ namespace Quicksand
 		// The event manager should be created next so that subsystems can hook in as desired.
 		// Discussed in Chapter 5, page 144
 		//TODO: create event manager
-		//m_pEventManager = QSE_NEW EventManager( "QuicksandApp Event Mgr", true );
+		//m_pEventManager = QSE_NEW EventManager( "CQuicksandApp Event Mgr", true );
 		//if (!m_pEventManager)
 		//{
 		//	QSE_ERROR( "Failed to create EventManager." );
@@ -463,7 +465,7 @@ namespace Quicksand
 		//}
 
 		//set GLFW error callback before init
-		glfwSetErrorCallback( QuicksandApp::ErrorCallbackProc );
+		glfwSetErrorCallback( CQuicksandApp::ErrorCallbackProc );
 
 		//GLFW creation
 		int Success = glfwInit();
@@ -471,7 +473,7 @@ namespace Quicksand
 		if (Success == GL_FALSE)
 			return false;
 
-		m_ScreenSize = Point( ScreenWidth, ScreenHeight );
+		m_ScreenSize = CPoint( ScreenWidth, ScreenHeight );
 
 		//set window creation flags
 		glfwDefaultWindowHints();
@@ -495,7 +497,7 @@ namespace Quicksand
 		_tcscpy_s( m_SaveGameDirectory, GetSaveGameDirectory( glfwGetWin32Window( m_pOpenGLWindow ), VGetGameAppDirectory() ) );
 
 		// DXUTCreateDevice - Chapter 5 - page 139
-		m_ScreenSize = Point( ScreenWidth, ScreenHeight );
+		m_ScreenSize = CPoint( ScreenWidth, ScreenHeight );
 
 		//TODO: create renderer
 		//m_Renderer->VSetBackgroundColor( 255, 20, 20, 200 );
@@ -522,7 +524,7 @@ namespace Quicksand
 		return TRUE;
 	}
 
-	bool QuicksandApp::VLoadGame( void )
+	bool CQuicksandApp::VLoadGame( void )
 	{
 		// Read the game options and see what the current game
 		// needs to be - all of the game graphics are initialized by now, too...
@@ -532,26 +534,27 @@ namespace Quicksand
 		return false;
 	}
 
-	void QuicksandApp::RegisterEngineEvents( void )
+	void CQuicksandApp::RegisterEngineEvents( void )
 	{
-		//REGISTER_EVENT( EvtData_Environment_Loaded );
-		//REGISTER_EVENT( EvtData_New_Actor );
-		//REGISTER_EVENT( EvtData_Move_Actor );
-		//REGISTER_EVENT( EvtData_Destroy_Actor );
-		//REGISTER_EVENT( EvtData_Request_New_Actor );
-		//REGISTER_EVENT( EvtData_Network_Player_Actor_Assignment );
+		REGISTER_EVENT( CEvtData_Environment_Loaded );
+		REGISTER_EVENT( CEvtData_New_Actor );
+		REGISTER_EVENT( CEvtData_Move_Actor );
+		REGISTER_EVENT( CEvtData_Destroy_Actor );
+		REGISTER_EVENT( CEvtData_Request_New_Actor );
+		REGISTER_EVENT( CEvtData_Network_Player_Actor_Assignment );
+		//TODO: impliment event: OnLoadNewChunk
 	}
 
 	//
-	// QuicksandApp::LoadStrings										- Chapter 5, page 143
+	// CQuicksandApp::LoadStrings										- Chapter 5, page 143
 	//
-	bool QuicksandApp::LoadStrings( std::string language )
+	bool CQuicksandApp::LoadStrings( std::string language )
 	{
 		std::string languageFile = "Strings\\";
 		languageFile += language;
 		languageFile += ".xml";
 
-		TiXmlElement* pRoot = XmlResourceLoader::LoadAndReturnRootXmlElement( languageFile.c_str() );
+		TiXmlElement* pRoot = CXmlResourceLoader::LoadAndReturnRootXmlElement( languageFile.c_str() );
 		if (!pRoot)
 		{
 			QSE_ERROR( "Strings are missing." );
@@ -581,7 +584,7 @@ namespace Quicksand
 		return true;
 	}
 
-	UINT QuicksandApp::MapCharToKeycode( const char pHotKey )
+	UINT CQuicksandApp::MapCharToKeycode( const char pHotKey )
 	{
 		if (pHotKey >= '0' && pHotKey <= '9')
 			return 0x30 + pHotKey - '0';
@@ -595,13 +598,13 @@ namespace Quicksand
 
 
 	//----------------------------------------------------------
-	// QuicksandApp::GetString								- Chapter 5, page 144
+	// CQuicksandApp::GetString								- Chapter 5, page 144
 	//
 	// creates a string from a string resource ID in the string table
 	// stored in a special DLL, LANG.DLL, so game text strings
 	// can be language independant
 	//
-	std::wstring QuicksandApp::GetString( std::wstring sID )
+	std::wstring CQuicksandApp::GetString( std::wstring sID )
 	{
 		auto localizedString = m_TextResource.find( sID );
 		if (localizedString == m_TextResource.end())
@@ -619,7 +622,7 @@ namespace Quicksand
 	//  handles windows messages
 	//
 	//
-	void QuicksandApp::MainLoop( void )
+	void CQuicksandApp::MainLoop( void )
 	{
 		// Begin the messages pump.
 		bool bGotMsg;
@@ -665,51 +668,51 @@ namespace Quicksand
 	//	This will destroy various systems
 	//
 	//
-	void QuicksandApp::ShutDown( void )
+	void CQuicksandApp::ShutDown( void )
 	{
 		//for now
 		glfwTerminate();
 	}
 
 	//a method that will be called to update the game data, and tick the game logic
-	void QuicksandApp::OnUpdateGame( float fTime, float fEllapsedTime )
+	void CQuicksandApp::OnUpdateGame( float fTime, float fEllapsedTime )
 	{
 
 	}
 
 	//this is called specifically to update rendering and graphics data
-	void QuicksandApp::OnUpdateFrame( float fTime, float fEllapsedTime )
+	void CQuicksandApp::OnUpdateFrame( float fTime, float fEllapsedTime )
 	{
 
 	}
 
 
-	void QuicksandApp::VRegisterGameEvents( void )
+	void CQuicksandApp::VRegisterGameEvents( void )
 	{
 
 	}
 
-	LRESULT QuicksandApp::OnPowerBroadcast( int event )
-	{
-		return 0;
-	}
-
-	LRESULT QuicksandApp::OnSysCommand( WPARAM wParam, LPARAM lParam )
+	LRESULT CQuicksandApp::OnPowerBroadcast( int event )
 	{
 		return 0;
 	}
 
-	LRESULT QuicksandApp::OnClose( )
+	LRESULT CQuicksandApp::OnSysCommand( WPARAM wParam, LPARAM lParam )
 	{
 		return 0;
 	}
 
-	LRESULT QuicksandApp::OnAltEnter( )
+	LRESULT CQuicksandApp::OnClose( )
 	{
 		return 0;
 	}
 
-	void QuicksandApp::ErrorCallbackProc( int error, const char* errorMessage )
+	LRESULT CQuicksandApp::OnAltEnter( )
+	{
+		return 0;
+	}
+
+	void CQuicksandApp::ErrorCallbackProc( int error, const char* errorMessage )
 	{
 		std::stringstream ss;
 
@@ -784,7 +787,7 @@ namespace Quicksand
 	}
 
 
-	LRESULT CALLBACK QuicksandApp::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bool* pbNoFurtherProcessing, void* pUserContext )
+	LRESULT CALLBACK CQuicksandApp::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bool* pbNoFurtherProcessing, void* pUserContext )
 	{
 		// Always allow dialog resource manager calls to handle global messages
 		// so GUI state is updated correctly

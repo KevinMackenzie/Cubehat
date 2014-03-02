@@ -5,7 +5,7 @@ namespace Quicksand
 {
 
 
-	Shader::Shader(ShaderType shaderType)
+	CShader::CShader(ShaderType shaderType)
 	{
 		m_Type = shaderType;
 		m_TextCache = "";
@@ -13,27 +13,27 @@ namespace Quicksand
 		m_ShaderID = glCreateShader(shaderType);
 	}
 
-	Shader::~Shader(void)
+	CShader::~CShader(void)
 	{
 		glDeleteShader(m_ShaderID);
 	}
 
-	void Shader::FlushTextCache(void)
+	void CShader::FlushTextCache(void)
 	{
 		m_TextCache.clear();
 	}
 
-	bool Shader::Load(std::string fileName, bool append = false)
+	bool CShader::Load(std::string fileName, bool append = false)
 	{
 
 	}
 
-	bool Shader::LoadList(std::list<std::string> fileNames, bool append = false)
+	bool CShader::LoadList(std::list<std::string> fileNames, bool append = false)
 	{
 
 	}
 
-	bool Shader::Load(const char* shaderText, bool append = false)
+	bool CShader::Load(const char* shaderText, bool append = false)
 	{
 		if (append)
 		{
@@ -46,7 +46,7 @@ namespace Quicksand
 	}
 
 
-	bool Shader::Compile(bool flushOnSuccess)
+	bool CShader::Compile(bool flushOnSuccess)
 	{
 		const char* strTmp = m_TextCache.c_str();
 
@@ -76,33 +76,33 @@ namespace Quicksand
 	}
 
 	//returns NULL if there is no text in the cache
-	const char* Shader::GetTextCache(void) const
+	const char* CShader::GetTextCache(void) const
 	{
 		return m_TextCache.c_str();
 	}
 
 	//this allows a user to manually edit the text
-	char* Shader::GetEditibleTextCache(void)
+	char* CShader::GetEditibleTextCache(void)
 	{
 		return const_cast<char*>(m_TextCache.c_str());
 	}
 
 
 	//this lets you get compile information from opeGL
-	const ShaderCompileStruct& Shader::GetCompileInfo(void) const
+	const ShaderCompileStruct& CShader::GetCompileInfo(void) const
 	{
 		return m_CompileInfo;
 	}
 
 
 	//attaches a shader
-	void ShaderProgram::AttachShader(Shader shader)
+	void CShaderProgram::AttachShader(CShader shader)
 	{
 		glAttachShader(m_ProgramID, shader.GetShaderID());
 	}
 
 	//this builds the program with the contained shaders
-	bool ShaderProgram::Build()
+	bool CShaderProgram::Build()
 	{
 		glLinkProgram(m_ProgramID);
 

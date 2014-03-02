@@ -8,7 +8,7 @@ namespace Quicksand
 
 	//definition of global event manager;  this may be null for custom event managers
 	static IEventManager* g_pEventMgr = NULL;
-	GenericObjectFactory<IEventData, EventType> g_eventFactory;
+	CGenericObjectFactory<IEventData, EventType> g_eventFactory;
 
 	//GCC_MEMORY_WATCHER_DEFINITION(IEventData);
 

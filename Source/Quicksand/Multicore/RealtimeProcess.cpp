@@ -3,7 +3,7 @@
 
 using namespace Quicksand;
 
-RealtimeProcess::RealtimeProcess( int priority )
+CRealtimeProcess::CRealtimeProcess( int priority )
 {
 	m_ThreadID = 0;
 	m_ThreadPriority = priority;
@@ -12,14 +12,14 @@ RealtimeProcess::RealtimeProcess( int priority )
 
 
 
-DWORD WINAPI RealtimeProcess::ThreadProc( LPVOID lpParam )
+DWORD WINAPI CRealtimeProcess::ThreadProc( LPVOID lpParam )
 {
-	RealtimeProcess *proc = static_cast<RealtimeProcess*>(lpParam);
+	CRealtimeProcess *proc = static_cast<CRealtimeProcess*>(lpParam);
 	proc->VThreadProc();
 	return TRUE;
 }
 
-void RealtimeProcess::VOnInit()
+void CRealtimeProcess::VOnInit()
 {
 	CProcess::VOnInit();
 

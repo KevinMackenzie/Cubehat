@@ -6,11 +6,11 @@ namespace Quicksand
 {
 	//some classes for good threadsafe multiprogramming
 
-	class CriticalSection : public QSE_noncopyable
+	class CCriticalSection : public CQSE_noncopyable
 	{
 	public:
-		CriticalSection() { InitializeCriticalSection( &m_cs ); }
-		~CriticalSection(){ DeleteCriticalSection( &m_cs ); }
+		CCriticalSection() { InitializeCriticalSection( &m_cs ); }
+		~CCriticalSection(){ DeleteCriticalSection( &m_cs ); }
 		void Lock()		  { EnterCriticalSection( &m_cs ); }
 		void Unlock()	  { LeaveCriticalSection( &m_cs ); }
 	protected:
@@ -19,17 +19,17 @@ namespace Quicksand
 
 
 
-	class ScopedCriticalSection : public QSE_noncopyable
+	class CScopedCriticalSection : public CQSE_noncopyable
 	{
 	public:
-		ScopedCriticalSection( CriticalSection& csResource )
+		CScopedCriticalSection( CCriticalSection& csResource )
 			: m_csResource( csResource )
 			{m_csResource.Lock();}
 
-		~ScopedCriticalSection(){ m_csResource.Unlock(); }
+		~CScopedCriticalSection(){ m_csResource.Unlock(); }
 
 	private:
-		CriticalSection &m_csResource;
+		CCriticalSection &m_csResource;
 	};
 
 

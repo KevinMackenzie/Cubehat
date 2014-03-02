@@ -38,7 +38,7 @@ namespace Quicksand
 #define QSE_UNINITIALIZED_OPENGL 0xFFFFFFFF
 
 	//these are all helper classes to encapsulate openGL buffers
-	class GLBuffer
+	class CGLBuffer
 	{
 		GLuint m_BufferId;
 
@@ -48,8 +48,8 @@ namespace Quicksand
 
 	public:
 
-		GLBuffer(GLBufferType type = GLBufferVertex);
-		~GLBuffer(void);
+		CGLBuffer(GLBufferType type = GLBufferVertex);
+		~CGLBuffer(void);
 
 
 
@@ -143,16 +143,16 @@ namespace Quicksand
 	};
 
 
-	class GLVertexArrayObject
+	class CGLVertexArrayObject
 	{
 		GLuint m_VaoId;
 
-		std::list<shared_ptr<GLBuffer> > m_Buffers;
+		std::list<shared_ptr<CGLBuffer> > m_Buffers;
 
 	public:
 
-		GLVertexArrayObject(void);
-		~GLVertexArrayObject(void);
+		CGLVertexArrayObject(void);
+		~CGLVertexArrayObject(void);
 
 		//this creats the VAO, this should be the first thing to call
 		bool Create(void);
@@ -167,7 +167,7 @@ namespace Quicksand
 		void Release(void);
 
 		//enable a GL_ARRAY_BUFFER for the vao.
-		void AddBuffer(shared_ptr<GLBuffer> buffer, GLArrayBufferProperties arrayBufferProperties);
+		void AddBuffer(shared_ptr<CGLBuffer> buffer, GLArrayBufferProperties arrayBufferProperties);
 
 		//this disables all of the buffers attached with the VBO
 		void DisableBuffers(void);
@@ -177,7 +177,7 @@ namespace Quicksand
 
 	};
 
-	typedef GLVertexArrayObject GLVAO;
+	typedef CGLVertexArrayObject GLVAO;
 
 
 

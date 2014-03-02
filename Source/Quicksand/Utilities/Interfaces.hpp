@@ -7,8 +7,8 @@
 namespace Quicksand
 {
 
-	class Actor;
-	class ActorComponent;
+	class CActor;
+	class CActorComponent;
 
 	typedef unsigned int ActorId;
 	typedef unsigned int ComponentId;
@@ -16,12 +16,12 @@ namespace Quicksand
 	const ActorId INVALID_ACTOR_ID = 0;
 	const ComponentId INVALID_COMPONENT_ID = 0;
 
-	typedef shared_ptr<Actor> StrongActorPtr;
-	typedef weak_ptr<Actor> WeakActorPtr;
-	typedef shared_ptr<ActorComponent> StrongActorComponentPtr;
-	typedef weak_ptr<ActorComponent> WeakActorComponentPtr;
+	typedef shared_ptr<CActor> StrongActorPtr;
+	typedef weak_ptr<CActor> WeakActorPtr;
+	typedef shared_ptr<CActorComponent> StrongActorComponentPtr;
+	typedef weak_ptr<CActorComponent> WeakActorComponentPtr;
 
-	template<class T>
+	template<class CT>
 	struct SortBy_SharedPtr_Content
 	{
 		bool operator()( const shared_ptr<T> &lhs, const shared_ptr<T> &rhs ) const
@@ -106,7 +106,7 @@ namespace Quicksand
 	////////////////////////////////////////////////////
 	//
 	// IKeyboardHandler Description		- Chapter 9, page 242
-	// IPointerHandler Description		- Chapter 9, page 242
+	// ICPointerHandler Description		- Chapter 9, page 242
 	// IJoystickHandler Description		- Chapter 9, page 242
 	// IGamepadHandler Description		- Chapter 9, page 242
 	//
@@ -126,12 +126,12 @@ namespace Quicksand
 		virtual bool VOnKeyUp( const BYTE c ) = 0;
 	};
 
-	class IPointerHandler
+	class ICPointerHandler
 	{
 	public:
-		virtual bool VOnPointerMove( const Point &pos, const int radius ) = 0;
-		virtual bool VOnPointerButtonDown( const Point &pos, const int radius, const std::string &buttonName ) = 0;
-		virtual bool VOnPointerButtonUp( const Point &pos, const int radius, const std::string &buttonName ) = 0;
+		virtual bool VOnCPointerMove( const CPoint &pos, const int radius ) = 0;
+		virtual bool VOnCPointerButtonDown( const CPoint &pos, const int radius, const std::string &buttonName ) = 0;
+		virtual bool VOnCPointerButtonUp( const CPoint &pos, const int radius, const std::string &buttonName ) = 0;
 	};
 
 	class IJoystickHandler
@@ -157,9 +157,9 @@ namespace Quicksand
 	// 
 	////////////////////////////////////////////////////
 
-	class Resource;
+	class CResource;
 	class IResourceFile;
-	class ResHandle;
+	class CResHandle;
 
 	//
 	// class IResourceLoader					- Chapter 8, page 224
@@ -172,15 +172,15 @@ namespace Quicksand
 		virtual bool VDiscardRawBufferAfterLoad( ) = 0;
 		virtual bool VAddNullZero( ) { return false; }
 		virtual unsigned int VGetLoadedResourceSize( char *rawBuffer, unsigned int rawSize ) = 0;
-		virtual bool VLoadResource( char *rawBuffer, unsigned int rawSize, shared_ptr<ResHandle> handle ) = 0;
+		virtual bool VLoadResource( char *rawBuffer, unsigned int rawSize, shared_ptr<CResHandle> handle ) = 0;
 	};
 
 	class IResourceFile
 	{
 	public:
 		virtual bool VOpen( ) = 0;
-		virtual int VGetRawResourceSize( const Resource &r ) = 0;
-		virtual int VGetRawResource( const Resource &r, char *buffer ) = 0;
+		virtual int VGetRawResourceSize( const CResource &r ) = 0;
+		virtual int VGetRawResource( const CResource &r, char *buffer ) = 0;
 		virtual int VGetNumResources( ) const = 0;
 		virtual std::string VGetResourceName( int num ) const = 0;
 		virtual bool VIsUsingDevelopmentDirectories( void ) const = 0;
@@ -194,7 +194,7 @@ namespace Quicksand
 	// enum RenderPass							- Chapter 16, page 529
 	//
 	//   3D scenes are drawn in passes - this enum defines the render passes
-	//   supported by the 3D scene graph created by class Scene.
+	//   supported by the 3D scene graph created by class CScene.
 	/////////////////////////////////////////////////////////////////////////////
 
 	enum RenderPass
@@ -210,12 +210,12 @@ namespace Quicksand
 
 
 
-	class Scene;
-	class GLSceneNodeProperties;
-	class RayCast;
-	class LightNode;
+	class CScene;
+	class CGLSceneNodeProperties;
+	class CRayCast;
+	class CLightNode;
 
-	typedef std::list<shared_ptr<LightNode> > Lights;
+	typedef std::list<shared_ptr<CLightNode> > Lights;
 
 
 	class IRenderState
@@ -256,23 +256,23 @@ namespace Quicksand
 	class IGLSceneNode
 	{
 	public:
-		virtual const GLSceneNodeProperties * const VGet( ) const = 0;
+		virtual const CGLSceneNodeProperties * const VGet( ) const = 0;
 
 		virtual void VSetTransform( const mat4 *toWorld, const mat4 *fromWorld = NULL ) = 0;
 
-		virtual HRESULT VOnUpdate( Scene *pScene, DWORD const elapsedMs ) = 0;
-		virtual HRESULT VOnRestore( Scene *pScene ) = 0;
+		virtual HRESULT VOnUpdate( CScene *pScene, DWORD const elapsedMs ) = 0;
+		virtual HRESULT VOnRestore( CScene *pScene ) = 0;
 
-		virtual HRESULT VPreRender( Scene *pScene ) = 0;
-		virtual bool VIsVisible( Scene *pScene ) const = 0;
-		virtual HRESULT VRender( Scene *pScene ) = 0;
-		virtual HRESULT VRenderChildren( Scene *pScene ) = 0;
-		virtual HRESULT VPostRender( Scene *pScene ) = 0;
+		virtual HRESULT VPreRender( CScene *pScene ) = 0;
+		virtual bool VIsVisible( CScene *pScene ) const = 0;
+		virtual HRESULT VRender( CScene *pScene ) = 0;
+		virtual HRESULT VRenderChildren( CScene *pScene ) = 0;
+		virtual HRESULT VPostRender( CScene *pScene ) = 0;
 
 		virtual bool VAddChild( shared_ptr<IGLSceneNode> kid ) = 0;
 		virtual bool VRemoveChild( ActorId id ) = 0;
-		virtual HRESULT VOnLostDevice( Scene *pScene ) = 0;
-		virtual HRESULT VPick( Scene *pScene, RayCast *pRayCast ) = 0;
+		virtual HRESULT VOnLostDevice( CScene *pScene ) = 0;
+		virtual HRESULT VPick( CScene *pScene, CRayCast *pRayCast ) = 0;
 
 
 		virtual ~IGLSceneNode( ) { };
@@ -298,7 +298,7 @@ namespace Quicksand
 		// Initialization of Physics Objects
 		virtual void VAddSphere( float radius, WeakActorPtr actor, /*const Mat4x4& initialTransform, */const std::string& densityStr, const std::string& physicsMaterial ) = 0;
 		virtual void VAddBox( const vec3& dimensions, WeakActorPtr gameActor, /*const Mat4x4& initialTransform, */ const std::string& densityStr, const std::string& physicsMaterial ) = 0;
-		virtual void VAddPointCloud( vec3 *verts, int numPoints, WeakActorPtr gameActor, /*const Mat4x4& initialTransform, */ const std::string& densityStr, const std::string& physicsMaterial ) = 0;
+		virtual void VAddCPointCloud( vec3 *verts, int numCPoints, WeakActorPtr gameActor, /*const Mat4x4& initialTransform, */ const std::string& densityStr, const std::string& physicsMaterial ) = 0;
 		virtual void VRemoveActor( ActorId id ) = 0;
 
 		// Debugging

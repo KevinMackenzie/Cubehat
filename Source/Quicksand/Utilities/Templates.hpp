@@ -2,27 +2,27 @@
 #define QSE_TEMPLATES_HPP
 
 //---------------------------------------------------------------------------------------------------------------------
-// singleton template manages setting/resettting global variables.
+// CSingleton template manages setting/resettting global variables.
 //---------------------------------------------------------------------------------------------------------------------
 
 namespace Quicksand
 {
 
-	template <class T>
-	class singleton
+	template <class CT>
+	class CSingleton
 	{
 		T m_OldValue;
 		T* m_pGlobalValue;
 
 	public:
-		singleton( T newValue, T* globalValue )
+		CSingleton( T newValue, T* globalValue )
 		{
 			m_pGlobalValue = globalValue;
 			m_OldValue = *globalValue;
 			*m_pGlobalValue = newValue;
 		}
 
-		virtual ~singleton() { *m_pGlobalValue = m_OldValue; }
+		virtual ~CSingleton() { *m_pGlobalValue = m_OldValue; }
 	};
 
 
@@ -33,7 +33,7 @@ namespace Quicksand
 	// you can still cast a dead weak_ptr to a shared_ptr and crash.  Nice.  Anyway, this function takes some of that 
 	// headache away.
 	//---------------------------------------------------------------------------------------------------------------------
-	template <class Type>
+	template <class CType>
 	shared_ptr<Type> MakeStrongPtr( weak_ptr<Type> pWeakPtr )
 	{
 		if (!pWeakPtr.expired())
@@ -44,14 +44,14 @@ namespace Quicksand
 
 
 	//////////////////////////////////////////////////////////////////////////////
-	// optional.h
+	// COptional.h
 	//
 	// An isolation point for optionality, provides a way to define
 	// objects having to provide a special "null" state.
 	//
 	// In short:
 	//
-	// struct optional<T>
+	// struct COptional<T>
 	// {
 	//     bool m_bValid;
 	//
@@ -62,24 +62,24 @@ namespace Quicksand
 
 #include <new>
 
-	class optional_empty { };
+	class COptional_empty { };
 
 	template <unsigned long size>
-	class optional_base
+	class COptional_base
 	{
 	public:
 		// Default - invalid.
 
-		optional_base() : m_bValid( false ) { }
+		COptional_base() : m_bValid( false ) { }
 
-		optional_base & operator = (optional_base const & t)
+		COptional_base & operator = (COptional_base const & t)
 		{
 			m_bValid = t.m_bValid;
 			return *this;
 		}
 
 		//Copy constructor
-		optional_base( optional_base const & other )
+		COptional_base( COptional_base const & other )
 			: m_bValid( other.m_bValid )  { }
 
 		//utility functions
@@ -91,17 +91,17 @@ namespace Quicksand
 		char m_data[size];  // storage space for T
 	};
 
-	template <class T>
-	class optional : public optional_base<sizeof(T)>
+	template <class CT>
+	class COptional : public COptional_base<sizeof(T)>
 	{
 	public:
 		// Default - invalid.
 
-		optional()	 {    }
-		optional( T const & t )  { construct( t ); m_bValid = (true); }
-		optional( optional_empty const & ) {	}
+		COptional()	 {    }
+		COptional( T const & t )  { construct( t ); m_bValid = (true); }
+		COptional( COptional_empty const & ) {	}
 
-		optional & operator = (T const & t)
+		COptional & operator = (T const & t)
 		{
 			if (m_bValid)
 			{
@@ -117,7 +117,7 @@ namespace Quicksand
 		}
 
 		//Copy constructor
-		optional( optional const & other )
+		COptional( COptional const & other )
 		{
 			if (other.m_bValid)
 			{
@@ -126,7 +126,7 @@ namespace Quicksand
 			}
 		}
 
-		optional & operator = (optional const & other)
+		COptional & operator = (COptional const & other)
 		{
 			QSE_ASSERT( !(this == &other) );	// don't copy over self!
 			if (m_bValid)
@@ -146,14 +146,14 @@ namespace Quicksand
 		}
 
 
-		bool const operator == (optional const & other) const
+		bool const operator == (COptional const & other) const
 		{
 			if ((!valid()) && (!other.valid())) { return true; }
 			if (valid() ^ other.valid()) { return false; }
 			return ((** this) == (*other));
 		}
 
-		bool const operator < (optional const & other) const
+		bool const operator < (COptional const & other) const
 		{
 			// equally invalid - not smaller.
 			if ((!valid()) && (!other.valid()))   { return false; }
@@ -167,7 +167,7 @@ namespace Quicksand
 			return ((** this) < (*other));
 		}
 
-		~optional() { if (m_bValid) destroy(); }
+		~COptional() { if (m_bValid) destroy(); }
 
 		// Accessors.
 
@@ -176,7 +176,7 @@ namespace Quicksand
 		T const * const operator -> () const	{ QSE_ASSERT( m_bValid ); return GetT(); }
 		T		* const operator -> ()			{ QSE_ASSERT( m_bValid ); return GetT(); }
 
-		//This clears the value of this optional variable and makes it invalid once again.
+		//This clears the value of this COptional variable and makes it invalid once again.
 		void clear()
 		{
 			if (m_bValid)
@@ -200,17 +200,17 @@ namespace Quicksand
 	};
 
 
-	template <class BaseType, class SubType>
+	template <class CBaseType, class CSubType>
 	BaseType* GenericObjectCreationFunction( void ) { return new SubType; }
 
-	template <class BaseClass, class IdType>
-	class GenericObjectFactory
+	template <class CBaseClass, class IdType>
+	class CGenericObjectFactory
 	{
 		typedef BaseClass* (*ObjectCreationFunction)(void);
 		std::map<IdType, ObjectCreationFunction> m_creationFunctions;
 
 	public:
-		template <class SubClass>
+		template <class CSubClass>
 		bool Register( IdType id )
 		{
 			auto findIt = m_creationFunctions.find( id );

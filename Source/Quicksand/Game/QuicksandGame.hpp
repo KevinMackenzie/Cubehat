@@ -1,7 +1,7 @@
 #ifndef QUICKSANDGAME_HPP
 #define QUICKSANDGAME_HPP
 
-class TiXmlDocument;
+class CTiXmlDocument;
 
 struct GLFWwindow;
 
@@ -17,7 +17,7 @@ namespace Quicksand
 		// Rendering options
 		std::string m_Renderer;
 		bool m_runFullSpeed;
-		Point m_ScreenSize;
+		CPoint m_ScreenSize;
 		bool m_RunFullScreen;
 
 		// Sound options
@@ -45,13 +45,13 @@ namespace Quicksand
 	};
 
 
-	class BaseGameLogic;
-	class QuicksandApp;
+	class CBaseGameLogic;
+	class CQuicksandApp;
 
 
-	extern QuicksandApp* g_pApp;
+	extern CQuicksandApp* g_pApp;
 
-	class QuicksandApp
+	class CQuicksandApp
 	{
 
 		//DATA:
@@ -59,8 +59,8 @@ namespace Quicksand
 		bool m_bIsRunning;						// true if everything is initialized and the game is in the main loop
 		bool m_bQuitRequested;					// true if the app should run the exit sequence
 		bool m_bQuitting;						// true if the app is running the exit sequence
-		Rect m_rcDesktop;			// current desktop size - not necessarilly the client window size
-		Point m_ScreenSize;			// game screen size
+		CRect m_rcDesktop;			// current desktop size - not necessarilly the client window size
+		CPoint m_ScreenSize;			// game screen size
 		bool m_bIsEditorRunning;				// true if the game editor is running
 
 		HINSTANCE   m_hInstance;//the application instance
@@ -81,7 +81,7 @@ namespace Quicksand
 
 		int m_HasModalDialog;					// determines if a modal dialog is up
 		int PumpUntilMessage( UINT msgEnd, WPARAM* pWParam, LPARAM* pLParam );
-		int	EatSpecificMessages( UINT msgType, optional<LPARAM> lParam, optional<WPARAM> wParam );
+		int	EatSpecificMessages( UINT msgType, COptional<LPARAM> lParam, COptional<WPARAM> wParam );
 		void FlashWhileMinimized( );
 
 	public:
@@ -89,17 +89,20 @@ namespace Quicksand
 		void MainLoop( void );
 		void ShutDown( void );
 
-		class ResCache *m_pResCache;
+		class CResCache *m_pResCache;
 		TCHAR m_SaveGameDirectory[MAX_PATH];
 
 
 		struct GameOptions m_Options;
-		BaseGameLogic* m_pGame;
+		CBaseGameLogic* m_pGame;
+
+		//event manager
+		class CEventManager *m_pEventManager;
 
 
 		//constructors
-		QuicksandApp( void );
-		~QuicksandApp( void );
+		CQuicksandApp( void );
+		~CQuicksandApp( void );
 
 
 		//must override these methods in subclass
@@ -108,7 +111,7 @@ namespace Quicksand
 		virtual void VRegisterGameEvents( void );
 
 		//this returns a weak pointer to the game instance
-		static QuicksandApp *GetApp( void ){ return g_pApp; }
+		static CQuicksandApp *GetApp( void ){ return g_pApp; }
 
 		//these must be overriden and are simple to impliment
 		virtual const char *VGetGameTitle( ) const = 0;

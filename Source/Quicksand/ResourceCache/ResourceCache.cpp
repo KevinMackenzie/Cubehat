@@ -6,8 +6,8 @@ namespace Quicksand
 {
 
 
-	ResHandle::ResHandle(
-		Resource& resource, char* buffer, unsigned int size, ResCache* pResCache ) :
+	CResHandle::CResHandle(
+		CResource& resource, char* buffer, unsigned int size, CResCache* pResCache ) :
 		m_Resource( resource )
 	{
 		m_Buffer = buffer;
@@ -17,23 +17,23 @@ namespace Quicksand
 	}
 
 
-	ResHandle::~ResHandle( void )
+	CResHandle::~CResHandle( void )
 	{
 		SAFE_DELETE_ARRAY( m_Buffer );
 		m_pResCache->MemoryHasBeenFreed( m_Size );
 	}
 
-	ResCache::ResCache( const unsigned int sizeInMb, IResourceFile* resFile )
+	CResCache::CResCache( const unsigned int sizeInMb, IResourceFile* resFile )
 	{
 		m_CacheSize = sizeInMb * 1024 * 1024;
 		m_pFile = resFile;
 		m_Allocated = 0;
 	}
 
-	shared_ptr<ResHandle> ResCache::Load( Resource &r )
+	shared_ptr<CResHandle> CResCache::Load( CResource &r )
 	{
 		shared_ptr < IResourceLoader> loader;
-		shared_ptr <ResHandle> handle;
+		shared_ptr <CResHandle> handle;
 
 		for (ResourceLoaders::iterator it = m_ResourceLoaders.begin(); it != m_ResourceLoaders.end(); ++it)
 		{
@@ -51,7 +51,7 @@ namespace Quicksand
 			return handle;
 		};
 
-		const Resource& iR = r;
+		const CResource& iR = r;
 
 		unsigned int rawSize = m_pFile->VGetRawResourceSize( iR );
 
@@ -60,7 +60,7 @@ namespace Quicksand
 		if (rawBuffer == NULL)
 		{
 			//resource cache ran out of memeory
-			return shared_ptr<ResHandle>();
+			return shared_ptr<CResHandle>();
 		}
 
 		m_pFile->VGetRawResource( iR, rawBuffer );
@@ -70,7 +70,7 @@ namespace Quicksand
 		if (loader->VUseRawFile())
 		{
 			buffer = rawBuffer;
-			handle = shared_ptr<ResHandle>( QSE_NEW ResHandle( r, buffer, rawSize, this ) );
+			handle = shared_ptr<CResHandle>( QSE_NEW CResHandle( r, buffer, rawSize, this ) );
 		}
 		else
 		{
@@ -79,16 +79,16 @@ namespace Quicksand
 			if (rawBuffer == NULL || buffer == NULL)
 			{
 				//resource cach out of memory
-				return shared_ptr<ResHandle>();
+				return shared_ptr<CResHandle>();
 			}
-			handle = shared_ptr<ResHandle>( QSE_NEW ResHandle( r, buffer, size, this ) );
+			handle = shared_ptr<CResHandle>( QSE_NEW CResHandle( r, buffer, size, this ) );
 			bool success = loader->VLoadResource( rawBuffer, rawSize, handle );
 			SAFE_DELETE_ARRAY( rawBuffer );
 
 			if (!success)
 			{
 				//resource cache out of memory
-				return shared_ptr<ResHandle>();
+				return shared_ptr<CResHandle>();
 
 			}
 		}
@@ -105,7 +105,7 @@ namespace Quicksand
 	}
 
 
-	char* ResCache::Allocate( unsigned int size )
+	char* CResCache::Allocate( unsigned int size )
 	{
 		if (!MakeRoom( size ))
 			return NULL;
@@ -117,7 +117,7 @@ namespace Quicksand
 		return mem;
 	}
 
-	bool ResCache::MakeRoom( unsigned int size )
+	bool CResCache::MakeRoom( unsigned int size )
 	{
 		if (size > m_CacheSize)
 			return false;
@@ -135,47 +135,47 @@ namespace Quicksand
 		return true;
 	}
 
-	void ResCache::FreeOneResource()
+	void CResCache::FreeOneResource()
 	{
 		ResHandleList::iterator gonner = m_LRU.end();
 		gonner--;
 
-		shared_ptr<ResHandle> handle = *gonner;
+		shared_ptr<CResHandle> handle = *gonner;
 
 		m_LRU.pop_back();
 		m_Resources.erase( handle->m_Resource.m_Name );
 	}
 
 
-	shared_ptr<ResHandle> ResCache::Find( Resource& res )
+	shared_ptr<CResHandle> CResCache::Find( CResource& res )
 	{
 		ResHandleMap::iterator it = m_Resources.find( res.m_Name );
 		if (it == m_Resources.end( ))
-			return shared_ptr<ResHandle>( );
+			return shared_ptr<CResHandle>( );
 
 		return it->second;
 	}
 
 
-	bool ResCache::Init( )
+	bool CResCache::Init( )
 	{
 		bool retValue = false;
 		if (m_pFile->VOpen( ))
 		{
-			RegisterLoader( shared_ptr<IResourceLoader>( QSE_NEW DefaultResourceLoader( ) ) );
+			RegisterLoader( shared_ptr<IResourceLoader>( QSE_NEW CDefaultResourceLoader( ) ) );
 			retValue = true;
 		}
 		return retValue;
 	}
 
-	void ResCache::RegisterLoader( shared_ptr<IResourceLoader> loader )
+	void CResCache::RegisterLoader( shared_ptr<IResourceLoader> loader )
 	{
 		m_ResourceLoaders.push_front( loader );
 	}
 
-	shared_ptr <ResHandle> ResCache::GetHandle( Resource *r )
+	shared_ptr <CResHandle> CResCache::GetHandle( CResource *r )
 	{
-		shared_ptr<ResHandle> handle( Find( *r ) );
+		shared_ptr<CResHandle> handle( Find( *r ) );
 		if (handle == NULL)
 		{
 			handle = Load( *r );
@@ -188,7 +188,7 @@ namespace Quicksand
 		return handle;
 	}
 
-	int ResCache::Preload( const std::string pattern, void( *progressCallback )(int, bool&) )
+	int CResCache::Preload( const std::string pattern, void( *progressCallback )(int, bool&) )
 	{
 		if (m_pFile == NULL)
 			return 0;
@@ -198,11 +198,11 @@ namespace Quicksand
 		bool cancel = false;
 		for (int i = 0; i<numFiles; ++i)
 		{
-			Resource resource( m_pFile->VGetResourceName( i ) );
+			CResource resource( m_pFile->VGetResourceName( i ) );
 
 			if (WildcardMatch( pattern.c_str( ), resource.m_Name.c_str( ) ))
 			{
-				shared_ptr<ResHandle> handle = g_pApp->m_pResCache->GetHandle( &resource );
+				shared_ptr<CResHandle> handle = g_pApp->m_pResCache->GetHandle( &resource );
 				++loaded;
 			}
 
@@ -214,35 +214,35 @@ namespace Quicksand
 		return loaded;
 	}
 
-	void ResCache::Flush( void )
+	void CResCache::Flush( void )
 	{
 		while (!m_LRU.empty())
 		{
-			shared_ptr<ResHandle> handle = *(m_LRU.begin());
+			shared_ptr<CResHandle> handle = *(m_LRU.begin());
 			Free( handle );
 			m_LRU.pop_front();
 		}
 	}
 
 
-	void ResCache::MemoryHasBeenFreed( unsigned int size )
+	void CResCache::MemoryHasBeenFreed( unsigned int size )
 	{
 		m_Allocated -= size;
 	}
 
-	void ResCache::Free( shared_ptr<ResHandle> gonner )
+	void CResCache::Free( shared_ptr<CResHandle> gonner )
 	{
 		m_LRU.remove( gonner );
 		m_Resources.erase( gonner->m_Resource.m_Name );
 		// Note - the resource might still be in use by something,
 		// so the cache can't actually count the memory freed until the
-		// ResHandle pointing to it is destroyed.
+		// CResHandle pointing to it is destroyed.
 
 		//m_allocated -= gonner->m_resource.m_size;
 		//delete gonner;
 	}
 
-	void ResCache::Update( shared_ptr<ResHandle> handle )
+	void CResCache::Update( shared_ptr<CResHandle> handle )
 	{
 		m_LRU.remove( handle );
 		m_LRU.push_front( handle );

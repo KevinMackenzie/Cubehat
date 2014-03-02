@@ -136,6 +136,12 @@
     <ClCompile Include="..\..\Source\Quicksand\Graphics3D\Texture.cpp">
       <Filter>Graphics3D</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Quicksand\ResourceCache\TextureResource.cpp">
+      <Filter>ResourceCache</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Quicksand\ResourceCache\FreeRoamCache.cpp">
+      <Filter>ResourceCache</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -222,6 +228,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Quicksand\Graphics3D\Texture.hpp">
       <Filter>Graphics3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\ResourceCache\TextureResource.hpp">
+      <Filter>ResourceCache</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quicksand\ResourceCache\FreeRoamCache.hpp">
+      <Filter>ResourceCache</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

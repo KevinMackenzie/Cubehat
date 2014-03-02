@@ -3,20 +3,20 @@
 
 namespace Quicksand
 {
-	//implimentation of the QuicksandEventManager class
+	//implimentation of the CQuicksandEventManager class
 
-	QuicksandEventManager::QuicksandEventManager( bool bSetAsGlobal ) : IEventManager( "QuicksandEventManager", bSetAsGlobal )
+	CQuicksandEventManager::CQuicksandEventManager( bool bSetAsGlobal ) : IEventManager( "CQuicksandEventManager", bSetAsGlobal )
 	{
 		m_activeQueue = 0;
 	}
 
-	QuicksandEventManager::~QuicksandEventManager( void )
+	CQuicksandEventManager::~CQuicksandEventManager( void )
 	{
 		//nothing to do
 	}
 
 
-	bool QuicksandEventManager::VAddListener( const EventListenerDelegate& eventDelegate, const EventType& type )
+	bool CQuicksandEventManager::VAddListener( const EventListenerDelegate& eventDelegate, const EventType& type )
 	{
 		QSE_LOG( "Events", "Attempting to add delegate function for event type: " + ToStr( type, 16 ) );
 
@@ -36,7 +36,7 @@ namespace Quicksand
 		return true;
 	}
 
-	bool QuicksandEventManager::VRemoveListener( const EventListenerDelegate& eventDelegate, const EventType& type )
+	bool CQuicksandEventManager::VRemoveListener( const EventListenerDelegate& eventDelegate, const EventType& type )
 	{
 		QSE_LOG( "Events", "Attempting to remove delegate function from event type: " + ToStr( type, 16 ) );
 		bool success = false;
@@ -60,7 +60,7 @@ namespace Quicksand
 		return success;
 	}
 
-	bool QuicksandEventManager::VTriggerEvent( const IEventDataPtr& pEvent ) const
+	bool CQuicksandEventManager::VTriggerEvent( const IEventDataPtr& pEvent ) const
 	{
 		QSE_LOG( "Events", "Attempting to trigger event " + std::string( pEvent->GetName( ) ) );
 		bool processed = false;
@@ -81,7 +81,7 @@ namespace Quicksand
 		return processed;
 	}
 
-	bool QuicksandEventManager::VAbortEvent( const EventType& inType, bool allOfType )
+	bool CQuicksandEventManager::VAbortEvent( const EventType& inType, bool allOfType )
 	{
 		QSE_ASSERT( m_activeQueue >= 0 );
 		QSE_ASSERT( m_activeQueue < EVENTMANAGER_NUM_QUEUES );
@@ -114,7 +114,7 @@ namespace Quicksand
 	}
 
 	//process the event queue, and do all that fun stuff
-	bool QuicksandEventManager::VUpdate( const long maxMS )
+	bool CQuicksandEventManager::VUpdate( const long maxMS )
 	{
 		unsigned long currMs = GetTickCount( );
 		unsigned long maxMs = ((maxMS == IEventManager::kINFINITE) ? (IEventManager::kINFINITE) : (currMs + maxMS));
@@ -194,7 +194,7 @@ namespace Quicksand
 		return queueFlushed;
 	}
 
-	bool QuicksandEventManager::VQueueEvent( const IEventDataPtr& pEvent )
+	bool CQuicksandEventManager::VQueueEvent( const IEventDataPtr& pEvent )
 	{
 		QSE_ASSERT( m_activeQueue >= 0 );
 		QSE_ASSERT( m_activeQueue < EVENTMANAGER_NUM_QUEUES );
@@ -222,7 +222,7 @@ namespace Quicksand
 		}
 	}
 
-	bool QuicksandEventManager::VThreadSafeQueueEvent( const IEventDataPtr& pEvent )
+	bool CQuicksandEventManager::VThreadSafeQueueEvent( const IEventDataPtr& pEvent )
 	{
 		//m_realtimeEventQueue.push( pEvent );
 		return true;

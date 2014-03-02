@@ -31,16 +31,16 @@ const unsigned char WARNINGFLAG_DEFAULT = 0;
 const unsigned char LOGFLAG_DEFAULT = 0;
 #endif
 
-// singleton
-class LogMgr;
-static LogMgr* s_pLogMgr = NULL;
+// CSingleton
+class CLogMgr;
+static CLogMgr* s_pLogMgr = NULL;
 #pragma endregion
 
-#pragma region LogMgr class
+#pragma region CLogMgr class
 //------------------------------------------------------------------------------------------------------------------------------------
-// LogMgr class
+// CLogMgr class
 //------------------------------------------------------------------------------------------------------------------------------------
-class LogMgr
+class CLogMgr
 {
 public:
 	enum ErrorDialogResult
@@ -51,19 +51,19 @@ public:
 	};
 
 	typedef std::map<string, unsigned char> Tags;
-	typedef std::list<NLogger::ErrorMessenger*> ErrorMessengerList;
+	typedef std::list<NLogger::CErrorMessenger*> ErrorMessengerList;
 
 	Tags m_tags;
 	ErrorMessengerList m_errorMessengers;
 
 	// thread safety
-	CriticalSection m_tagCriticalSection;
-	CriticalSection m_messengerCriticalSection;
+	CCriticalSection m_tagCriticalSection;
+	CCriticalSection m_messengerCriticalSection;
 
 public:
 	// construction
-	LogMgr( void );
-	~LogMgr( void );
+	CLogMgr( void );
+	~CLogMgr( void );
 	void Init( const char* loggingConfigFilename );
 
 	// logs
@@ -71,8 +71,8 @@ public:
 	void SetDisplayFlags( const std::string& tag, unsigned char flags );
 
 	// error messengers
-	void AddErrorMessenger( NLogger::ErrorMessenger* pMessenger );
-	LogMgr::ErrorDialogResult Error( const std::string& errorMessage, bool isFatal, const char* funcName, const char* sourceFile, unsigned int lineNum );
+	void AddErrorMessenger( NLogger::CErrorMessenger* pMessenger );
+	CLogMgr::ErrorDialogResult Error( const std::string& errorMessage, bool isFatal, const char* funcName, const char* sourceFile, unsigned int lineNum );
 
 private:
 	// log helpers
@@ -82,11 +82,11 @@ private:
 };
 #pragma endregion
 
-#pragma region LogMgr class definition
+#pragma region CLogMgr class Cdefinition
 //------------------------------------------------------------------------------------------------------------------------------------
 // Constructor
 //------------------------------------------------------------------------------------------------------------------------------------
-LogMgr::LogMgr( void )
+CLogMgr::CLogMgr( void )
 {
 	// set up the default log tags
 	SetDisplayFlags( "ERROR", ERRORFLAG_DEFAULT );
@@ -98,12 +98,12 @@ LogMgr::LogMgr( void )
 //------------------------------------------------------------------------------------------------------------------------------------
 // Destructor
 //------------------------------------------------------------------------------------------------------------------------------------
-LogMgr::~LogMgr( void )
+CLogMgr::~CLogMgr( void )
 {
 	m_messengerCriticalSection.Lock( );
 	for (auto it = m_errorMessengers.begin( ); it != m_errorMessengers.end( ); ++it)
 	{
-		NLogger::ErrorMessenger* pMessenger = (*it);
+		NLogger::CErrorMessenger* pMessenger = (*it);
 		delete pMessenger;
 	}
 	m_errorMessengers.clear( );
@@ -114,7 +114,7 @@ LogMgr::~LogMgr( void )
 //------------------------------------------------------------------------------------------------------------------------------------
 // Initializes the NLogger.
 //------------------------------------------------------------------------------------------------------------------------------------
-void LogMgr::Init( const char* loggingConfigFilename )
+void CLogMgr::Init( const char* loggingConfigFilename )
 {
 	if (loggingConfigFilename)
 	{
@@ -151,7 +151,7 @@ void LogMgr::Init( const char* loggingConfigFilename )
 //------------------------------------------------------------------------------------------------------------------------------------
 // This function builds up the log string and outputs it to various places based on the display flags (m_displayFlags).
 //------------------------------------------------------------------------------------------------------------------------------------
-void LogMgr::Log( const string& tag, const string& message, const char* funcName, const char* sourceFile, unsigned int lineNum )
+void CLogMgr::Log( const string& tag, const string& message, const char* funcName, const char* sourceFile, unsigned int lineNum )
 {
 	m_tagCriticalSection.Lock( );
 	Tags::iterator findIt = m_tags.find( tag );
@@ -169,13 +169,13 @@ void LogMgr::Log( const string& tag, const string& message, const char* funcName
 		// get executed.
 		m_tagCriticalSection.Unlock( );
 	}
-}  // end LogMgr::Log()
+}  // end CLogMgr::Log()
 
 
 //------------------------------------------------------------------------------------------------------------------------------------
 // Sets one or more display flags
 //------------------------------------------------------------------------------------------------------------------------------------
-void LogMgr::SetDisplayFlags( const std::string& tag, unsigned char flags )
+void CLogMgr::SetDisplayFlags( const std::string& tag, unsigned char flags )
 {
 	m_tagCriticalSection.Lock( );
 	if (flags != 0)
@@ -197,7 +197,7 @@ void LogMgr::SetDisplayFlags( const std::string& tag, unsigned char flags )
 //------------------------------------------------------------------------------------------------------------------------------------
 // Adds an error messenger to the list
 //------------------------------------------------------------------------------------------------------------------------------------
-void LogMgr::AddErrorMessenger( NLogger::ErrorMessenger* pMessenger )
+void CLogMgr::AddErrorMessenger( NLogger::CErrorMessenger* pMessenger )
 {
 	m_messengerCriticalSection.Lock( );
 	m_errorMessengers.push_back( pMessenger );
@@ -206,9 +206,9 @@ void LogMgr::AddErrorMessenger( NLogger::ErrorMessenger* pMessenger )
 
 
 //------------------------------------------------------------------------------------------------------------------------------------
-// Helper for ErrorMessenger.
+// Helper for CErrorMessenger.
 //------------------------------------------------------------------------------------------------------------------------------------
-LogMgr::ErrorDialogResult LogMgr::Error( const std::string& errorMessage, bool isFatal, const char* funcName, const char* sourceFile, unsigned int lineNum )
+CLogMgr::ErrorDialogResult CLogMgr::Error( const std::string& errorMessage, bool isFatal, const char* funcName, const char* sourceFile, unsigned int lineNum )
 {
 	string tag = ((isFatal) ? ("FATAL") : ("ERROR"));
 
@@ -229,10 +229,10 @@ LogMgr::ErrorDialogResult LogMgr::Error( const std::string& errorMessage, bool i
 	// act upon the choice
 	switch (result)
 	{
-	case IDIGNORE: return LogMgr::LOGMGR_ERROR_IGNORE;
-	case IDABORT: __debugbreak( ); return LogMgr::LOGMGR_ERROR_RETRY;  // assembly language instruction to break into the debugger
-	case IDRETRY:	return LogMgr::LOGMGR_ERROR_RETRY;
-	default:       return LogMgr::LOGMGR_ERROR_RETRY;
+	case IDIGNORE: return CLogMgr::LOGMGR_ERROR_IGNORE;
+	case IDABORT: __debugbreak( ); return CLogMgr::LOGMGR_ERROR_RETRY;  // assembly language instruction to break into the debugger
+	case IDRETRY:	return CLogMgr::LOGMGR_ERROR_RETRY;
+	default:       return CLogMgr::LOGMGR_ERROR_RETRY;
 	}
 }
 
@@ -243,7 +243,7 @@ LogMgr::ErrorDialogResult LogMgr::Error( const std::string& errorMessage, bool i
 // IMPORTANT: The two places this function is called from wrap the code in the tag critical section (m_pTagCriticalSection), 
 // so that makes this call thread safe.  If you call this from anywhere else, make sure you wrap it in that critical section.
 //------------------------------------------------------------------------------------------------------------------------------------
-void LogMgr::OutputFinalBufferToLogs( const string& finalBuffer, unsigned char flags )
+void CLogMgr::OutputFinalBufferToLogs( const string& finalBuffer, unsigned char flags )
 {
 	// Write the log to each display based on the display flags
 	if ((flags & LOGFLAG_WRITE_TO_LOG_FILE) > 0)  // log file
@@ -256,7 +256,7 @@ void LogMgr::OutputFinalBufferToLogs( const string& finalBuffer, unsigned char f
 //------------------------------------------------------------------------------------------------------------------------------------
 // This is a helper function that writes the data string to the log file.
 //------------------------------------------------------------------------------------------------------------------------------------
-void LogMgr::WriteToLogFile( const string& data )
+void CLogMgr::WriteToLogFile( const string& data )
 {
 	FILE* pLogFile = NULL;
 	fopen_s( &pLogFile, ERRORLOG_FILENAME, "a+" );
@@ -271,7 +271,7 @@ void LogMgr::WriteToLogFile( const string& data )
 //------------------------------------------------------------------------------------------------------------------------------------
 // Fills outOutputBuffer with the find error string.
 //------------------------------------------------------------------------------------------------------------------------------------
-void LogMgr::GetOutputBuffer( std::string& outOutputBuffer, const string& tag, const string& message, const char* funcName, const char* sourceFile, unsigned int lineNum )
+void CLogMgr::GetOutputBuffer( std::string& outOutputBuffer, const string& tag, const string& message, const char* funcName, const char* sourceFile, unsigned int lineNum )
 {
 	if (!tag.empty( ))
 		outOutputBuffer = "[" + tag + "] " + message;
@@ -301,29 +301,29 @@ void LogMgr::GetOutputBuffer( std::string& outOutputBuffer, const string& tag, c
 
 #pragma endregion
 
-#pragma region ErrorMessenger definition
+#pragma region CErrorMessenger definition
 //-----------------------------------------------------------------------------------------------------------------------
-// ErrorMessenger
+// CErrorMessenger
 //-----------------------------------------------------------------------------------------------------------------------
-NLogger::ErrorMessenger::ErrorMessenger( void )
+NLogger::CErrorMessenger::CErrorMessenger( void )
 {
 	s_pLogMgr->AddErrorMessenger( this );
 	m_enabled = true;
 }
 
-void NLogger::ErrorMessenger::Show( const std::string& errorMessage, bool isFatal, const char* funcName, const char* sourceFile, unsigned int lineNum )
+void NLogger::CErrorMessenger::Show( const std::string& errorMessage, bool isFatal, const char* funcName, const char* sourceFile, unsigned int lineNum )
 {
 	if (m_enabled)
 	{
-		if (s_pLogMgr->Error( errorMessage, isFatal, funcName, sourceFile, lineNum ) == LogMgr::LOGMGR_ERROR_IGNORE)
+		if (s_pLogMgr->Error( errorMessage, isFatal, funcName, sourceFile, lineNum ) == CLogMgr::LOGMGR_ERROR_IGNORE)
 			m_enabled = false;
 	}
 }
 #pragma endregion
 
-#pragma region C Interface
+#pragma region CPlane Interface
 //-----------------------------------------------------------------------------------------------------------------------
-// C Interface
+// CPlane Interface
 //-----------------------------------------------------------------------------------------------------------------------
 
 
@@ -331,7 +331,7 @@ void NLogger::Init( const char* loggingConfigFilename )
 {
 	if (!s_pLogMgr)
 	{
-		s_pLogMgr = QSE_NEW LogMgr;
+		s_pLogMgr = QSE_NEW CLogMgr;
 		s_pLogMgr->Init( loggingConfigFilename );
 	}
 }

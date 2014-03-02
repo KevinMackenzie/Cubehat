@@ -5,17 +5,17 @@
 
 namespace Quicksand
 {
-	Plane::Plane(vec3 p0, vec3 p1, vec3 p2)
+	CPlane::CPlane(vec3 p0, vec3 p1, vec3 p2)
 	{
 		Init(p0, p1, p2);
 	}
 
-	Plane::Plane(GLfloat a, GLfloat b, GLfloat c, GLfloat d)
+	CPlane::CPlane(GLfloat a, GLfloat b, GLfloat c, GLfloat d)
 	{
 		Init(a, b, c, d);
 	}
 
-	Plane::Plane(void)
+	CPlane::CPlane(void)
 	{
 		m_fA = 0.0f;
 		m_fB = 0.0f;
@@ -23,12 +23,12 @@ namespace Quicksand
 		m_fD = 0.0f;
 	}
 
-	Plane::~Plane(void)
+	CPlane::~CPlane(void)
 	{
 
 	}
 
-	void Plane::Init(vec3 p0, vec3 p1, vec3 p2)
+	void CPlane::Init(vec3 p0, vec3 p1, vec3 p2)
 	{
 		vec3 v, u, n;
 
@@ -46,7 +46,7 @@ namespace Quicksand
 
 	}
 
-	void Plane::Init(GLfloat a, GLfloat b, GLfloat c, GLfloat d)
+	void CPlane::Init(GLfloat a, GLfloat b, GLfloat c, GLfloat d)
 	{
 		m_fA = a;
 		m_fB = b;
@@ -54,7 +54,7 @@ namespace Quicksand
 		m_fD = d;
 	}
 
-	void Plane::Normalize(void)
+	void CPlane::Normalize(void)
 	{
 		float mag;
 		mag = sqrt(m_fA*m_fA + m_fB*m_fB + m_fC*m_fC);
@@ -63,7 +63,7 @@ namespace Quicksand
 		m_fC /= mag;
 	}
 
-	bool Plane::Inside(const vec3& point, const float radius) const
+	bool CPlane::Inside(const vec3& point, const float radius) const
 	{
 		//if Distance < -radius, we are outside
 
@@ -74,20 +74,20 @@ namespace Quicksand
 		return (fDistance >= -radius);
 	}
 
-	bool Plane::Inside(const vec3& point) const
+	bool CPlane::Inside(const vec3& point) const
 	{
 		//the point is inside the plane if it is being faced by the normal of the plane
 		//NOTE: if it is flush with the plane, it is inside
 		return (Distance(point) >= 0.0f);
 	}
 
-	GLfloat Plane::Distance(const vec3& point) const
+	GLfloat CPlane::Distance(const vec3& point) const
 	{
 		return glm::dot(vec3(m_fA, m_fB, m_fC), point) + m_fD;
 	}
 
 
-	Frustum::Frustum(void)
+	CFrustum::CFrustum(void)
 	{
 		m_FOV = PI / 4.0f;		//default FOV is pi/4
 		m_Aspect = 1;			//default is square
@@ -96,12 +96,12 @@ namespace Quicksand
 
 	}
 
-	void Frustum::ReInit(void)
+	void CFrustum::ReInit(void)
 	{
 		Init(m_FOV, m_Aspect, m_Near, m_Far);
 	}
 
-	bool Frustum::Inside(const vec3& point) const
+	bool CFrustum::Inside(const vec3& point) const
 	{
 		for (int i = 0; i < NumPlanes; i++)
 		{
@@ -113,7 +113,7 @@ namespace Quicksand
 		return true;
 	}
 
-	bool Frustum::Inside(const vec3& point, const GLfloat radius) const
+	bool CFrustum::Inside(const vec3& point, const GLfloat radius) const
 	{
 		for (int i = 0; i < NumPlanes; i++)
 		{
@@ -125,31 +125,31 @@ namespace Quicksand
 		return true;
 	}
 
-	void Frustum::SetFOV(GLfloat fov)
+	void CFrustum::SetFOV(GLfloat fov)
 	{
 		m_FOV = fov;
 		ReInit();
 	}
 
-	void Frustum::SetAspect(GLfloat aspect)
+	void CFrustum::SetAspect(GLfloat aspect)
 	{
 		m_Aspect = aspect;
 		ReInit();
 	}
 
-	void Frustum::SetNear(GLfloat nearClip)
+	void CFrustum::SetNear(GLfloat nearClip)
 	{
 		m_Near = nearClip;
 		ReInit();
 	}
 
-	void Frustum::SetFar(GLfloat farClip)
+	void CFrustum::SetFar(GLfloat farClip)
 	{
 		m_Far = farClip;
 		ReInit();
 	}
 
-	void Frustum::Init(const GLfloat fov, const GLfloat aspect, const GLfloat nearClipDistance, const GLfloat farClipDistance)
+	void CFrustum::Init(const GLfloat fov, const GLfloat aspect, const GLfloat nearClipDistance, const GLfloat farClipDistance)
 	{
 		m_FOV = fov;
 		m_Aspect = aspect;
@@ -190,22 +190,22 @@ namespace Quicksand
 	}
 
 
-	void Frustum::Render(void)
+	void CFrustum::Render(void)
 	{
 
 	}
 
 
-	//GLMatrixStack
+	//CGLMatrixStack
 	//////////////////////////////////////////////
 
-	GLMatrixStack::GLMatrixStack(void)
+	CGLMatrixStack::CGLMatrixStack(void)
 	{
 		//add one to the stack to begin with to have fewer issues
 		m_MatrixStack.push(mat4());
 	}
 
-	GLMatrixStack::~GLMatrixStack(void)
+	CGLMatrixStack::~CGLMatrixStack(void)
 	{
 		while (m_MatrixStack.size() != 0)
 		{
@@ -214,7 +214,7 @@ namespace Quicksand
 	}
 
 
-	void GLMatrixStack::Push(void)
+	void CGLMatrixStack::Push(void)
 	{
 		
 		m_OneFromTop = &m_MatrixStack.top();
@@ -222,7 +222,7 @@ namespace Quicksand
 		
 	}
 
-	void GLMatrixStack::Pop(void)
+	void CGLMatrixStack::Pop(void)
 	{
 		//make sure we leave that one top level identity matrix
 		if (m_MatrixStack.size() == 1)
@@ -246,22 +246,22 @@ namespace Quicksand
 		m_MatrixStack.push(tmp);
 	}
 
-	void GLMatrixStack::LoadMatrix(mat4 matrix)
+	void CGLMatrixStack::LoadMatrix(mat4 matrix)
 	{
 		m_MatrixStack.top() = matrix * (*m_OneFromTop);
 	}
 
-	void GLMatrixStack::LoadIdentity(void)
+	void CGLMatrixStack::LoadIdentity(void)
 	{
 		m_MatrixStack.top() = *m_OneFromTop;
 	}
 
-	void GLMatrixStack::MultMatrix(mat4 matrix)
+	void CGLMatrixStack::MultMatrix(mat4 matrix)
 	{
 		m_MatrixStack.top() *= matrix;
 	}
 
-	const mat4& GLMatrixStack::GetTop(void) const
+	const mat4& CGLMatrixStack::GetTop(void) const
 	{
 		return m_MatrixStack.top();
 	}
